@@ -35,13 +35,16 @@ class DatabaseHandler:
                     c.company, 
                     p.unique_id, 
                     u.name AS added_by, 
-                    p.credited
+                    p.credited, 
+                    p.updated_at
                 FROM 
                     parts p
                 JOIN 
                     users u ON p.user_id = u.id
                 JOIN 
                     customers c ON p.customer_id = c.id
+                ORDER BY 
+                    p.updated_at DESC
             """
             cursor.execute(query)
             results = cursor.fetchall()
@@ -52,6 +55,7 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+
 
     def get_customers_data(self):
         try:
