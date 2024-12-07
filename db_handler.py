@@ -49,6 +49,7 @@ class DatabaseHandler:
             cursor = self.connection.cursor()
             query = """
                 SELECT 
+                    p.id,
                     p.partname, 
                     p.quantity, 
                     p.reason, 

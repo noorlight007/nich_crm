@@ -62,17 +62,17 @@
           <tbody>
             {% for part in parts %}
                 <tr>
-                    <td>{{ part[0] }}</td>
-                    <td class="text-secondary">{{ part[1] }}</td>
+                    <td>{{ part[1] }}</td>
                     <td class="text-secondary">{{ part[2] }}</td>
                     <td class="text-secondary">{{ part[3] }}</td>
                     <td class="text-secondary">{{ part[4] }}</td>
                     <td class="text-secondary">{{ part[5] }}</td>
                     <td class="text-secondary">{{ part[6] }}</td>
                     <td class="text-secondary">{{ part[7] }}</td>
+                    <td class="text-secondary">{{ part[8] }}</td>
                     <td>
                       <div class="btn-list flex-nowrap">
-                          <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report{{ part[5] }}">
+                          <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report{{ part[0] }}">
                               Edit
                           </a>
                           <div class="dropdown">
@@ -90,7 +90,7 @@
                           </div>
                       </div>
                     </td>
-                    <div class="modal modal-blur fade" id="modal-report{{ part[5] }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal modal-blur fade" id="modal-report{{ part[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -100,7 +100,7 @@
                           <div class="modal-body">
                             <div class="mb-3">
                               <label class="form-label">Name</label>
-                              <input type="text" class="form-control" name="example-text-input" placeholder="Your report name" value="{{ part[0] }}">
+                              <input type="text" class="form-control" name="example-text-input" placeholder="Your report name" value="{{ part[1] }}">
                             </div>
                             <label class="form-label">Report type</label>
                             <div class="form-selectgroup-boxes row mb-3">
