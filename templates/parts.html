@@ -50,11 +50,14 @@
 {% block main_content %}
 
 <div class="col-12">
-    <div>
-      <label>
-          <input type="checkbox" id="credited-parts-checkbox"> Check credited parts
-      </label>
-    </div>
+  <div>
+    <label>
+        <input type="checkbox" id="credited-parts-checkbox" 
+               {% if checked == 'yes' %} checked {% endif %}> 
+        Check credited parts
+    </label>
+</div>
+
 
     <div class="card">
       <div class="table-responsive p-2">

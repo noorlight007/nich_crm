@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify,request
 from db_handler import DatabaseHandler
 
 app = Flask(__name__)
@@ -25,17 +25,14 @@ def index():
 def parts_table():
     db_handler = DatabaseHandler(**db_config)
     try:
-        parts_data = db_handler.get_parts_data()
-        return render_template('parts.html', parts=parts_data)
-    except Exception as e:
-        return f"Error: {str(e)}"
-    
-@app.route('/parts?checked=true')
-def checked_parts_table():
-    db_handler = DatabaseHandler(**db_config)
-    try:
-        parts_data = db_handler.get_credited_parts_data()
-        return render_template('parts.html', parts=parts_data , checked = "yes")
+        # Check the query parameter
+        checked = request.args.get('checked')
+        if checked == 'true':
+            parts_data = db_handler.get_credited_parts_data()
+            return render_template('parts.html', parts=parts_data, checked="yes")
+        else:
+            parts_data = db_handler.get_parts_data()
+            return render_template('parts.html', parts=parts_data, checked="no")
     except Exception as e:
         return f"Error: {str(e)}"
 
