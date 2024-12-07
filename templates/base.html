@@ -29,8 +29,12 @@
     <!-- for customer css style -->
     {% endblock %}
   </head>
+    
   <body >
-    <script src="{{ url_for('static', filename='js/demo-theme.min.js') }}"></script> 
+    <script src="{{ url_for('static', filename='js/demo-theme.min.js') }}"></script>
+    {% block page_loader %}
+    <!-- for customer css style -->
+    {% endblock %}
     <div class="page">
       <!-- Navbar -->
       <header class="navbar navbar-expand-md d-print-none" >

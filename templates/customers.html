@@ -38,7 +38,21 @@
     }
 </style>
 {% endblock %}
-
+{% block page_loader %}
+<div id="page-loader" class="page page-center">
+    <div class="container container-slim py-4">
+      <div class="text-center">
+        <div class="mb-3">
+          <a href="." class="navbar-brand navbar-brand-autodark"><img src="" height="36" alt="AutoParts"></a>
+        </div>
+        <div class="text-secondary mb-3">Preparing customer data</div>
+        <div class="progress progress-sm">
+          <div class="progress-bar progress-bar-indeterminate"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
 {% block content_title %}
 
     <h2 class="page-title">
@@ -49,7 +63,7 @@
 
 {% block main_content %}
 
-<div class="col-12">
+<div class="col-12" id="main_content_body" style="display: none;">
     <div class="d-flex justify-content-start mb-1">
         <div class=" d-flex align-items-center">
             <a href="#" class="btn btn-primary btn-pill w-100">
@@ -286,6 +300,16 @@
       }
     });
   });
+</script>
+<script>
+    // Wait for the page to load, then hide the loader and show the main content
+    window.onload = function() {
+        // Hide the loader and show the main content after 6 seconds
+        setTimeout(function() {
+            document.getElementById('page-loader').style.display = 'none'; // Hide loader
+            document.getElementById('main_content_body').style.display = 'block'; // Show main content
+        }, 6000); // Delay of 6 seconds (6000 milliseconds)
+    };
 </script>
 {% endblock %}
 
