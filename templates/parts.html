@@ -306,7 +306,17 @@
     });
   });
 </script>
+<style>
+  /* Apply hover effect to DataTable pagination links */
+  .dataTables_paginate .paginate_button {
+    color: #007bff; /* Default color (you can change this) */
+  }
 
+  .dataTables_paginate .paginate_button:hover {
+    color: white !important; /* White text on hover */
+    background-color: #007bff !important; /* Optional: change background color to match hover */
+  }
+</style>
 <!-- ### -->
 <script>
   document.getElementById('credited-parts-checkbox').addEventListener('change', function () {
