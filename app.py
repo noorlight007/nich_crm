@@ -30,7 +30,7 @@ def parts_table():
 def customers_table():
     try:
         customers_data = db_handler.get_customers_data()
-        return render_template('customers_table.html', customers=customers_data)
+        return render_template('customers.html', customers=customers_data)
     except Exception as e:
         return f"Error: {str(e)}"
 

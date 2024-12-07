@@ -3,7 +3,7 @@
 
 {% block page_title %}
 
-    <title>Parts - AutoPart</title>
+    <title>Customers - AutoPart</title>
 
 {% endblock %}
 
@@ -48,31 +48,27 @@
         <table class="table table-vcenter card-table table-striped">
           <thead>
             <tr>
-              <th>Part Name</th>
-              <th>Quantity</th>
-              <th>Reason</th>
-              <th>Account Number</th>
-              <th>Company</th>
-              <th>Unique ID</th>
-              <th>Added By</th>
-              <th>Credited</th>
+                <th>ID</th>
+                <th>Account Number</th>
+                <th>Username</th>
+                <th>Company</th>
+                <th>Created At</th>
+                <th>Updated At</th>
               <th class="w-1"></th>
             </tr>
           </thead>
           <tbody>
-            {% for part in parts %}
+            {% for customer in customers %}
                 <tr>
-                    <td>{{ part[1] }}</td>
-                    <td class="text-secondary">{{ part[2] }}</td>
-                    <td class="text-secondary">{{ part[3] }}</td>
-                    <td class="text-secondary">{{ part[4] }}</td>
-                    <td class="text-secondary">{{ part[5] }}</td>
-                    <td class="text-secondary">{{ part[6] }}</td>
-                    <td class="text-secondary">{{ part[7] }}</td>
-                    <td class="text-secondary">{{ part[8] }}</td>
+                    <td>{{ customer[0] }}</td>
+                    <td>{{ customer[1] }}</td>
+                    <td>{{ customer[2] }}</td>
+                    <td>{{ customer[3] }}</td>
+                    <td>{{ customer[4] }}</td>
+                    <td>{{ customer[5] }}</td>
                     <td>
                       <div class="btn-list flex-nowrap">
-                          <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report{{ part[0] }}">
+                          <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report{{ customer[0] }}">
                               Edit
                           </a>
                           <div class="dropdown">
@@ -90,7 +86,7 @@
                           </div>
                       </div>
                     </td>
-                    <div class="modal modal-blur fade" id="modal-report{{ part[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal modal-blur fade" id="modal-report{{ customer[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -100,7 +96,7 @@
                           <div class="modal-body">
                             <div class="mb-3">
                               <label class="form-label">Name</label>
-                              <input type="text" class="form-control" name="example-text-input" placeholder="Your report name" value="{{ part[1] }}">
+                              <input type="text" class="form-control" name="example-text-input" placeholder="Your report name" value="{{ customer[3] }}">
                             </div>
                             <label class="form-label">Report type</label>
                             <div class="form-selectgroup-boxes row mb-3">
