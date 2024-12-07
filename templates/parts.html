@@ -51,17 +51,20 @@
 
 <div class="col-12">
 
-  <div class="d-flex justify-content-between">
-    <a href="#" class="btn btn-primary btn-pill w-100">
-      + Add new part
-    </a>
-    <label class="form-selectgroup-item d-flex align-items-center">
-      <input type="checkbox" id="credited-parts-checkbox" {% if checked == 'yes' %} checked {% endif %} class="form-check-input me-2">
-      <div class="form-selectgroup-label">
-        <strong>Check Credited Parts</strong>
+    <div class="d-flex justify-content-between">
+      <div class=" d-flex align-items-center">
+        <a href="#" class="btn btn-primary btn-pill w-100">
+          + Add new part
+        </a>
       </div>
-    </label>
-  </div>
+      
+      <label class="form-selectgroup-item d-flex align-items-center">
+        <input type="checkbox" id="credited-parts-checkbox" {% if checked == 'yes' %} checked {% endif %} class="form-check-input me-2">
+        <div class="form-selectgroup-label">
+          <strong>Check Credited Parts</strong>
+        </div>
+      </label>
+    </div>
 
     <div class="card">
       <div class="table-responsive p-2">
