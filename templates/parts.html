@@ -50,7 +50,7 @@
 {% block main_content %}
 
 <div class="col-12">
-  <div class="row mb-2">
+  <div class="row mb-1">
     <div class="col-12 d-flex justify-content-center">
       <label class="form-selectgroup-item d-flex align-items-center">
         <input type="checkbox" id="credited-parts-checkbox" {% if checked == 'yes' %} checked {% endif %} class="form-check-input me-2">
@@ -74,7 +74,6 @@
               <th>Company</th>
               <th>Unique ID</th>
               <th>Added By</th>
-              <th>Credited</th>
               <th class="w-1"></th>
             </tr>
           </thead>
@@ -88,7 +87,6 @@
                     <td class="text-secondary">{{ part[5] }}</td>
                     <td class="text-secondary">{{ part[6] }}</td>
                     <td class="text-secondary">{{ part[7] }}</td>
-                    <td class="text-secondary">{{ part[8] }}</td>
                     <td>
                       <div class="btn-list flex-nowrap">
                           <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report{{ part[0] }}">
@@ -291,7 +289,7 @@
       "pageLength": 10,
       "order": [],
       "columnDefs": [
-        { "orderable": false, "targets": [7, 8] },
+        { "orderable": false, "targets": [7] },
         { "searchable": false, "targets": [1, 7] }
       ],
       "language": {
