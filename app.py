@@ -23,6 +23,7 @@ def index():
 
 @app.route('/parts')
 def parts_table():
+    db_handler = DatabaseHandler(**db_config)
     try:
         parts_data = db_handler.get_parts_data()
         return render_template('parts.html', parts=parts_data)
@@ -31,6 +32,7 @@ def parts_table():
 
 @app.route('/customers')
 def customers_table():
+    db_handler = DatabaseHandler(**db_config)
     try:
         customers_data = db_handler.get_customers_data()
         return render_template('customers.html', customers=customers_data)
@@ -39,6 +41,7 @@ def customers_table():
 
 @app.route('/users')
 def users_table():
+    db_handler = DatabaseHandler(**db_config)
     try:
         users_data = db_handler.get_users_data()
         return render_template('users_table.html', users=users_data)
@@ -47,6 +50,7 @@ def users_table():
 
 @app.teardown_appcontext
 def close_db_connection(exception=None):
+    db_handler = DatabaseHandler(**db_config)
     """
     Close the database connection when the app context ends.
     """
