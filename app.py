@@ -10,11 +10,12 @@ db_config = {
     "password": "6984125oO!",
     "db_name": "AutoParts"
 }
-db_handler = DatabaseHandler(**db_config)
+
 
 
 @app.route('/')
 def index():
+    db_handler = DatabaseHandler(**db_config)
     total_parts = db_handler.get_total_parts()
     total_customers = db_handler.get_total_customers()
     return render_template('index.html', total_parts=total_parts, total_customers=total_customers)
