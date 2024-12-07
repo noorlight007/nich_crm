@@ -119,6 +119,47 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def get_total_parts(self):
+        """
+        Get the total number of parts in the 'parts' table.
+        """
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT COUNT(*) FROM parts"
+            cursor.execute(query)
+            result = cursor.fetchone()
+            return result[0] if result else 0
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
+    def get_total_customers(self):
+        """
+        Get the total number of customers in the 'customers' table.
+        """
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT COUNT(*) FROM customers"
+            cursor.execute(query)
+            result = cursor.fetchone()
+            return result[0] if result else 0
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
+
     def close(self):
         """
         Close the database connection safely.
