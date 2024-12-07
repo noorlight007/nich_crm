@@ -97,11 +97,17 @@
                               Actions
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
+                              {% if credited == 'yes' %}
                               <a class="dropdown-item" href="#">
-                              Action
+                                  Mark as Not-credited
                               </a>
+                              {% else %}
                               <a class="dropdown-item" href="#">
-                              Another action
+                                  Mark as Not-credited
+                              </a>
+                              {% endif %}
+                              <a class="dropdown-item" href="#">
+                              Delete
                               </a>
                           </div>
                           </div>
