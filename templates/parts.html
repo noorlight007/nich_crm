@@ -307,14 +307,25 @@
   });
 </script>
 <style>
-  /* Apply hover effect to DataTable pagination links */
+  /* Ensure pagination links have a default color */
   .dataTables_paginate .paginate_button {
-    color: #007bff; /* Default color (you can change this) */
+    color: #007bff !important; /* Default color (you can change this) */
+    background-color: transparent !important; /* Remove default background */
+    border-color: #ddd; /* Optional: set border color */
   }
 
+  /* Apply white text color on hover */
   .dataTables_paginate .paginate_button:hover {
     color: white !important; /* White text on hover */
-    background-color: #007bff !important; /* Optional: change background color to match hover */
+    background-color: #007bff !important; /* Blue background on hover */
+    border-color: #007bff !important; /* Optional: matching border color */
+  }
+
+  /* Ensure active page link has distinct color */
+  .dataTables_paginate .paginate_button.current {
+    color: white !important;
+    background-color: #007bff !important;
+    border-color: #007bff !important;
   }
 </style>
 <!-- ### -->
