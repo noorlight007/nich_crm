@@ -50,9 +50,17 @@
 {% block main_content %}
 
 <div class="col-12">
+    <div>
+      <label>
+          <input type="checkbox" id="credited-parts-checkbox"> Check credited parts
+      </label>
+    </div>
+    <div id="loading-screen" style="display: none;">
+        <p>Loading, please wait...</p>
+    </div>
     <div class="card">
       <div class="table-responsive p-2">
-        <table class="table table-vcenter card-table table-striped">
+        <table id="parts-table" class="table table-vcenter card-table table-striped">
           <thead>
             <tr>
               <th>Part Name</th>
@@ -289,6 +297,42 @@
   });
 </script>
 
+<!-- ### -->
+<script>
+  $(document).ready(function () {
+      const table = $('#parts-table').DataTable({
+          "ajax": {
+              "url": "/get_parts",
+              "dataSrc": ""
+          },
+          "columns": [
+              { "data": "id" },
+              { "data": "partname" },
+              { "data": "quantity" },
+              { "data": "reason" },
+              { "data": "accountNumber" },
+              { "data": "company" },
+              { "data": "added_by" },
+              { "data": "credited" },
+              { "data": "updated_at" }
+          ]
+      });
+
+      $('#credited-parts-checkbox').change(function () {
+          if (this.checked) {
+              $('#loading-screen').show();
+              table.ajax.url("/get_credited_parts").load(function () {
+                  $('#loading-screen').hide();
+              });
+          } else {
+              $('#loading-screen').show();
+              table.ajax.url("/get_parts").load(function () {
+                  $('#loading-screen').hide();
+              });
+          }
+      });
+  });
+</script>
 
 {% endblock %}
 

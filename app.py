@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from db_handler import DatabaseHandler
 
 app = Flask(__name__)
@@ -29,6 +29,54 @@ def parts_table():
         return render_template('parts.html', parts=parts_data)
     except Exception as e:
         return f"Error: {str(e)}"
+    
+@app.route('/get_parts', methods=['GET'])
+def get_parts():
+    db_handler = DatabaseHandler(**db_config)
+    try:
+        parts = db_handler.get_parts_data()
+        formatted_parts = [
+            {
+                "id": part[0],
+                "partname": part[1],
+                "quantity": part[2],
+                "reason": part[3],
+                "accountNumber": part[4],
+                "company": part[5],
+                "unique_id": part[6],
+                "added_by": part[7],
+                "credited": "Yes" if part[8] else "No",
+                "updated_at": part[9].strftime('%Y-%m-%d %H:%M:%S')
+            }
+            for part in parts
+        ]
+        return jsonify(formatted_parts)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/get_credited_parts', methods=['GET'])
+def get_credited_parts():
+    db_handler = DatabaseHandler(**db_config)
+    try:
+        parts = db_handler.get_credited_parts_data()
+        formatted_parts = [
+            {
+                "id": part[0],
+                "partname": part[1],
+                "quantity": part[2],
+                "reason": part[3],
+                "accountNumber": part[4],
+                "company": part[5],
+                "unique_id": part[6],
+                "added_by": part[7],
+                "credited": "Yes",
+                "updated_at": part[9].strftime('%Y-%m-%d %H:%M:%S')
+            }
+            for part in parts
+        ]
+        return jsonify(formatted_parts)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/customers')
 def customers_table():
