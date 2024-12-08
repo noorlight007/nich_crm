@@ -199,11 +199,11 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                               {% if checked == 'yes' %}
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
                                   Mark as Not-credited
                               </a>
                               {% else %}
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
                                   Mark as Credited
                               </a>
                               {% endif %}
@@ -315,10 +315,7 @@
                           <div class="modal-status bg-danger"></div>
                           <div class="modal-body text-center py-4">
                             <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="yellow" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                              <path d="M23.121,6.151L17.849.878c-.567-.566-1.321-.878-2.121-.878h-7.455c-.8,0-1.554.312-2.122.879L.879,6.151c-.566.567-.879,1.32-.879,2.121v7.456c0,.801.312,1.554.879,2.121l5.272,5.273c.567.566,1.321.878,2.121.878h7.455c.8,0,1.554-.312,2.122-.879l5.271-5.272c.566-.567.879-1.32.879-2.121v-7.456c0-.801-.313-1.554-.879-2.121Zm-1.121,9.577c0,.263-.106.521-.293.707l-5.271,5.271c-.19.189-.442.294-.709.294h-7.455c-.267,0-.519-.104-.708-.293l-5.271-5.272c-.187-.187-.293-.444-.293-.707v-7.456c0-.263.106-.521.293-.707L7.563,2.294c.19-.189.442-.294.709-.294h7.455c.267,0,.519.104.708.293l5.271,5.272c.187.187.293.444.293.707v7.456Zm-9-2.728h-2v-7h2v7Zm.5,3.5c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Z" />
-                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
                             
                             <h3>Are you sure?</h3>
                             <div class="text-secondary">Do you really want to remove part <h4>{{ part[1] }}</h4></div>
@@ -331,6 +328,36 @@
                                   </a></div>
                                 <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
                                     Delete
+                                  </a></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal modal-blur fade" id="modal-mark{{ part[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          <div class="modal-status bg-danger"></div>
+                          <div class="modal-body text-center py-4">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-warning icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                              <path d="M23.121,6.151L17.849.878c-.567-.566-1.321-.878-2.121-.878h-7.455c-.8,0-1.554.312-2.122.879L.879,6.151c-.566.567-.879,1.32-.879,2.121v7.456c0,.801.312,1.554.879,2.121l5.272,5.273c.567.566,1.321.878,2.121.878h7.455c.8,0,1.554-.312,2.122-.879l5.271-5.272c.566-.567.879-1.32.879-2.121v-7.456c0-.801-.313-1.554-.879-2.121Zm-1.121,9.577c0,.263-.106.521-.293.707l-5.271,5.271c-.19.189-.442.294-.709.294h-7.455c-.267,0-.519-.104-.708-.293l-5.271-5.272c-.187-.187-.293-.444-.293-.707v-7.456c0-.263.106-.521.293-.707L7.563,2.294c.19-.189.442-.294.709-.294h7.455c.267,0,.519.104.708.293l5.271,5.272c.187.187.293.444.293.707v7.456Zm-9-2.728h-2v-7h2v7Zm.5,3.5c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Z"/>
+                            </svg>
+                            
+                            <h3>Confirm again!</h3>
+                            <div class="text-secondary">Do you really want to mark the product <strong>{{ part[0] }}</strong> as {% if checked == 'yes' %} <h3>Not-credited</h3>{% else %} <h3>Credited</h3>{% endif %}?</div>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="w-100">
+                              <div class="row">
+                                <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                    Cancel
+                                  </a></div>
+                                <div class="col"><a href="#" class="btn btn-primary w-100" data-bs-dismiss="modal">
+                                    Mark & Save
                                   </a></div>
                               </div>
                             </div>
