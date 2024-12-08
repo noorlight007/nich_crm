@@ -36,12 +36,29 @@ def parts_table():
     except Exception as e:
         return f"Error: {str(e)}"
 
-@app.route('/customers')
-def customers_table():
+@app.route('/customers/<state_count>')
+def customers_table(state_count = None):
     db_handler = DatabaseHandler(**db_config)
     try:
-        customers_data = db_handler.get_customers_data()
-        return render_template('customers.html', customers=customers_data)
+        # Get the total number of customers
+        total_customers = db_handler.get_total_customers()
+
+        # Check the query parameter for 'first_half' or 'last_half'
+        if state_count:
+            if state_count == "first_half":
+                # Get the first half of the customer data
+                first_half = db_handler.get_customers_data(0, total_customers // 2)
+                return render_template('customers.html', customers=first_half,  state = 'first_half')
+
+            elif state_count == "last_half":
+                # Get the second half of the customer data
+                last_half = db_handler.get_customers_data(total_customers // 2, total_customers)
+                return render_template('customers.html', customers=last_half,  state = 'last_half')
+
+        else:
+            # Default behavior (if no 'count' parameter is passed)
+            customers_data = db_handler.get_customers_data()
+            return render_template('customers.html', customers=customers_data)
     except Exception as e:
         return f"Error: {str(e)}"
 
