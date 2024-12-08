@@ -153,7 +153,7 @@ class DatabaseHandler:
             cursor = self.connection.cursor()
             query = """
                 SELECT company
-                FROM customers ORDER_BY company
+                FROM customers ORDER BY company
             """
             cursor.execute(query)
             results = cursor.fetchall()
