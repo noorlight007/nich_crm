@@ -143,7 +143,28 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+    
+    def get_all_company(self):
+        """
+        Fetch customer data with optional start and end to slice the result set.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            query = """
+                SELECT company
+                FROM customers ORDER_BY company
+            """
+            cursor.execute(query)
+            results = cursor.fetchall()
 
+            return results
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
 
     def get_users_data(self):
         """
