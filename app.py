@@ -26,14 +26,17 @@ def index():
 def parts_table():
     db_handler = DatabaseHandler(**db_config)
     try:
+        
+        all_companies = db_handler.get_all_company()
+        db_handler = DatabaseHandler(**db_config)
         # Check the query parameter
         checked = request.args.get('checked')
         if checked == 'true':
             parts_data = db_handler.get_credited_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="yes")
+            return render_template('parts.html', parts=parts_data, checked="yes", all_companies = all_companies)
         else:
             parts_data = db_handler.get_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="no")
+            return render_template('parts.html', parts=parts_data, checked="no", all_companies = all_companies)
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -43,8 +46,7 @@ def customers_table(state_count):
     try:
         # Get the total number of customers
         total_customers = db_handler.get_total_customers()
-        db_handler = DatabaseHandler(**db_config)
-        all_companies = db_handler.get_all_company()
+        
         db_handler = DatabaseHandler(**db_config)
         # Check the query parameter for 'first_half' or 'last_half'
         if state_count:
@@ -52,13 +54,12 @@ def customers_table(state_count):
                 # Get the first half of the customer data
                 first_half = db_handler.get_customers_data(0, total_customers // 2)
                 
-                return render_template('customers.html', customers=first_half,  state = 'first_half', all_companies = all_companies)
+                return render_template('customers.html', customers=first_half,  state = 'first_half')
 
             elif state_count == "last_half":
                 # Get the second half of the customer data
                 last_half = db_handler.get_customers_data(total_customers // 2, total_customers)
-                return render_template('customers.html', customers=last_half,  state = 'last_half', all_companies = all_companies)
-
+                return render_template('customers.html', customers=last_half,  state = 'last_half')
         else:
             # Default behavior (if no 'count' parameter is passed)
             customers_data = db_handler.get_customers_data()
