@@ -12,6 +12,9 @@ db_config = {
 }
 
 
+@app.route('/login')
+def login():
+    return render_template("signin.html")
 
 @app.route('/')
 def index():

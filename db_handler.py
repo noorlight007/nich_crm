@@ -144,7 +144,7 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
     
-    def get_all_company(self):
+    def get_all_company_with_acccount_no(self):
         """
         Fetch customer data with optional start and end to slice the result set.
         """
@@ -152,7 +152,7 @@ class DatabaseHandler:
             self.ensure_connection()
             cursor = self.connection.cursor()
             query = """
-                SELECT company
+                SELECT accountNumber, company
                 FROM customers ORDER BY company
             """
             cursor.execute(query)
