@@ -207,6 +207,26 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def get_total_admins(self):
+        """
+        Get the total number of admins in the 'users' table.
+        """
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT COUNT(*) FROM users"
+            cursor.execute(query)
+            result = cursor.fetchone()
+            return result[0] if result else 0
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
 
     def close(self):
         """

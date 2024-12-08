@@ -18,7 +18,8 @@ def index():
     db_handler = DatabaseHandler(**db_config)
     total_parts = db_handler.get_total_parts()
     total_customers = db_handler.get_total_customers()
-    return render_template('index.html', total_parts=total_parts, total_customers=total_customers)
+    total_admins = db_handler.get_total_admins()
+    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins)
 
 
 @app.route('/parts')
