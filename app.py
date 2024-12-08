@@ -45,6 +45,7 @@ def customers_table(state_count):
         total_customers = db_handler.get_total_customers()
         db_handler = DatabaseHandler(**db_config)
         all_companies = db_handler.get_all_company()
+        db_handler = DatabaseHandler(**db_config)
         # Check the query parameter for 'first_half' or 'last_half'
         if state_count:
             if state_count == "first_half":
