@@ -436,28 +436,6 @@
 <!-- DataTables JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script>
-  $(document).ready(function() {
-    $('.table').DataTable({
-      "responsive": true,
-      "paging": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "lengthChange": true,
-      "pageLength": 10,
-      "order": [],
-      "columnDefs": [
-        { "orderable": false, "targets": [7] },
-        { "searchable": false, "targets": [1, 7] }
-      ],
-      "language": {
-        "search": "Filter records:",
-        "lengthMenu": "Show _MENU_ entries"
-      }
-    });
-  });
-</script>
 
 <script>
   $(document).ready(function() {
