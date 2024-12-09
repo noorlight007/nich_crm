@@ -87,9 +87,8 @@ def create_part():
     reason = request.form.get('reason')
     acc_number = request.form.get('acc_number')
     unique_id = request.form.get('unique_id')
-    company = request.form.get('company')
     db_handler = DatabaseHandler(**db_config)
-    customer_id = db_handler.get_customerID_by_account_number()
+    customer_id = db_handler.get_customerID_by_account_number(acc_number)
     user_id = session.get('user_id')
 
 
