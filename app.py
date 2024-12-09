@@ -88,22 +88,25 @@ def create_part():
     acc_number = request.form.get('acc_number')
     unique_id = request.form.get('unique_id')
     company = request.form.get('company')
+    db_handler = DatabaseHandler(**db_config)
+    customer_id = db_handler.get_customerID_by_account_number()
+    user_id = session.get('user_id')
+
 
     # Validate quantity
     if not quantity.isdigit():
         return "Quantity must be an integer.", 400
-    
 
     try:
         db_handler = DatabaseHandler(**db_config)
         db_handler.create_part(
+            customer_id = customer_id,
             partname=partname,
             credited=int(credited),
             quantity=int(quantity),
             reason=reason,
-            acc_number=acc_number,
             unique_id=unique_id,
-            company=company
+            user_id = user_id
         )
         return redirect(referrer)  # Redirect to parts table
     except Exception as e:

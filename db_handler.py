@@ -1,4 +1,5 @@
 import MySQLdb
+from datetime import datetime
 
 class DatabaseHandler:
     def __init__(self, host, user, password, db_name):
@@ -288,18 +289,35 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+    
+    def get_customerID_by_account_number(self, acc_number):
+        try:
+            if not self.connection:
+                self.connect()
 
-    def create_part(self, partname, credited, quantity, reason, acc_number, unique_id, company):
+            cursor = self.connection.cursor()
+            query = "SELECT id FROM customers WHERE accountNumber = %s"
+            cursor.execute(query, (acc_number,))
+            result = cursor.fetchall()
+            return result
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
+    def create_part(self, customer_id, partname, credited, quantity, reason, unique_id, user_id):
         try:
             if not self.connection:
                 self.connect()
 
             cursor = self.connection.cursor()
             query = """
-                INSERT INTO parts (partname, credited, quantity, reason, accountNumber, unique_id, company)
+                INSERT INTO parts (customer_id, partname, credited, quantity, reason, unique_id,created_at, updated_at, user_id)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
-            cursor.execute(query, (partname, credited, quantity, reason, acc_number, unique_id, company))
+            cursor.execute(query, (customer_id, partname, credited, quantity, reason, unique_id, datetime.now(), datetime.now(), user_id))
             self.connection.commit()
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
