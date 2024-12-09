@@ -1,7 +1,14 @@
-from flask import Flask, render_template, jsonify,request
+from flask import Flask, render_template, jsonify,request,session, redirect, url_for
+from flask_session import Session
+from datetime import timedelta
 from db_handler import DatabaseHandler
 
 app = Flask(__name__)
+app.config['secret_key'] = '5800d5d9e4405020d527f0587538abbe'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # Initialize Database Handler
 db_config = {
@@ -11,13 +18,30 @@ db_config = {
     "db_name": "AutoParts"
 }
 
-
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template("signin.html")
+    if request.method == 'POST':
+        opt_code = request.form.get('opt_code')
+        pin = request.form.get('pin')
+
+        try:
+            db_handler = DatabaseHandler(**db_config)
+            user = db_handler.validate_user(opt_code, pin)
+            if user:
+                # Set session data
+                session['user_id'] = user[0]
+                session['username'] = user[1]
+                return redirect(url_for('index'))  # Redirect to a dashboard or home page
+            else:
+                return render_template('signin.html', error="Invalid OPT Code or PIN.")
+        except Exception as e:
+            return f"Error: {str(e)}"
+    return render_template('signin.html')
 
 @app.route('/')
 def index():
+    if 'user_id' not in session:
+        return redirect('login')
     db_handler = DatabaseHandler(**db_config)
     total_parts = db_handler.get_total_parts()
     total_customers = db_handler.get_total_customers()
@@ -28,10 +52,8 @@ def index():
 @app.route('/parts')
 def parts_table():
     db_handler = DatabaseHandler(**db_config)
+    all_companies = db_handler.get_all_company_with_acccount_no() 
     try:
-        
-        all_companies = db_handler.get_all_company()
-        db_handler = DatabaseHandler(**db_config)
         # Check the query parameter
         checked = request.args.get('checked')
         if checked == 'true':
@@ -49,20 +71,19 @@ def customers_table(state_count):
     try:
         # Get the total number of customers
         total_customers = db_handler.get_total_customers()
-        
         db_handler = DatabaseHandler(**db_config)
         # Check the query parameter for 'first_half' or 'last_half'
         if state_count:
             if state_count == "first_half":
                 # Get the first half of the customer data
                 first_half = db_handler.get_customers_data(0, total_customers // 2)
-                
                 return render_template('customers.html', customers=first_half,  state = 'first_half')
 
             elif state_count == "last_half":
                 # Get the second half of the customer data
                 last_half = db_handler.get_customers_data(total_customers // 2, total_customers)
                 return render_template('customers.html', customers=last_half,  state = 'last_half')
+
         else:
             # Default behavior (if no 'count' parameter is passed)
             customers_data = db_handler.get_customers_data()

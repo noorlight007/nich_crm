@@ -248,6 +248,29 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def validate_user(self, opt_code, pin):
+        """
+        Validate user credentials against the users table.
+        """
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = """
+                SELECT id, name 
+                FROM users 
+                WHERE optCode = %s AND pin = %s
+            """
+            cursor.execute(query, (opt_code, pin))
+            result = cursor.fetchone()
+            return result  # Returns the user record if found, else None
+        except MySQLdb.MySQLError as e:
+            print(f"Error validating user: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
 
     def close(self):
         """
