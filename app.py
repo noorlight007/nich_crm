@@ -18,6 +18,12 @@ db_config = {
     "db_name": "AutoParts"
 }
 
+@app.route('/logout')
+def logout():
+    # Clear the session
+    session.clear()
+    return redirect(url_for('login'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
