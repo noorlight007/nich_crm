@@ -115,7 +115,9 @@ def create_part():
             quantity=int(quantity),
             reason=reason,
             unique_id=unique_id,
-            user_id = int(user_id)
+            user_id = int(user_id),
+            created_at= datetime.now(),
+            updated_at= datetime.now()
         )
         return redirect(referrer)  # Redirect to parts table
     except Exception as e:
