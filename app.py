@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify,request,session, redirect, url_for
 from flask_session import Session
-from datetime import timedelta
+from datetime import timedelta, datetime
 from db_handler import DatabaseHandler
 
 app = Flask(__name__)
@@ -91,8 +91,16 @@ def create_part():
     customer_id = db_handler.get_customerID_by_account_number(acc_number)
     user_id = session.get('user_id')
 
-    print(f"Customer ID: {customer_id}, part name: {partname}, credited: {credited}, quantity: {quantity}, reason: {reason}, unique_id: {unique_id}, user ID: {user_id}")
-
+    print({
+        "customer_id": customer_id,
+        "partname": partname,
+        "credited": credited,
+        "quantity": quantity,
+        "reason": reason,
+        "unique_id": unique_id,
+        "user_id": user_id,
+        "created_at": datetime.now()
+    })
 
     # Validate quantity
     if not quantity.isdigit():
@@ -107,7 +115,9 @@ def create_part():
             quantity=int(quantity),
             reason=reason,
             unique_id=unique_id,
-            user_id = user_id
+            user_id = user_id,
+            created_at= datetime.now(),
+            updated_at= datetime.now()
         )
         return redirect(referrer)  # Redirect to parts table
     except Exception as e:

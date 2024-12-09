@@ -307,7 +307,7 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
-    def create_part(self, customer_id, partname, credited, quantity, reason, unique_id, user_id):
+    def create_part(self, customer_id, partname, credited, quantity, reason, unique_id, user_id, created_at, updated_at):
         try:
             if not self.connection:
                 self.connect()
@@ -317,7 +317,7 @@ class DatabaseHandler:
                 INSERT INTO parts (customer_id, partname, credited, quantity, reason, unique_id,created_at, updated_at, user_id)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
-            cursor.execute(query, (customer_id, partname, credited, quantity, reason, unique_id, datetime.now(), datetime.now(), user_id))
+            cursor.execute(query, (customer_id, partname, credited, quantity, reason, unique_id, created_at, updated_at, user_id))
             self.connection.commit()
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
