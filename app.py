@@ -109,13 +109,13 @@ def create_part():
     try:
         db_handler = DatabaseHandler(**db_config)
         db_handler.create_part(
-            customer_id = customer_id,
+            customer_id = int(customer_id),
             partname=partname,
             credited=int(credited),
             quantity=int(quantity),
             reason=reason,
             unique_id=unique_id,
-            user_id = user_id,
+            user_id = int(user_id),
             created_at= datetime.now(),
             updated_at= datetime.now()
         )
