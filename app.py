@@ -51,6 +51,8 @@ def index():
 
 @app.route('/parts')
 def parts_table():
+    if 'user_id' not in session:
+        return redirect('login')
     db_handler = DatabaseHandler(**db_config)
     all_companies = db_handler.get_all_company_with_acccount_no() 
     try:
@@ -68,6 +70,8 @@ def parts_table():
 
 @app.route('/customers/<state_count>')
 def customers_table(state_count):
+    if 'user_id' not in session:
+        return redirect('login')
     db_handler = DatabaseHandler(**db_config)
     try:
         # Get the total number of customers
