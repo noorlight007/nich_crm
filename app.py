@@ -76,6 +76,11 @@ def parts_table():
 
 @app.route('/create-part', methods=['POST'])
 def create_part():
+    if 'user_id' not in session:
+        return redirect('login')
+
+    referrer= request.referrer
+
     product_code = request.form.get('product_code')
     desc = request.form.get('desc')
     credited = request.form.get('credited')
@@ -102,7 +107,7 @@ def create_part():
             unique_id=unique_id,
             company=company
         )
-        return redirect(url_for('parts_table'))  # Redirect to parts table
+        return redirect(referrer)  # Redirect to parts table
     except Exception as e:
         return f"Error creating part: {str(e)}", 500
 
