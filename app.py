@@ -81,8 +81,7 @@ def create_part():
 
     referrer= request.referrer
 
-    product_code = request.form.get('product_code')
-    desc = request.form.get('desc')
+    partname = request.form.get('partname')
     credited = request.form.get('credited')
     quantity = request.form.get('quantity')
     reason = request.form.get('reason')
@@ -98,8 +97,7 @@ def create_part():
     try:
         db_handler = DatabaseHandler(**db_config)
         db_handler.create_part(
-            product_code=product_code,
-            desc=desc,
+            partname=partname,
             credited=int(credited),
             quantity=int(quantity),
             reason=reason,
