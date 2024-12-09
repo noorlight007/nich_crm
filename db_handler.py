@@ -315,7 +315,7 @@ class DatabaseHandler:
             cursor = self.connection.cursor()
             query = """
                 INSERT INTO parts (customer_id, partname, credited, quantity, reason, unique_id, user_id)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             cursor.execute(query, (customer_id, partname, credited, quantity, reason, unique_id,  user_id))
             self.connection.commit()
