@@ -54,6 +54,7 @@ def parts_table():
     db_handler = DatabaseHandler(**db_config)
     all_companies = db_handler.get_all_company_with_acccount_no() 
     try:
+        db_handler = DatabaseHandler(**db_config)
         # Check the query parameter
         checked = request.args.get('checked')
         if checked == 'true':
