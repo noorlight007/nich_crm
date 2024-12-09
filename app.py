@@ -110,6 +110,23 @@ def create_part():
         return redirect(referrer)  # Redirect to parts table
     except Exception as e:
         return f"Error creating part: {str(e)}", 500
+    
+@app.route('/validate-account-number')
+def validate_account_number():
+    acc_number = request.args.get('acc_number')
+    if not acc_number:
+        return jsonify({"success": False})
+
+    try:
+        db_handler = DatabaseHandler(**db_config)
+        customer_data = db_handler.get_customer_by_account_number(acc_number)
+        if customer_data:
+            return jsonify({"success": True, "company": customer_data[0][2]})  # Assuming the company name is the 3rd column
+        else:
+            return jsonify({"success": False})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
 
 @app.route('/customers/<state_count>')
 def customers_table(state_count):
