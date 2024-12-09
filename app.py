@@ -91,6 +91,8 @@ def create_part():
     customer_id = db_handler.get_customerID_by_account_number(acc_number)
     user_id = session.get('user_id')
 
+    print(f"Customer ID: {customer_id}, part name: {partname}, credited: {credited}, quantity: {quantity}, reason: {reason}, unique_id: {unique_id}, user ID: {user_id}")
+
 
     # Validate quantity
     if not quantity.isdigit():
