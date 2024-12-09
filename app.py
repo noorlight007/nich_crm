@@ -74,6 +74,38 @@ def parts_table():
     except Exception as e:
         return f"Error: {str(e)}"
 
+@app.route('/create-part', methods=['POST'])
+def create_part():
+    product_code = request.form.get('product_code')
+    desc = request.form.get('desc')
+    credited = request.form.get('credited')
+    quantity = request.form.get('quantity')
+    reason = request.form.get('reason')
+    acc_number = request.form.get('acc_number')
+    unique_id = request.form.get('unique_id')
+    company = request.form.get('company')
+
+    # Validate quantity
+    if not quantity.isdigit():
+        return "Quantity must be an integer.", 400
+    
+
+    try:
+        db_handler = DatabaseHandler(**db_config)
+        db_handler.create_part(
+            product_code=product_code,
+            desc=desc,
+            credited=int(credited),
+            quantity=int(quantity),
+            reason=reason,
+            acc_number=acc_number,
+            unique_id=unique_id,
+            company=company
+        )
+        return redirect(url_for('parts_table'))  # Redirect to parts table
+    except Exception as e:
+        return f"Error creating part: {str(e)}", 500
+
 @app.route('/customers/<state_count>')
 def customers_table(state_count):
     if 'user_id' not in session:

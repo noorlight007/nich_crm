@@ -272,6 +272,42 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def get_customer_by_account_number(self, acc_number):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT id, accountNumber, company FROM customers WHERE accountNumber = %s"
+            cursor.execute(query, (acc_number,))
+            result = cursor.fetchall()
+            return result
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
+    def create_part(self, product_code, desc, credited, quantity, reason, acc_number, unique_id, company):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = """
+                INSERT INTO parts (product_code, description, credited, quantity, reason, accountNumber, unique_id, company)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            cursor.execute(query, (product_code, desc, credited, quantity, reason, acc_number, unique_id, company))
+            self.connection.commit()
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
     def close(self):
         """
         Close the database connection safely.

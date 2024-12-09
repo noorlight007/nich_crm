@@ -65,85 +65,88 @@
               </div>
               <div class="modal-body">
                 <!-- ########## -->
-                <div class="row">
-                  <div class="col-lg-4">
-                    <div class="mb-3">
-                      <label class="form-label">Product Code</label>
-                      <div class="input-group input-group-flat">
-                        <input type="text" class="form-control">
+                <form action="{{ url_for('create_part') }}" method="post" id="create_part">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Product Code</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="product_code" required>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-8">
-                    <div class="mb-3">
-                      <label class="form-label">Description</label>
-                      <div class="input-group input-group-flat">
-                        <input type="text" class="form-control">
+                    <div class="col-lg-8">
+                      <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="desc" required>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="mb-3">
-                      <label class="form-label">Credited?</label>
-                      <select class="form-select">
-                        <option value="1" selected>Yes</option>
-                        <option value="2">No</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-lg-2">
-                    <div class="mb-3">
-                      <label class="form-label">Quantity</label>
-                      <div class="input-group input-group-flat">
-                        <input type="text" class="form-control">
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Credited?</label>
+                        <select class="form-select" name="credited">
+                          <option value="1" selected>Yes</option>
+                          <option value="2">No</option>
+                        </select>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="mb-3">
-                      <label class="form-label">Reason</label>
-                      <div class="input-group input-group-flat">
-                        <input type="text" class="form-control">
+                    <div class="col-lg-2">
+                      <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="quantity" id="quantity" required >
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="mb-3">
-                      <label class="form-label">Account Number</label>
-                      <div class="input-group input-group-flat">
-                        <input type="text" class="form-control">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Reason</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="reason" required>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="mb-3">
-                      <label class="form-label">Unique ID</label>
-                      <div class="input-group input-group-flat">
-                        <input type="text" class="form-control">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Account Number</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="acc_number" id="acc_number" required>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="mb-3">
-                      <label class="form-label">Customer Company</label>
-                      <div class="input-icon mb-3">
-                        <span class="input-icon-addon">
-                          <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                        </span>
-                        <input type="text" class="form-control" placeholder="Wating…">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Unique ID</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="unique_id" required>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-6" style="display: none;">
-                    <div class="mb-3">
-                      <label class="form-label">Customer Company</label>
-                      <div class="input-group input-group-flat">
-                        <input type="text" class="form-control is-valid">
+                    <div class="col-lg-6" id="check_company">
+                      <div class="mb-3">
+                        <label class="form-label">Customer Company</label>
+                        <div class="input-icon mb-3">
+                          <span class="input-icon-addon">
+                            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+                          </span>
+                          <input type="text" class="form-control" placeholder="Wating…" readonly>
+                        </div>
                       </div>
                     </div>
+                    <div class="col-lg-6" style="display: none;" id="show_company">
+                      <div class="mb-3">
+                        <label class="form-label">Customer Company</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control is-valid" name="company" required>
+                        </div>
+                      </div>
+                    </div>
+                    
                   </div>
-                  
-                </div>
+                 </form>
+                
 
                 <!-- ####### -->
                 
@@ -475,6 +478,38 @@
           window.location.href = "/parts";
       }
   });
+</script>
+
+<script>
+  document.getElementById("acc_number").addEventListener("input", function () {
+    const accNumber = this.value;
+    const checkCompanyDiv = document.getElementById("check_company");
+    const showCompanyDiv = document.getElementById("show_company");
+    const companyInput = showCompanyDiv.querySelector("input[name='company']");
+
+    if (accNumber.trim() === "") {
+        checkCompanyDiv.style.display = "block";
+        showCompanyDiv.style.display = "none";
+        return;
+    }
+
+    fetch(`/validate-account-number?acc_number=${accNumber}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                checkCompanyDiv.style.display = "none";
+                showCompanyDiv.style.display = "block";
+                companyInput.value = data.company;
+            } else {
+                checkCompanyDiv.style.display = "block";
+                showCompanyDiv.style.display = "none";
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+});
+
 </script>
 
 {% endblock %}
