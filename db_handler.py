@@ -298,8 +298,8 @@ class DatabaseHandler:
             cursor = self.connection.cursor()
             query = "SELECT id FROM customers WHERE accountNumber = %s"
             cursor.execute(query, (acc_number,))
-            result = cursor.fetchall()
-            return result
+            result = cursor.fetchone()  # Use fetchone() for a single row
+            return result[0] if result else None  # Return the id or None if no result
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
