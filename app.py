@@ -138,6 +138,17 @@ def validate_account_number():
             return jsonify({"success": False})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
+    
+@app.route('/delete-part/<int:part_id>', methods=['DELETE'])
+def delete_part(part_id):
+    try:
+        db_handler = DatabaseHandler(**db_config)
+        query = "DELETE FROM parts WHERE id = %s"
+        db_handler.connection.cursor().execute(query, (part_id,))
+        db_handler.connection.commit()
+        return {"status": "success", "message": "Part deleted successfully"}, 200
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
 
 
 @app.route('/customers/<state_count>')
