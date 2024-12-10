@@ -45,7 +45,7 @@
 {% endblock %}
 
 {% block main_content %}
-
+<div id="alerts-container"></div>
 <div class="col-12">
 
     <div class="d-flex justify-content-between mb-1">
@@ -493,77 +493,74 @@
 
 <script>
   $(document).ready(function () {
-    // Check if the DataTable is already initialized
-    if (!$.fn.DataTable.isDataTable('#parts-table')) {
-        $('#parts-table').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            responsive: true,
-            order: [],
-            columnDefs: [
-                {
-                    targets: [1], // Column indexes to apply this rule
-                    searchable: false, // Disable searching for these columns
-                },
-                {
-                    targets: [8], // Column index for actions
-                    orderable: false, // Disable ordering for this column
-                },
-            ],
-        });
-    }
-});
+    // DataTable initialization
+    const table = $('#parts-table').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true,
+        order: [],
+        columnDefs: [
+            {
+                targets: [1], // Part Name column
+                searchable: false,
+            },
+            {
+                targets: [8], // Actions column
+                orderable: false,
+            },
+        ],
+    });
 
-// Handling Delete Button Click
-document.addEventListener("DOMContentLoaded", function () {
-    const partsTable = $('#parts-table').DataTable(); // Get the existing DataTable instance
+    // Handle delete button click
+    $(document).on("click", "[id^=delete_part]", function () {
+        const button = $(this);
+        const partId = button.attr("id").replace("delete_part", ""); // Extract part ID
+        const modalId = `#modal-danger${partId}`; // Modal ID
 
-    document.querySelectorAll("[id^='delete_part']").forEach(button => {
-        button.addEventListener("click", function () {
-            const partId = this.id.replace("delete_part", ""); // Extract part ID
-            const row = this.closest("tr"); // Get the row for removal
-            
-            if (confirm("Are you sure you want to delete this part?")) {
-                fetch(`/delete-part/${partId}`, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "success") {
-                        // Remove the row from the DataTable
-                        partsTable.row(row).remove().draw();
+        $.ajax({
+            url: `/delete-part/${partId}`,
+            type: "DELETE",
+            success: function (response) {
+                // Close the modal
+                $(modalId).modal('hide');
 
-                        // Show success alert
-                        const alertDiv = document.createElement("div");
-                        alertDiv.className = "alert alert-important alert-info alert-dismissible";
-                        alertDiv.role = "alert";
-                        alertDiv.innerHTML = `
-                            <div class="d-flex">
-                                <div>The item has been deleted permanently</div>
-                            </div>
-                            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                        `;
-                        document.body.prepend(alertDiv);
+                if (response.status === "success") {
+                    // Remove the row from the DataTable
+                    const row = button.closest("tr");
+                    table.row(row).remove().draw();
 
-                        // Hide alert after 2 seconds
-                        setTimeout(() => {
-                            alertDiv.remove();
-                        }, 2000);
-                    } else {
-                        alert("Error deleting part: " + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("An error occurred while deleting the part.");
-                });
-            }
+                    // Show the success alert
+                    showAlert("The item has been deleted permanently.", "info");
+                } else {
+                    // Show the error alert if deletion was not successful
+                    showAlert(response.message, "danger");
+                }
+            },
+            error: function (xhr) {
+                // Close the modal
+                $(modalId).modal('hide');
+
+                // Show error alert
+                showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`, "danger");
+            },
         });
     });
+
+    // Function to show alert messages
+    function showAlert(message, type) {
+        const alertHtml = `
+            <div class="alert alert-important alert-${type} alert-dismissible" role="alert">
+                <div class="d-flex">
+                    <div>${message}</div>
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>`;
+        $("#alerts-container").html(alertHtml); // Append to a container for alerts
+        setTimeout(() => {
+            $(".alert").fadeOut();
+        }, 2000); // Auto-dismiss alert after 2 seconds
+    }
 });
 
 </script>
