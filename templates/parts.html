@@ -528,10 +528,10 @@
 
                 if (response.status === "success") {
                     // Get the row node
-                    var rowNode = table.row($(this).parents('tr'));
+                    var rowNode = table.row(row)[0];
                     
                     // Remove the row from the DataTable
-                    table.row(rowNode.parents('tr')).remove().draw(); // Ensure row removal
+                    table.row(rowNode).remove().draw(); // Ensure row removal
                     showAlert("The item has been deleted permanently.", "info");
                 } else {
                     showAlert(response.message, "danger");
@@ -545,7 +545,7 @@
     });
 
     // Function to show alert messages
-    function showAlert(message, type) {
+    function showAlert(message) {
         const alertHtml = `
             <div class="alert alert-important alert-warning alert-dismissible" role="alert">
                 <div class="d-flex">
