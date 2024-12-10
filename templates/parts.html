@@ -493,7 +493,7 @@
 
 <script>
   $(document).ready(function () {
-    // DataTable initialization
+    // Initialize DataTable and keep a reference to it
     const table = $('#parts-table').DataTable({
         paging: true,
         searching: true,
@@ -517,6 +517,7 @@
         const button = $(this);
         const partId = button.attr("id").replace("delete_part", ""); // Extract part ID
         const modalId = `#modal-danger${partId}`; // Modal ID
+        const row = button.closest("tr"); // Find the closest row for the clicked button
 
         $.ajax({
             url: `/delete-part/${partId}`,
@@ -527,21 +528,14 @@
 
                 if (response.status === "success") {
                     // Remove the row from the DataTable
-                    const row = button.closest("tr");
-                    table.row(row).remove().draw();
-
-                    // Show the success alert
+                    table.row(row).remove().draw(); // Ensure row removal
                     showAlert("The item has been deleted permanently.", "info");
                 } else {
-                    // Show the error alert if deletion was not successful
                     showAlert(response.message, "danger");
                 }
             },
             error: function (xhr) {
-                // Close the modal
                 $(modalId).modal('hide');
-
-                // Show error alert
                 showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`, "danger");
             },
         });
@@ -556,10 +550,10 @@
                 </div>
                 <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
             </div>`;
-        $("#alerts-container").html(alertHtml); // Append to a container for alerts
+        $("#alerts-container").html(alertHtml);
         setTimeout(() => {
             $(".alert").fadeOut();
-        }, 2000); // Auto-dismiss alert after 2 seconds
+        }, 2000);
     }
 });
 
