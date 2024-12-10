@@ -544,32 +544,36 @@
         });
     });
 
-    // Handle Mark button click
+    // Handle Mark & Save button click
     $(document).on("click", "[id^=mark_part]", function () {
         const button = $(this);
         const partId = button.attr("id").replace("mark_part", ""); // Extract part ID
         const modalId = `#modal-mark${partId}`; // Modal ID
 
+        // Perform AJAX to toggle credited value
         $.ajax({
             url: `/mark-part/${partId}`,
-            type: "POST",
+            type: "POST",  // We use POST because we are updating a value
             success: function (response) {
                 // Close the modal
                 $(modalId).modal('hide');
 
+                // Check if the response indicates success
                 if (response.status === "success") {
                     // Show success alert
-                    credit_showAlert("Credited status successfully changed.");
+                    showAlert("The item's credited status has been updated.", "info");
 
                     // Refresh the page after showing the alert
                     setTimeout(function() {
-                        window.location.href = document.referrer;
-                    }, 3000); // Delay before redirecting
+                        window.location.href = document.referrer;  // Reload the page
+                    }, 2000); // Delay before refreshing
                 } else {
+                    // Show error if the update failed
                     showAlert(response.message, "danger");
                 }
             },
             error: function (xhr) {
+                // Handle AJAX error
                 $(modalId).modal('hide');
                 showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`, "danger");
             },
