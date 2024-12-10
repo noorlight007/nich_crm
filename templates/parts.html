@@ -528,10 +528,10 @@
 
                 if (response.status === "success") {
                     // Get the row node
-                    var rowNode = table.row(row)[0];
+                    // var rowNode = table.row($(this).parents('tr'));
                     
                     // Remove the row from the DataTable
-                    table.row(rowNode.parents('tr')).remove().draw(); // Ensure row removal
+                    table.row($(this).parents('tr')).remove().draw(); // Ensure row removal
                     showAlert("The item has been deleted permanently.", "info");
                 } else {
                     showAlert(response.message, "danger");
