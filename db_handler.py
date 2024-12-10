@@ -357,6 +357,7 @@ class DatabaseHandler:
             query = "SELECT credited FROM parts WHERE id = %s"
             cursor.execute(query, (partID,))
             result = cursor.fetchone()  # Use fetchone() for a single row
+            print(result[0])
             return result[0] if result else None  # Return the id or None if no result
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
