@@ -531,7 +531,7 @@
                     var rowNode = table.row(row)[0];
                     
                     // Remove the row from the DataTable
-                    table.row(rowNode).remove().draw(); // Ensure row removal
+                    table.row(rowNode.parents('tr')).remove().draw(); // Ensure row removal
                     showAlert("The item has been deleted permanently.", "info");
                 } else {
                     showAlert(response.message, "danger");
