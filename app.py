@@ -154,7 +154,7 @@ def delete_part(part_id):
     finally:
         db_handler.close()
 
-@app.route('/mark-part/<int:part_id>', methods=['DELETE'])
+@app.route('/mark-part/<int:part_id>', methods=['POST'])
 def mark_part(part_id):
     db_handler = DatabaseHandler(**db_config)
     credited = db_handler.get_partCredited_byID(part_id)
