@@ -530,8 +530,7 @@
                     showAlert("The item has been deleted permanently.", "info");
 
                     const row = button.closest('tr');
-                    table.row(row).remove()
-                    .draw();
+                    table.row(row).remove().draw();
 
                 } else {
                     showAlert(response.message, "danger");
