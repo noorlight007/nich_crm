@@ -530,7 +530,7 @@
                     // Show success alert
                     showAlert("The item has been deleted permanently.", "info");
 
-                    const row = button.closest('tr');
+                    const row = button.parents('tr');
                     console.log(row)
                     table.row(row).remove().draw();
 
