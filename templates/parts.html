@@ -443,27 +443,7 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 
-<script>
-  $(document).ready(function() {
-    $('#parts-table').DataTable({
-      paging: true,
-      searching: true,
-      ordering: true,
-      responsive: true,
-      order: [],
-      columnDefs: [
-        {
-          targets: [1], // Column indexes to apply this rule (e.g., columns Part Name and Quantity)
-          searchable: false, // Disable searching for these columns
-        },
-        {
-          targets: [8], // Column index for actions (e.g., the last column)
-          orderable: false, // Disable ordering for this column
-        },
-      ],
-    });
-  });
-</script>
+
 
 
 <!-- ### -->
@@ -512,8 +492,32 @@
 </script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const partsTable = $('#parts-table').DataTable();
+  $(document).ready(function () {
+    // Check if the DataTable is already initialized
+    if (!$.fn.DataTable.isDataTable('#parts-table')) {
+        $('#parts-table').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            responsive: true,
+            order: [],
+            columnDefs: [
+                {
+                    targets: [1], // Column indexes to apply this rule
+                    searchable: false, // Disable searching for these columns
+                },
+                {
+                    targets: [8], // Column index for actions
+                    orderable: false, // Disable ordering for this column
+                },
+            ],
+        });
+    }
+});
+
+// Handling Delete Button Click
+document.addEventListener("DOMContentLoaded", function () {
+    const partsTable = $('#parts-table').DataTable(); // Get the existing DataTable instance
 
     document.querySelectorAll("[id^='delete_part']").forEach(button => {
         button.addEventListener("click", function () {
