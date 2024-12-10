@@ -528,11 +528,12 @@
 
                 if (response.status === "success") {
                     // Show success alert
-                    showAlert("The item has been deleted permanently.", "info");
+                    
 
                     const row = button[0].closest('tr');
                     console.log(row)
                     table.row(row).remove().draw();
+                    showAlert("The item has been deleted permanently.", "info");
 
                 } else {
                     showAlert(response.message, "danger");
