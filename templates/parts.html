@@ -527,8 +527,11 @@
                 $(modalId).modal('hide');
 
                 if (response.status === "success") {
+                    // Get the row node
+                    var rowNode = table.row(row)[0];
+                    
                     // Remove the row from the DataTable
-                    table.row(row).remove().draw(); // Ensure row removal
+                    table.row(rowNode).remove().draw(); // Ensure row removal
                     showAlert("The item has been deleted permanently.", "info");
                 } else {
                     showAlert(response.message, "danger");
