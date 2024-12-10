@@ -58,7 +58,8 @@ class DatabaseHandler:
                     c.company, 
                     p.unique_id, 
                     u.name AS added_by, 
-                    p.credited, 
+                    p.credited,
+                    p.created_at, 
                     p.updated_at
                 FROM 
                     parts p
