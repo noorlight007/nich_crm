@@ -559,7 +559,7 @@
 
                 if (response.status === "success") {
                     // Show success alert
-                    showAlert("Credited status successfully changed.", "info");
+                    credit_showAlert("Credited status successfully changed.");
 
                     // Refresh the page after showing the alert
                     setTimeout(function() {
@@ -580,6 +580,21 @@
     function showAlert(message) {
         const alertHtml = `
             <div class="alert alert-important alert-warning alert-dismissible" role="alert">
+                <div class="d-flex">
+                    <div>${message}</div>
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>`;
+        $("#alerts-container").html(alertHtml);
+        setTimeout(() => {
+            $(".alert").fadeOut();
+        }, 3000); // Hide the alert after 2 seconds
+    }
+
+    // Function to show alert messages
+    function credit_showAlert(message) {
+        const alertHtml = `
+            <div class="alert alert-important alert-success alert-dismissible" role="alert">
                 <div class="d-flex">
                     <div>${message}</div>
                 </div>
