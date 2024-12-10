@@ -158,6 +158,7 @@ def delete_part(part_id):
 def mark_part(part_id):
     db_handler = DatabaseHandler(**db_config)
     credited = db_handler.get_partCredited_byID(part_id)
+    print(credited)
 
     try:
         db_handler = DatabaseHandler(**db_config)
