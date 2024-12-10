@@ -517,7 +517,6 @@
         const button = $(this);
         const partId = button.attr("id").replace("delete_part", ""); // Extract part ID
         const modalId = `#modal-danger${partId}`; // Modal ID
-        const row = button.closest("tr"); // Find the closest row for the clicked button
 
         $.ajax({
             url: `/delete-part/${partId}`,
@@ -527,12 +526,13 @@
                 $(modalId).modal('hide');
 
                 if (response.status === "success") {
-                    // Get the row node
-                    var rowNode = table.row(row)[0];
-                    
-                    // Remove the row from the DataTable
-                    table.row(rowNode).remove().draw(); // Ensure row removal
+                    // Show success alert
                     showAlert("The item has been deleted permanently.", "info");
+
+                    // Refresh the page after showing the alert
+                    setTimeout(function() {
+                        window.location.href = document.referrer;
+                    }, 2000); // Delay before redirecting
                 } else {
                     showAlert(response.message, "danger");
                 }
@@ -556,7 +556,7 @@
         $("#alerts-container").html(alertHtml);
         setTimeout(() => {
             $(".alert").fadeOut();
-        }, 2000);
+        }, 3000); // Hide the alert after 2 seconds
     }
 });
 
