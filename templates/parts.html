@@ -515,6 +515,7 @@
     // Handle delete button click
     $(document).on("click", "[id^=delete_part]", function () {
         const button = $(this);
+        console.log(button)
         const partId = button.attr("id").replace("delete_part", ""); // Extract part ID
         const modalId = `#modal-danger${partId}`; // Modal ID
 
@@ -530,6 +531,7 @@
                     showAlert("The item has been deleted permanently.", "info");
 
                     const row = button.closest('tr');
+                    console.log(row)
                     table.row(row).remove().draw();
 
                 } else {
