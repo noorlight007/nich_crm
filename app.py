@@ -172,6 +172,7 @@ def mark_part(part_id):
         else:
             return jsonify({"status": "error", "message": "Part not found."}), 404
     except Exception as e:
+        print("we are here")
         return jsonify({"status": "error", "message": str(e)}), 500
     finally:
         db_handler.close()
