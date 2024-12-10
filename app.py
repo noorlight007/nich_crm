@@ -141,14 +141,18 @@ def validate_account_number():
     
 @app.route('/delete-part/<int:part_id>', methods=['DELETE'])
 def delete_part(part_id):
+    db_handler = DatabaseHandler(**db_config)
+
     try:
-        db_handler = DatabaseHandler(**db_config)
-        query = "DELETE FROM parts WHERE id = %s"
-        db_handler.connection.cursor().execute(query, (part_id,))
-        db_handler.connection.commit()
-        return {"status": "success", "message": "Part deleted successfully"}, 200
+        # Attempt to delete the part
+        if db_handler.delete_part(part_id):
+            return jsonify({"status": "success", "message": "Part deleted successfully."}), 200
+        else:
+            return jsonify({"status": "error", "message": "Part not found."}), 404
     except Exception as e:
-        return {"status": "error", "message": str(e)}, 500
+        return jsonify({"status": "error", "message": str(e)}), 500
+    finally:
+        db_handler.close()
 
 
 @app.route('/customers/<state_count>')

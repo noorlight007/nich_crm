@@ -326,6 +326,27 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+    
+    def delete_part(self, part_id):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "DELETE FROM parts WHERE id = %s"
+            cursor.execute(query, (part_id,))
+            self.connection.commit()
+
+            if cursor.rowcount > 0:
+                return True  # Successfully deleted
+            else:
+                return False  # No rows deleted (ID not found)
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing delete query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
 
     def close(self):
         """
