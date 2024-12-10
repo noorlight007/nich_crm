@@ -348,6 +348,43 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def get_partCredited_byID(self, partID):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT credited FROM parts WHERE id = %s"
+            cursor.execute(query, (partID,))
+            result = cursor.fetchone()  # Use fetchone() for a single row
+            return result[0] if result else None  # Return the id or None if no result
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+    def mark_part(self, part_id, value_credited):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "Update Item set credited = %s where id= %s"
+            cursor.execute(query, (value_credited, part_id,))
+            self.connection.commit()
+
+            if cursor.rowcount > 0:
+                return True  # Successfully deleted
+            else:
+                return False  # No rows deleted (ID not found)
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing delete query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
     def close(self):
         """
         Close the database connection safely.

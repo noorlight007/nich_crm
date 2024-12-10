@@ -364,9 +364,9 @@
                               <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
                                   Cancel
                                 </a></div>
-                              <div class="col"><a href="#" class="btn btn-primary w-100" data-bs-dismiss="modal">
+                              <div class="col"><button class="btn btn-primary w-100" id="mark_part{{ part[0] }}">
                                   Mark & Save
-                                </a></div>
+                              </button></div>
                             </div>
                           </div>
                         </div>
@@ -533,6 +533,38 @@
                     setTimeout(function() {
                         window.location.href = document.referrer;
                     }, 2000); // Delay before redirecting
+                } else {
+                    showAlert(response.message, "danger");
+                }
+            },
+            error: function (xhr) {
+                $(modalId).modal('hide');
+                showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`, "danger");
+            },
+        });
+    });
+
+    // Handle Mark button click
+    $(document).on("click", "[id^=mark_part]", function () {
+        const button = $(this);
+        const partId = button.attr("id").replace("mark_part", ""); // Extract part ID
+        const modalId = `#modal-mark${partId}`; // Modal ID
+
+        $.ajax({
+            url: `/mark-part/${partId}`,
+            type: "POST",
+            success: function (response) {
+                // Close the modal
+                $(modalId).modal('hide');
+
+                if (response.status === "success") {
+                    // Show success alert
+                    showAlert("Credited status successfully changed.", "info");
+
+                    // Refresh the page after showing the alert
+                    setTimeout(function() {
+                        window.location.href = document.referrer;
+                    }, 3000); // Delay before redirecting
                 } else {
                     showAlert(response.message, "danger");
                 }

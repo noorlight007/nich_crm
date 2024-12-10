@@ -154,6 +154,27 @@ def delete_part(part_id):
     finally:
         db_handler.close()
 
+@app.route('/mark-part/<int:part_id>', methods=['DELETE'])
+def mark_part(part_id):
+    db_handler = DatabaseHandler(**db_config)
+    credited = db_handler.get_partCredited_byID(part_id)
+
+    try:
+        db_handler = DatabaseHandler(**db_config)
+        # Attempt to delete the part
+        if credited == 1:
+            db_handler.mark_part(part_id, 2)
+            return jsonify({"status": "success", "message": "Part marked as Not-credited successfully."}), 200
+        if credited != 1:
+            db_handler.mark_part(part_id, 1)
+            return jsonify({"status": "success", "message": "Part marked as Credited successfully."}), 200
+        else:
+            return jsonify({"status": "error", "message": "Part not found."}), 404
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+    finally:
+        db_handler.close()
+
 
 @app.route('/customers/<state_count>')
 def customers_table(state_count):
