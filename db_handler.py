@@ -371,7 +371,7 @@ class DatabaseHandler:
                 self.connect()
 
             cursor = self.connection.cursor()
-            query = "Update Item set credited = %s where id= %s"
+            query = "Update parts set credited = %s where id= %s"
             cursor.execute(query, (value_credited, part_id,))
             self.connection.commit()
 
