@@ -163,12 +163,13 @@ def mark_part(part_id):
     try:
         db_handler = DatabaseHandler(**db_config)
         # Attempt to delete the part
-        if credited == 1:
-            db_handler.mark_part(part_id, 2)
-            return jsonify({"status": "success", "message": "Part marked as Not-credited successfully."}), 200
-        if credited != 1:
+        if not credited or credited != 1:
             db_handler.mark_part(part_id, 1)
             return jsonify({"status": "success", "message": "Part marked as Credited successfully."}), 200
+        elif credited == 1:
+            db_handler.mark_part(part_id, 2)
+            return jsonify({"status": "success", "message": "Part marked as Not-credited successfully."}), 200
+        
         else:
             return jsonify({"status": "error", "message": "Part not found."}), 404
     except Exception as e:
