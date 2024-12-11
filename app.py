@@ -67,10 +67,10 @@ def parts_table():
         checked = request.args.get('checked')
         if checked == 'true':
             parts_data = db_handler.get_credited_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="yes", all_companies = all_companies)
+            return render_template('parts.html', parts=parts_data, checked="yes", all_companies = all_companies, admin_name = session.get('username'))
         else:
             parts_data = db_handler.get_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="no", all_companies = all_companies)
+            return render_template('parts.html', parts=parts_data, checked="no", all_companies = all_companies, admin_name = session.get('username'))
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -195,17 +195,17 @@ def customers_table(state_count):
             if state_count == "first_half":
                 # Get the first half of the customer data
                 first_half = db_handler.get_customers_data(0, total_customers // 2)
-                return render_template('customers.html', customers=first_half,  state = 'first_half')
+                return render_template('customers.html', customers=first_half,  state = 'first_half', admin_name = session.get('username'))
 
             elif state_count == "last_half":
                 # Get the second half of the customer data
                 last_half = db_handler.get_customers_data(total_customers // 2, total_customers)
-                return render_template('customers.html', customers=last_half,  state = 'last_half')
+                return render_template('customers.html', customers=last_half,  state = 'last_half', admin_name = session.get('username'))
 
         else:
             # Default behavior (if no 'count' parameter is passed)
             customers_data = db_handler.get_customers_data()
-            return render_template('customers.html', customers=customers_data)
+            return render_template('customers.html', customers=customers_data, admin_name = session.get('username'))
     except Exception as e:
         return f"Error: {str(e)}"
 
