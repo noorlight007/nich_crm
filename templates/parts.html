@@ -356,7 +356,7 @@
                           </svg>
                           
                           <h3>Confirm again!</h3>
-                          <div class="text-secondary">Do you really want to mark the product <strong>{{ part[1] | upper }}</strong> as {% if checked == 'yes' %} <h3>Not-credited</h3>{% else %} <h3>Credited</h3>{% endif %}?</div>
+                          <div class="text-secondary">Do you really want to mark the product <strong>{{ part[1] | upper }}</strong> as {% if part[8] == 1 %} <h3>Not-credited</h3>{% else %} <h3>Credited</h3>{% endif %}?</div>
                         </div>
                         <div class="modal-footer">
                           <div class="w-100">
