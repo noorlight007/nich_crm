@@ -527,21 +527,18 @@
                 $(modalId).modal('hide');
 
                 if (response.status === "success") {
-                    // Show success alert
-                    
-
-                    const row = button[0].closest('tr');
-                    console.log(row)
-                    table.row(row).remove().draw();
-                    showAlert("The item has been deleted permanently.", "info");
+                    showAlert("The item has been deleted permanently.");
+                    setTimeout(function() {
+                        window.location.href = document.referrer;  // Reload the page
+                    }, 2000); // Delay before refreshing
 
                 } else {
-                    showAlert(response.message, "danger");
+                    showAlert(response.message);
                 }
             },
             error: function (xhr) {
                 $(modalId).modal('hide');
-                showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`, "danger");
+                showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`);
             },
         });
     });
