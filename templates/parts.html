@@ -568,7 +568,7 @@
                 // Find the row in the table using the part ID
                 const row = button[0].closest('tr');
                 const cell = $(row).find('td:nth-child(6)'); // Target the 6th column
-
+                console.log(cell.text())
                 // Toggle the text in the cell between "Yes" and "No"
                 if (cell.text().trim() === "Yes") {
                     cell.text("No");
