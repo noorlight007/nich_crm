@@ -562,16 +562,26 @@
 
                 // Check if the response indicates success
                 if (response.status === "success") {
-                    // Show success alert
-                    showAlert("The item's credited status has been updated.", "info");
+                // Show success alert
+                credit_showAlert("The item's credited status has been updated.");
 
-                    // Refresh the page after showing the alert
-                    setTimeout(function() {
-                        window.location.href = document.referrer;  // Reload the page
-                    }, 2000); // Delay before refreshing
+                // Find the row in the table using the part ID
+                const row = button[0].closest('tr');
+                const cell = $(row).find('td:nth-child(6)'); // Target the 6th column
+
+                // Toggle the text in the cell between "Yes" and "No"
+                if (cell.text().trim() === "Yes") {
+                    cell.text("No");
                 } else {
+                    cell.text("Yes");
+                }
+
+                // Optionally, add a visual update effect to the cell
+                cell.addClass('bg-success text-white'); // Add temporary success styles
+                setTimeout(() => cell.removeClass('bg-success text-white'), 2000); // Remove styles after 2 seconds
+            } else {
                     // Show error if the update failed
-                    showAlert(response.message, "danger");
+                    showAlert(response.message);
                 }
             },
             error: function (xhr) {
