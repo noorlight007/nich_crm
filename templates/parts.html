@@ -51,132 +51,142 @@
 {% block main_content %}
 <div id="alerts-container"></div>
 <div class="col-12">
-    
-    <div class="d-flex justify-content-between mb-1">
-      <div class=" d-flex align-items-center">
-        <a href="javascript:void(0)" class="btn btn-primary btn-pill w-100"  data-bs-toggle="modal" data-bs-target="#modal-create-part">
-          + Add new part
-        </a>
-        <div class="modal modal-blur fade" id="modal-create-part" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Add new part</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="row">
+      <div class="col-md-4 col-sm-12 mb-1">
+        <div class=" d-flex align-items-center">
+          <a href="javascript:void(0)" class="btn btn-primary btn-pill w-100"  data-bs-toggle="modal" data-bs-target="#modal-create-part">
+            + Add new part
+          </a>
+          <div class="modal modal-blur fade" id="modal-create-part" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Add new part</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('create_part') }}" method="post" id="create_part">
+                <div class="modal-body">
+                  <!-- ########## -->
+                  
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label class="form-label">Part Name</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="partname" required>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label class="form-label">Credited?</label>
+                          <select class="form-select" name="credited">
+                            <option value="1" selected>Yes</option>
+                            <option value="2">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label class="form-label">Quantity</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="quantity" id="quantity" required >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label">Reason</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="reason" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label">Account Number</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="acc_number" id="acc_number" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label">Unique ID</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="unique_id" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6" id="check_company">
+                        <div class="mb-3">
+                          <label class="form-label">Customer Company</label>
+                          <div class="input-icon mb-3">
+                            <span class="input-icon-addon">
+                              <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Wating…" readonly>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6" style="display: none;" id="show_company">
+                        <div class="mb-3">
+                          <label class="form-label">Customer Company</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control is-valid" name="company" required>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  
+                  
+  
+                  <!-- ####### -->
+                  
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                  </a>
+                  <button type="submit" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    Create & upload
+                  </button>
+                </div>
+                </form>
               </div>
-              <form action="{{ url_for('create_part') }}" method="post" id="create_part">
-              <div class="modal-body">
-                <!-- ########## -->
-                
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <div class="mb-3">
-                        <label class="form-label">Part Name</label>
-                        <div class="input-group input-group-flat">
-                          <input type="text" class="form-control" name="partname" required>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                      <div class="mb-3">
-                        <label class="form-label">Credited?</label>
-                        <select class="form-select" name="credited">
-                          <option value="1" selected>Yes</option>
-                          <option value="2">No</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="mb-3">
-                        <label class="form-label">Quantity</label>
-                        <div class="input-group input-group-flat">
-                          <input type="text" class="form-control" name="quantity" id="quantity" required >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="mb-3">
-                        <label class="form-label">Reason</label>
-                        <div class="input-group input-group-flat">
-                          <input type="text" class="form-control" name="reason" required>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="mb-3">
-                        <label class="form-label">Account Number</label>
-                        <div class="input-group input-group-flat">
-                          <input type="text" class="form-control" name="acc_number" id="acc_number" required>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="mb-3">
-                        <label class="form-label">Unique ID</label>
-                        <div class="input-group input-group-flat">
-                          <input type="text" class="form-control" name="unique_id" required>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6" id="check_company">
-                      <div class="mb-3">
-                        <label class="form-label">Customer Company</label>
-                        <div class="input-icon mb-3">
-                          <span class="input-icon-addon">
-                            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                          </span>
-                          <input type="text" class="form-control" placeholder="Wating…" readonly>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6" style="display: none;" id="show_company">
-                      <div class="mb-3">
-                        <label class="form-label">Customer Company</label>
-                        <div class="input-group input-group-flat">
-                          <input type="text" class="form-control is-valid" name="company" required>
-                        </div>
-                      </div>
-                    </div>
-                    
-                  </div>
-                
-                
-
-                <!-- ####### -->
-                
-              </div>
-              <div class="modal-footer">
-                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                  Cancel
-                </a>
-                <button type="submit" class="btn btn-primary ms-auto">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                  Create & upload
-                </button>
-              </div>
-              </form>
             </div>
           </div>
         </div>
       </div>
-      
-      <label class="form-selectgroup-item d-flex align-items-center">
-        <input type="checkbox" id="credited-parts-checkbox" {% if checked == 'yes' %} checked {% endif %} class="form-check-input me-2">
-        <div class="form-selectgroup-label">
-          <strong>Check Credited Parts</strong>
-        </div>
-      </label>
-
-      <div class="mb-3">
-        <label for="from-date">From:</label>
-        <input type="date" id="from-date" class="form-control d-inline w-auto">
-        <label for="to-date">To:</label>
-        <input type="date" id="to-date" class="form-control d-inline w-auto">
-        <button id="filter-button" class="btn btn-primary">Filter</button>
-        <button id="reset-button" class="btn btn-danger">Reset</button>
+      <div class="col-md-4 col-sm-12 mb-1">
+        <label class="form-selectgroup-item d-flex align-items-center">
+          <input type="checkbox" id="credited-parts-checkbox" {% if checked == 'yes' %} checked {% endif %} class="form-check-input me-2">
+          <div class="form-selectgroup-label">
+            <strong>Check Credited Parts</strong>
+          </div>
+        </label>
       </div>
+      <div class="col-md-4 col-sm-12 mb-1">
+        <div >
+          <label for="from-date">From:</label>
+          <input type="date" id="from-date" class="form-control d-inline w-auto">
+          <label for="to-date">To:</label>
+          <input type="date" id="to-date" class="form-control d-inline w-auto">
+          <button id="filter-button" class="btn btn-primary">Filter</button>
+          <button id="reset-button" class="btn btn-danger">Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between mb-1">
+      
+      
+      
+
+      
     </div>
 
     <div class="card">
