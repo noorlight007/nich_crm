@@ -82,11 +82,9 @@ def update_part_route(part_id):
     if 'user_id' not in session:
         return redirect('login')
 
-    
-
     # Get form data
     part_name = request.form.get('edited_partname')
-    credited = int(request.form.get('edited_credited'))  # Convert to int (1 for Yes, 0 for No)
+    credited = request.form.get('edited_credited')  # Convert to int (1 for Yes, 0 for No)
     quantity = request.form.get('edited_quantity')
     reason = request.form.get('edited_reason')
     unique_id = request.form.get('edited_unique_id')
@@ -97,7 +95,7 @@ def update_part_route(part_id):
     customer_id = db_handler.get_customerID_by_account_number(account_number)
     db_handler = DatabaseHandler(**db_config)
     # Validate inputs (optional)
-    if not all([part_name, quantity, reason, unique_id, account_number]):
+    if not all([part_name,credited, quantity, reason, unique_id, account_number]):
         return jsonify({"status": "error", "message": "All fields are required."}), 400
 
     try:
