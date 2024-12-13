@@ -625,7 +625,7 @@ $(document).on("click", "[id^=update_part]", function () {
         error: function (xhr) {
             // Handle AJAX error
             $(modalId).modal("hide");
-            showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`, "danger");
+            showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`);
         },
     });
 });
