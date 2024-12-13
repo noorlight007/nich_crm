@@ -232,77 +232,70 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <div class="row">
-                            <div class="col-lg-4">
-                              <div class="mb-3">
-                                <label class="form-label">Product Code</label>
-                                <div class="input-group input-group-flat">
-                                  <input type="text" class="form-control">
+                          <!-- ########## -->
+                          
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <div class="mb-3">
+                                  <label class="form-label">Part Name</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" class="form-control" name="edited_partname" value="{{ part[1] }}" required>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-lg-8">
-                              <div class="mb-3">
-                                <label class="form-label">Description</label>
-                                <div class="input-group input-group-flat">
-                                  <input type="text" class="form-control">
+                              
+                              <!-- TODO -->
+                              <div class="col-lg-4">
+                                <div class="mb-3">
+                                  <label class="form-label">Credited?</label>
+                                  <select class="form-select" name="credited">
+                                    <option value="1" selected>Yes</option>
+                                    <option value="2">No</option>
+                                  </select>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-lg-4">
-                              <div class="mb-3">
-                                <label class="form-label">Credited?</label>
-                                <select class="form-select">
-                                  <option value="1" selected>Yes</option>
-                                  <option value="2">No</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-lg-2">
-                              <div class="mb-3">
-                                <label class="form-label">Quantity</label>
-                                <div class="input-group input-group-flat">
-                                  <input type="text" class="form-control">
+                              <div class="col-lg-4">
+                                <div class="mb-3">
+                                  <label class="form-label">Quantity</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" class="form-control" name="edited_quantity" value="{{ part[2] }}" id="edited_quantity" required >
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-lg-6">
-                              <div class="mb-3">
-                                <label class="form-label">Reason</label>
-                                <div class="input-group input-group-flat">
-                                  <input type="text" class="form-control">
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Reason</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" class="form-control" name="edited_reason" value="{{ part[3] }}" required>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-lg-6">
-                              <div class="mb-3">
-                                <label class="form-label">Account Number</label>
-                                <div class="input-group input-group-flat">
-                                  <input type="text" class="form-control">
+                              
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Unique ID</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" class="form-control" name="edited_unique_id" value="{{ part[6] }}" required>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-lg-6">
-                              <div class="mb-3">
-                                <label class="form-label">Unique ID</label>
-                                <div class="input-group input-group-flat">
-                                  <input type="text" class="form-control">
+
+                              <!-- TODO -->
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Account Number</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" class="form-control" name="edited_acc_number" value="{{ part[4] }}" required>
+                                  </div>
                                 </div>
                               </div>
+                              
                             </div>
-                            <div class="col-lg-8">
-                              <div class="mb-3">
-                                <label class="form-label">Customer Company</label>
-                                <select type="text" class="form-select" id="select-users" value="">
-                                  <option value="1">Chuck Tesla</option>
-                                  <option value="2">Elon Musk</option>
-                                  <option value="3">Paweł Kuna</option>
-                                  <option value="4">Nikola Tesla</option>
-                                </select>
-                              </div>
-                            </div>
-                            
-                          </div>
+                          
+                          
+          
+                          <!-- ####### -->
+                          
                         </div>
                         <div class="modal-footer">
                           <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
