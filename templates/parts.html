@@ -293,10 +293,12 @@
                                   <label class="form-label">Account Number</label>
                                   <select class="form-select" name="edited_credited">
                                     {% for item in account_numbers %}
-                                    <option value="{{item}}" {% if item == part[4] %} selected {% endif %}>{{ item }}</option>
+                                        <option value="{{ item }}" {% if item == part[4] %} selected {% endif %}>
+                                            {{ item }}
+                                        </option>
                                     {% endfor %}
-                                    
-                                  </select>
+                                </select>
+                                
                                 </div>
                               </div>
                               
