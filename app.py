@@ -63,6 +63,7 @@ def parts_table():
     all_companies = db_handler.get_all_company_with_acccount_no()
     db_handler = DatabaseHandler(**db_config)
     account_numbers = db_handler.get_all_account_number()
+    print(account_numbers)
     try:
         db_handler = DatabaseHandler(**db_config)
         # Check the query parameter
