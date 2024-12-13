@@ -291,9 +291,12 @@
                               <div class="col-lg-6">
                                 <div class="mb-3">
                                   <label class="form-label">Account Number</label>
-                                  <div class="input-group input-group-flat">
-                                    <input type="text" class="form-control" name="edited_acc_number" value="{{ part[4] }}" required>
-                                  </div>
+                                  <select class="form-select" name="edited_credited">
+                                    {% for item in account_numbers %}
+                                    <option value="{{item}}" {% if item == part[4] %} selected {% endif %}>{{ item }}</option>
+                                    {% endfor %}
+                                    
+                                  </select>
                                 </div>
                               </div>
                               

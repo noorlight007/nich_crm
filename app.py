@@ -60,17 +60,19 @@ def parts_table():
     if 'user_id' not in session:
         return redirect('login')
     db_handler = DatabaseHandler(**db_config)
-    all_companies = db_handler.get_all_company_with_acccount_no() 
+    all_companies = db_handler.get_all_company_with_acccount_no()
+    db_handler = DatabaseHandler(**db_config)
+    account_numbers = db_handler.get_all_account_number()
     try:
         db_handler = DatabaseHandler(**db_config)
         # Check the query parameter
         checked = request.args.get('checked')
         if checked == 'true':
             parts_data = db_handler.get_credited_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="yes", all_companies = all_companies, admin_name = session.get('username'))
+            return render_template('parts.html', parts=parts_data, checked="yes", all_companies = all_companies, admin_name = session.get('username'), account_numbers = account_numbers)
         else:
             parts_data = db_handler.get_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="no", all_companies = all_companies, admin_name = session.get('username'))
+            return render_template('parts.html', parts=parts_data, checked="no", all_companies = all_companies, admin_name = session.get('username'), account_numbers = account_numbers)
     except Exception as e:
         return f"Error: {str(e)}"
 

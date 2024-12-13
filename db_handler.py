@@ -317,7 +317,8 @@ class DatabaseHandler:
             query = "SELECT accountNumber FROM customers"
             cursor.execute(query)
             result = cursor.fetchall()
-            return result
+            flat_list = [item[0] for item in result]
+            return flat_list
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
