@@ -585,6 +585,34 @@
         table.draw(); // Redraw the table without the custom filter
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+    // Restrict date inputs to DD/MM/YYYY format
+    const dateInputs = document.querySelectorAll('#from-date, #to-date');
+
+    dateInputs.forEach(input => {
+        input.addEventListener('input', function () {
+            const value = this.value.replace(/[^0-9/]/g, ''); // Allow only numbers and '/'
+            const partition = value.split('/').map(part => part.slice(0, 2)); // Restrict day/month to 2 digits
+            this.value = partition.filter(Boolean).join('/'); // Reconstruct the date
+        });
+
+        input.addEventListener('blur', function () {
+            const partition = this.value.split('/');
+            if (partition.length === 3) {
+                const day = partition[0].padStart(2, '0');
+                const month = partition[1].padStart(2, '0');
+                const year = partition[2];
+                if (day && month && year) {
+                    this.value = `${day}/${month}/${year}`;
+                } else {
+                    this.value = ''; // Clear invalid inputs
+                }
+            }
+        });
+    });
+});
+
+
     // Handle delete button click
     $(document).on("click", "[id^=delete_part]", function () {
         const button = $(this);
