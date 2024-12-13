@@ -168,6 +168,14 @@
           <strong>Check Credited Parts</strong>
         </div>
       </label>
+
+      <div class="mb-3">
+        <label for="from-date">From:</label>
+        <input type="date" id="from-date" class="form-control d-inline w-auto">
+        <label for="to-date">To:</label>
+        <input type="date" id="to-date" class="form-control d-inline w-auto">
+        <button id="filter-button" class="btn btn-primary">Filter</button>
+      </div>
     </div>
 
     <div class="card">
@@ -389,13 +397,7 @@
       </div>
     </div>
 
-    <div class="mb-3">
-      <label for="from-date">From:</label>
-      <input type="date" id="from-date" class="form-control d-inline w-auto">
-      <label for="to-date">To:</label>
-      <input type="date" id="to-date" class="form-control d-inline w-auto">
-      <button id="filter-button" class="btn btn-primary">Filter</button>
-  </div>
+    
 </div>
 
 {% endblock %}
