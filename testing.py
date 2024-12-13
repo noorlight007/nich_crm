@@ -10,4 +10,6 @@ db_config = {
 
 db_handler = DatabaseHandler(**db_config)
 account_numbers = db_handler.get_all_account_number()
-print(account_numbers)
+
+flat_list = [item[0] for item in account_numbers]
+print(flat_list)
