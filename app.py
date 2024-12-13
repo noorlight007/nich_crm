@@ -97,12 +97,11 @@ def update_part_route(part_id):
     customer_id = db_handler.get_customerID_by_account_number(account_number)
     db_handler = DatabaseHandler(**db_config)
     # Validate inputs (optional)
-    if not all([part_name,credited, quantity, reason, unique_id, account_number]):
-        return jsonify({"status": "error", "message": "All fields are required."}), 400
+    success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, customer_id)
     return redirect(referrer)
     # try:
     #     # Update part in the database
-    #     success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, customer_id)
+    #     
     #     if success:
     #         return jsonify({
     #             "status": "success",
