@@ -541,7 +541,7 @@
 
         const createdAtDate = new Date(createdAt);
         const from = fromDate ? new Date(fromDate) : null;
-        const to = toDate ? new Date(toDate) : null;
+        const to = toDate ? new Date(toDate + 'T23:59:59') : null;
 
         if (
             (!from || createdAtDate >= from) &&
