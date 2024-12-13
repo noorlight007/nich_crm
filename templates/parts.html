@@ -175,6 +175,7 @@
         <label for="to-date">To:</label>
         <input type="date" id="to-date" class="form-control d-inline w-auto">
         <button id="filter-button" class="btn btn-primary">Filter</button>
+        <button id="reset-button" class="btn btn-secondary">Reset</button>
       </div>
     </div>
 
@@ -555,6 +556,13 @@
     // Apply the filter on button click
     $('#filter-button').on('click', function () {
         table.draw();
+    });
+
+    // Reset the filter and clear inputs
+    $('#reset-button').on('click', function () {
+        $('#from-date').val('');
+        $('#to-date').val('');
+        table.draw(); // Redraw the table without the custom filter
     });
 
     // Handle delete button click
