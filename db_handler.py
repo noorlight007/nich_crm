@@ -307,6 +307,23 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+    
+    def get_all_account_number(self):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT accountNumber FROM customers"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            return result
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
 
     def create_part(self, customer_id, partname, credited, quantity, reason, unique_id, user_id, created_at, updated_at):
         try:
