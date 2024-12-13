@@ -231,7 +231,7 @@
                           <h5 class="modal-title">Edit Part - <strong>{{ part[1] | upper }}</strong></h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="" method="post" id="update_data{{ part[0] }}">
+                        <form action="{{ url_for('update_part_route') }}" method="post" id="update_data{{ part[0] }}">
                         <div class="modal-body">
                           <!-- ########## -->
                             
@@ -596,12 +596,14 @@ $(document).on("click", "[id^=update_part]", function () {
 
     // Serialize form data
     const formData = $(formId).serialize();
-
+    console.log(formData)
     // Perform AJAX to update the part details
     $.ajax({
+      
         url: `/update-part/${partId}`, // Flask route
         type: "POST",
         data: formData,
+        
         success: function (response) {
             // Close the modal
             $(modalId).modal("hide");

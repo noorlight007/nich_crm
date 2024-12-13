@@ -55,7 +55,7 @@ def index():
     return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'))
 
 
-@app.route('/parts')
+@app.route('/parts', methods=['GET','POST'])
 def parts_table():
     if 'user_id' not in session:
         return redirect('login')
