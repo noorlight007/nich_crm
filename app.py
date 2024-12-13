@@ -95,7 +95,7 @@ def update_part_route(part_id):
     # Initialize the database handler
     db_handler = DatabaseHandler(**db_config)
     customer_id = db_handler.get_customerID_by_account_number(account_number)
-
+    db_handler = DatabaseHandler(**db_config)
     # Validate inputs (optional)
     if not all([part_name, quantity, reason, unique_id, account_number]):
         return jsonify({"status": "error", "message": "All fields are required."}), 400
