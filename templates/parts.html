@@ -162,15 +162,18 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 mb-1">
-        <label class="form-selectgroup-item d-flex align-items-center">
-          <input type="checkbox" id="credited-parts-checkbox" {% if checked == 'yes' %} checked {% endif %} class="form-check-input me-2">
-          <div class="form-selectgroup-label">
-            <strong>Check Credited Parts</strong>
-          </div>
-        </label>
+      <div class="col-md-5 col-sm-12 mb-1">
+        <div class="d-flex justify-content-center">
+          <label class="form-selectgroup-item d-flex align-items-center">
+            <input type="checkbox" id="credited-parts-checkbox" {% if checked == 'yes' %} checked {% endif %} class="form-check-input me-2">
+            <div class="form-selectgroup-label">
+              <strong>Check Credited Parts</strong>
+            </div>
+          </label>
+        </div>
+        
       </div>
-      <div class="col-md-6 col-sm-12 mb-1">
+      <div class="col-md-5 col-sm-12 mb-1">
         <div >
           <label for="from-date">From:</label>
           <input type="date" id="from-date" class="form-control d-inline w-auto input-sm">
