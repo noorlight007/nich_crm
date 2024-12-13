@@ -199,7 +199,7 @@
                   <td class="text-secondary">{{ part[9] }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
-                        <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report{{ part[0] }}">
+                        <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report{{ part[0] }}">
                             Edit
                         </a>
                         <div class="dropdown">
@@ -208,32 +208,33 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
                             {% if part[8] == 1 %}
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
                                 Mark as Not-credited
                             </a>
                             {% else %}
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
                                 Mark as Credited
                             </a>
                             {% endif %}
                             
-                            <a class="dropdown-item border-top" href="#" data-bs-toggle="modal" data-bs-target="#modal-danger{{ part[0] }}">
+                            <a class="dropdown-item border-top" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-danger{{ part[0] }}">
                             Delete
                             </a>
                         </div>
                         </div>
                     </div>
                   </td>
-                  <div class="modal modal-blur fade" id="modal-report{{ part[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal modal-blur fade" id="modal-update{{ part[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title">Edit Part - <strong>{{ part[1] | upper }}</strong></h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <form action="" method="post" id="update_data{{ part[0] }}">
                         <div class="modal-body">
                           <!-- ########## -->
-                          
+                            
                             <div class="row">
                               <div class="col-lg-4">
                                 <div class="mb-3">
@@ -291,7 +292,7 @@
                               <div class="col-lg-6">
                                 <div class="mb-3">
                                   <label class="form-label">Account Number</label>
-                                  <select class="form-select" name="edited_credited">
+                                  <select class="form-select" name="edited_account_number">
                                     {% for i in account_numbers %}
                                         <option value="{{ i }}" {% if i == part[4] %} selected {% endif %}>
                                             {{ i }}
@@ -303,9 +304,6 @@
                               </div>
                               
                             </div>
-                          
-                          
-          
                           <!-- ####### -->
                           
                         </div>
@@ -313,12 +311,13 @@
                           <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                             Cancel
                           </a>
-                          <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                          <button class="btn btn-primary ms-auto" type="submit" id="update_part{{ part[0] }}">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                             Edit & Save
-                          </a>
+                          </button>
                         </div>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -587,9 +586,66 @@
             },
         });
     });
+    // Attach the submit event to all forms with IDs starting with "update_data"
+// Handle Edit & Save button click
+$(document).on("click", "[id^=update_part]", function () {
+    const button = $(this);
+    const partId = button.attr("id").replace("update_part", ""); // Extract part ID
+    const formId = `#update_data${partId}`; // Form ID
+    const modalId = `#modal-update${partId}`; // Modal ID
+
+    // Serialize form data
+    const formData = $(formId).serialize();
+
+    // Perform AJAX to update the part details
+    $.ajax({
+        url: `/update-part/${partId}`, // Flask route
+        type: "POST",
+        data: formData,
+        success: function (response) {
+            // Close the modal
+            $(modalId).modal("hide");
+
+            // Check if the response indicates success
+            if (response.status === "success") {
+                // Show success alert
+                update_showAlert("Part details updated successfully!");
+
+                // Refresh the page after showing the alert
+                setTimeout(function() {
+                        window.location.href = document.referrer;  // Reload the page
+                    }, 2000); // Delay before refreshing
+            } else {
+                // Show error if the update failed
+                showAlert(response.message);
+            }
+        },
+        error: function (xhr) {
+            // Handle AJAX error
+            $(modalId).modal("hide");
+            showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`, "danger");
+        },
+    });
+});
+
+
 
     // Function to show alert messages
     function showAlert(message) {
+        const alertHtml = `
+            <div class="alert alert-important alert-warning alert-dismissible" role="alert">
+                <div class="d-flex">
+                    <div>${message}</div>
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>`;
+        $("#alerts-container").html(alertHtml);
+        setTimeout(() => {
+            $(".alert").fadeOut();
+        }, 3000); // Hide the alert after 2 seconds
+    }
+    // Function to show alert messages
+    function update_showAlert(message) {
         const alertHtml = `
             <div class="alert alert-important alert-warning alert-dismissible" role="alert">
                 <div class="d-flex">
@@ -607,11 +663,17 @@
     function credit_showAlert(message) {
         const alertHtml = `
             <div class="alert alert-important alert-success alert-dismissible" role="alert">
-                <div class="d-flex">
-                    <div>${message}</div>
-                </div>
-                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-            </div>`;
+                      <div class="d-flex">
+                        <div>
+                          <!-- Download SVG icon from http://tabler-icons.io/i/check -->
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+                        </div>
+                        <div>
+                          ${message}
+                        </div>
+                      </div>
+                      <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                    </div>`;
         $("#alerts-container").html(alertHtml);
         setTimeout(() => {
             $(".alert").fadeOut();

@@ -77,6 +77,41 @@ def parts_table():
     except Exception as e:
         return f"Error: {str(e)}"
 
+
+@app.route('/update-part/<int:part_id>', methods=['POST'])
+def update_part_route(part_id):
+    if 'user_id' not in session:
+        return redirect('login')
+
+    # Initialize the database handler
+    db_handler = DatabaseHandler(**db_config)
+
+    # Get form data
+    part_name = request.form.get('edited_partname')
+    credited = int(request.form.get('edited_credited', 0))  # Convert to int (1 for Yes, 0 for No)
+    quantity = request.form.get('edited_quantity')
+    reason = request.form.get('edited_reason')
+    unique_id = request.form.get('edited_unique_id')
+    account_number = request.form.get('edited_account_number')
+
+    # Validate inputs (optional)
+    if not all([part_name, quantity, reason, unique_id, account_number]):
+        return jsonify({"status": "error", "message": "All fields are required."}), 400
+
+    try:
+        # Update part in the database
+        success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, account_number)
+        if success:
+            return jsonify({
+                "status": "success",
+                "message": "Part updated successfully."
+            }), 200
+        else:
+            return jsonify({"status": "error", "message": "Failed to update part."}), 500
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
 @app.route('/create-part', methods=['POST'])
 def create_part():
     if 'user_id' not in session:

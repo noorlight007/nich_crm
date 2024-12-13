@@ -403,6 +403,40 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+    
+    def update_part(self, part_id, part_name, credited, quantity, reason, unique_id, account_number):
+        """
+        Update part details in the database.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+
+            # Update query
+            query = """
+                UPDATE parts
+                SET 
+                    partname = %s,
+                    credited = %s,
+                    quantity = %s,
+                    reason = %s,
+                    unique_id = %s,
+                    account_number = %s,
+                    updated_at = NOW()
+                WHERE 
+                    id = %s
+            """
+            cursor.execute(query, (part_name, credited, quantity, reason, unique_id, account_number, part_id))
+            self.connection.commit()
+
+            # Return success status
+            return cursor.rowcount > 0
+        except self.MySQLdb.MySQLError as e:
+            print(f"Error updating part: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
 
     def close(self):
         """
