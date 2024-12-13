@@ -231,7 +231,7 @@
                           <h5 class="modal-title">Edit Part - <strong>{{ part[1] | upper }}</strong></h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form method="post" id="update_data{{ part[0] }}">
+                        <form action="{{ url_for('update_part_route, part_id = part[0]') }}" method="post" id="update_data{{ part[0] }}">
                         <div class="modal-body">
                           <!-- ########## -->
                             
@@ -587,48 +587,6 @@
         });
     });
     // Attach the submit event to all forms with IDs starting with "update_data"
-// Handle Edit & Save button click
-$(document).on("click", "[id^=update_part]", function () {
-    const button = $(this);
-    const partId = button.attr("id").replace("update_part", ""); // Extract part ID
-    const formId = `#update_data${partId}`; // Form ID
-    const modalId = `#modal-update${partId}`; // Modal ID
-
-    // Serialize form data
-    const formData = $(formId).serialize();
-    console.log(formData)
-    // Perform AJAX to update the part details
-    $.ajax({
-      
-        url: `/update-part/${partId}`, // Flask route
-        type: "POST",
-        data: formData,
-        
-        success: function (response) {
-            // Close the modal
-            $(modalId).modal("hide");
-
-            // Check if the response indicates success
-            if (response.status === "success") {
-                // Show success alert
-                update_showAlert("Part details updated successfully!");
-
-                // Refresh the page after showing the alert
-                setTimeout(function() {
-                        window.location.href = document.referrer;  // Reload the page
-                    }, 2000); // Delay before refreshing
-            } else {
-                // Show error if the update failed
-                showAlert(response.message);
-            }
-        },
-        error: function (xhr) {
-            // Handle AJAX error
-            $(modalId).modal("hide");
-            showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`);
-        },
-    });
-});
 
 
 

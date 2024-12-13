@@ -82,6 +82,7 @@ def update_part_route(part_id):
     if 'user_id' not in session:
         return redirect('login')
 
+    referrer = request.referrer
     # Get form data
     part_name = request.form.get('edited_partname')
     credited = request.form.get('edited_credited')  # Convert to int (1 for Yes, 0 for No)
@@ -89,6 +90,7 @@ def update_part_route(part_id):
     reason = request.form.get('edited_reason')
     unique_id = request.form.get('edited_unique_id')
     account_number = request.form.get('edited_account_number')
+    print(f"{part_name}, {credited}, {quantity}, {reason}, {unique_id}, {account_number}")
 
     # Initialize the database handler
     db_handler = DatabaseHandler(**db_config)
@@ -97,19 +99,19 @@ def update_part_route(part_id):
     # Validate inputs (optional)
     if not all([part_name,credited, quantity, reason, unique_id, account_number]):
         return jsonify({"status": "error", "message": "All fields are required."}), 400
-
-    try:
-        # Update part in the database
-        success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, customer_id)
-        if success:
-            return jsonify({
-                "status": "success",
-                "message": "Part updated successfully."
-            }), 200
-        else:
-            return jsonify({"status": "error", "message": "Failed to update part."}), 500
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+    return redirect(referrer)
+    # try:
+    #     # Update part in the database
+    #     success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, customer_id)
+    #     if success:
+    #         return jsonify({
+    #             "status": "success",
+    #             "message": "Part updated successfully."
+    #         }), 200
+    #     else:
+    #         return jsonify({"status": "error", "message": "Failed to update part."}), 500
+    # except Exception as e:
+    #     return jsonify({"status": "error", "message": str(e)}), 500
 
 
 @app.route('/create-part', methods=['POST'])
