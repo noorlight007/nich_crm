@@ -170,7 +170,7 @@
                             <h5 class="modal-title">Edit Customer - {{ customer[3] }}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
-                          <form action="{{ flask_route_link_here }}" method="post" id="edit_customer_form{{ customer[0] }}">
+                          <form action="{{ url_for('update_customer', customer_id = customer[0]) }}" method="post" id="edit_customer_form{{ customer[0] }}">
                           <div class="modal-body">
                             <!-- ########## -->
                             <div class="row">
@@ -336,45 +336,44 @@
 
 <!-- for creating new customer -->
 <script>
-  document.querySelectorAll('[id^=edit_customer_form]').forEach(form => {
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault();
+    document.querySelectorAll('[id^=edit_customer_form]').forEach(button => {
+      button.addEventListener('click', async function (event) {
+          event.preventDefault();
 
-        const formData = new FormData(form);
-        const submitButton = form.querySelector('[id^=edit_customer_submit_button]');
-        const customerId = form.id.replace('edit_customer_form', '');
+          const form = button.closest('form');
+          const formData = new FormData(form);
+          const customerId = form.id.replace('edit_customer_form', '');
 
-        submitButton.disabled = true;
+          button.disabled = true;
 
-        try {
-            const response = await fetch(`/update-customer/${customerId}`, {
-                method: 'POST',
-                body: formData
-            });
+          try {
+              const response = await fetch(`/update-customer/${customerId}`, {
+                  method: 'POST',
+                  body: formData
+              });
 
-            const result = await response.json();
+              const result = await response.json();
 
-            if (response.ok) {
-                showAlert('Customer updated successfully!', 'success');
-                const modal = bootstrap.Modal.getInstance(form.closest('.modal'));
-                if (modal) modal.hide();
-            } else {
-                showAlert(result.message || 'Error updating customer', 'danger');
-            }
-        } catch (error) {
-            showAlert(`An unexpected error occurred: ${error.message}`, 'danger');
-        } finally {
-            submitButton.disabled = false;
-        }
-    });
-});
-
-
+              if (response.ok) {
+                  showAlert('Customer updated successfully!', 'success');
+                  const modal = bootstrap.Modal.getInstance(form.closest('.modal'));
+                  if (modal) modal.hide();
+              } else {
+                  showAlert(result.message || 'Error updating customer', 'danger');
+              }
+          } catch (error) {
+              showAlert(`An unexpected error occurred: ${error.message}`, 'danger');
+          } finally {
+              button.disabled = false;
+          }
+      });
+  });
 
   document.getElementById('create_customer_form').addEventListener('submit', async function (event) {
     event.preventDefault(); // Prevent the default form submission
 
     const form = event.target;
+    console.log(form)
     const formData = new FormData(form);
     const submitButton = document.getElementById('upload_customer_submit');
     const modalId = `#modal-create-customer`;
