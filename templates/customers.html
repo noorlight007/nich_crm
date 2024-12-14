@@ -342,6 +342,7 @@
     const form = event.target;
     const formData = new FormData(form);
     const submitButton = document.getElementById('upload_customer_submit');
+    const modalId = `#modal-create-customer`;
 
     // Disable the button to prevent multiple submissions
     submitButton.disabled = true;
@@ -355,11 +356,14 @@
         const resultText = await response.text();
 
         if (response.ok) {
+            $(modalId).modal('hide');
             showAlert('Customer created successfully!', 'success');
         } else {
+          $(modalId).modal('hide');
             showAlert(`Error: ${resultText}`, 'danger');
         }
     } catch (error) {
+        $(modalId).modal('hide');
         showAlert(`An unexpected error occurred: ${error.message}`, 'danger');
     } finally {
         // Re-enable the button
@@ -368,8 +372,9 @@
 });
 
 function showAlert(message, type) {
-    const alertContainer = document.createElement('div');
-    alertContainer.innerHTML = `
+    const alertsContainer = document.getElementById('alerts-container');
+    const alertElement = document.createElement('div');
+    alertElement.innerHTML = `
         <div class="alert alert-important alert-${type} alert-dismissible" role="alert">
             <div class="d-flex">
                 <div>
@@ -383,13 +388,14 @@ function showAlert(message, type) {
             <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
         </div>`;
 
-    document.body.appendChild(alertContainer);
+    alertsContainer.appendChild(alertElement);
 
     // Automatically remove the alert after 3 seconds
     setTimeout(() => {
-        alertContainer.remove();
+        alertElement.remove();
     }, 3000);
 }
+
 </script>
 
 {% endblock %}
