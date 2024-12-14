@@ -342,6 +342,34 @@
 
           const form = event.target;
           console.log(form)
+          const formData = new FormData(form);
+          const customerId = form.id.replace('edit_customer_form', '');
+          const modalId = `#modal-edit${customerId}`; // Modal ID
+
+        button.disabled = true;
+
+        try {
+            const response = await fetch(`/update-customer/${customerId}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                $(modalId).modal('hide');
+                showAlert('Customer updated successfully!', 'success');
+                
+            } else {
+              $(modalId).modal('hide');
+                showAlert(result.message || 'Error updating customer', 'danger');
+            }
+        } catch (error) {
+          $(modalId).modal('hide');
+            showAlert(`An unexpected error occurred: ${error.message}`, 'danger');
+        } finally {
+            button.disabled = false;
+        }
       });
   });
 
