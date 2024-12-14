@@ -97,20 +97,19 @@ def update_part_route(part_id):
     customer_id = db_handler.get_customerID_by_account_number(account_number)
     db_handler = DatabaseHandler(**db_config)
     # Validate inputs (optional)
-    success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, customer_id)
-    return redirect(referrer)
-    # try:
-    #     # Update part in the database
-    #     
-    #     if success:
-    #         return jsonify({
-    #             "status": "success",
-    #             "message": "Part updated successfully."
-    #         }), 200
-    #     else:
-    #         return jsonify({"status": "error", "message": "Failed to update part."}), 500
-    # except Exception as e:
-    #     return jsonify({"status": "error", "message": str(e)}), 500
+    
+    try:
+        # Update part in the database
+        success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, customer_id)
+        if success:
+            return jsonify({
+                "status": "success",
+                "message": "Part updated successfully."
+            }), 200
+        else:
+            return jsonify({"status": "error", "message": "Failed to update part."}), 500
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route('/update-customer/<int:customer_id>', methods=['POST'])
 def update_customer(customer_id):

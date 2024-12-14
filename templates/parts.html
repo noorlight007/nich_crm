@@ -321,7 +321,7 @@
                           <h5 class="modal-title">Edit Part - <strong>{{ part[1] | upper }}</strong></h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{{ url_for('update_part_route', part_id = part[0]) }}" method="post" id="update_data{{ part[0] }}">
+                        <form method="post" id="edit_part_form{{ part[0] }}">
                         <div class="modal-body">
                           <!-- ########## -->
                             
@@ -715,8 +715,71 @@
         });
     });
     // Attach the submit event to all forms with IDs starting with "update_data"
+    document.querySelectorAll('[id^=edit_part_form]').forEach(button => {
+        button.addEventListener('submit', async function (event) {
+            event.preventDefault();
 
+            const form = event.target;
+            console.log(form)
+            const formData = new FormData(form);
+            const partId = form.id.replace('edit_part_form', '');
+            const modalId = `#modal-update${partId}`; // Modal ID
 
+          button.disabled = true;
+
+          try {
+              const response = await fetch(`/update-part/${partId}`, {
+                  method: 'POST',
+                  body: formData
+              });
+
+              const result = await response.json();
+
+              if (response.ok) {
+                  $(modalId).modal('hide');
+                  standard_showAlert('Part updated successfully!', 'success');
+                  // Refresh the page after showing the alert
+                  setTimeout(function() {
+                          window.location.href = document.referrer;  // Reload the page
+                      }, 2000);
+                  
+              } else {
+                $(modalId).modal('hide');
+                standard_showAlert(result.message || 'Error updating part', 'danger');
+              }
+          } catch (error) {
+            $(modalId).modal('hide');
+            standard_showAlert(`An unexpected error occurred: ${error.message}`, 'danger');
+          } finally {
+              button.disabled = false;
+          }
+        });
+    });
+
+    function standard_showAlert(message, type) {
+    const alertsContainer = document.getElementById('alerts-container');
+    const alertElement = document.createElement('div');
+    alertElement.innerHTML = `
+        <div class="alert alert-important alert-${type} alert-dismissible" role="alert">
+            <div class="d-flex">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24V0z" fill="none"></path>
+                        ${type === 'success' ? '<path d="M5 12l5 5l10 -10" />' : '<path d="M12 5l0 14" /><path d="M5 12l14 0" />'}
+                    </svg>
+                </div>
+                <div>${message}</div>
+            </div>
+            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div>`;
+
+    alertsContainer.appendChild(alertElement);
+
+    // Automatically remove the alert after 3 seconds
+    setTimeout(() => {
+        alertElement.remove();
+    }, 3000);
+}
 
     // Function to show alert messages
     function showAlert(message) {
