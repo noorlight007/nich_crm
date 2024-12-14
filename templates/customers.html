@@ -427,10 +427,11 @@
             url: `/delete-customer/${customerId}`,
             type: "DELETE",
             success: function (response) {
-                // Close the modal
-                $(modalId).modal('hide');
+                
 
                 if (response.status === "success") {
+                    // Close the modal
+                    $(modalId).modal('hide');
                     showAlert("The item has been deleted permanently.","success");
                     setTimeout(function() {
                         window.location.href = document.referrer;  // Reload the page
