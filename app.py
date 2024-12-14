@@ -238,6 +238,21 @@ def delete_part(part_id):
     finally:
         db_handler.close()
 
+@app.route('/delete-customer/<int:customer_id>', methods=['DELETE'])
+def delete_customer(customer_id):
+    db_handler = DatabaseHandler(**db_config)
+
+    try:
+        # Attempt to delete the customer
+        if db_handler.delete_customer(customer_id):
+            return jsonify({"status": "success", "message": "Part deleted successfully."}), 200
+        else:
+            return jsonify({"status": "error", "message": "Part not found."}), 404
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+    finally:
+        db_handler.close()
+
 @app.route('/mark-part/<int:part_id>', methods=['POST'])
 def mark_part(part_id):
     db_handler = DatabaseHandler(**db_config)

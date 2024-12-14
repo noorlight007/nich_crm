@@ -386,6 +386,27 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def delete_customer(self, customer_id):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "DELETE FROM customers WHERE id = %s"
+            cursor.execute(query, (customer_id,))
+            self.connection.commit()
+
+            if cursor.rowcount > 0:
+                return True  # Successfully deleted
+            else:
+                return False  # No rows deleted (ID not found)
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing delete query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
     def get_partCredited_byID(self, partID):
         try:
             if not self.connection:
@@ -424,40 +445,6 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
     
-    def update_part(self, part_id, part_name, credited, quantity, reason, unique_id, customer_id):
-        """
-        Update part details in the database.
-        """
-        try:
-            self.ensure_connection()
-            cursor = self.connection.cursor()
-
-            # Update query
-            query = """
-                UPDATE parts
-                SET 
-                    partname = %s,
-                    credited = %s,
-                    quantity = %s,
-                    reason = %s,
-                    unique_id = %s,
-                    customer_id = %s,
-                    updated_at = NOW()
-                WHERE 
-                    id = %s
-            """
-            cursor.execute(query, (part_name, credited, quantity, reason, unique_id, customer_id, part_id))
-            self.connection.commit()
-
-            # Return success status
-            return cursor.rowcount > 0
-        except self.MySQLdb.MySQLError as e:
-            print(f"Error updating part: {e}")
-            raise
-        finally:
-            if cursor:
-                cursor.close()
-
     def update_part(self, part_id, part_name, credited, quantity, reason, unique_id, customer_id):
         """
         Update part details in the database.

@@ -156,7 +156,7 @@
                               Actions
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
-                              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-danger{{ customer[0] }}">
+                              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete{{ customer[0] }}">
                               Delete Customer
                               </a>
                           </div>
@@ -217,7 +217,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="modal modal-blur fade" id="modal-danger{{ customer[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal modal-blur fade" id="modal-delete{{ customer[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -235,9 +235,9 @@
                                 <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
                                     Cancel
                                   </a></div>
-                                <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                                    Delete
-                                  </a></div>
+                                <div class="col"><button class="btn btn-danger w-100" id="delete_customer{{ customer[0] }}">
+                                  Delete
+                              </button></div>
                               </div>
                             </div>
                           </div>
@@ -416,6 +416,36 @@
         submitButton.disabled = false;
     }
 });
+    // Handle delete button click
+    $(document).on("click", "[id^=delete_customer]", function () {
+        const button = $(this);
+        console.log(button)
+        const customerId = button.attr("id").replace("delete_customer", ""); // Extract customer ID
+        const modalId = `#modal-delete${customerId}`; // Modal ID
+
+        $.ajax({
+            url: `/delete-customer/${customerId}`,
+            type: "DELETE",
+            success: function (response) {
+                // Close the modal
+                $(modalId).modal('hide');
+
+                if (response.status === "success") {
+                    showAlert("The item has been deleted permanently.","success");
+                    setTimeout(function() {
+                        window.location.href = document.referrer;  // Reload the page
+                    }, 2000); // Delay before refreshing
+
+                } else {
+                    showAlert(response.message, "danger");
+                }
+            },
+            error: function (xhr) {
+                $(modalId).modal('hide');
+                showAlert(`Error: ${xhr.responseJSON?.message || "An unexpected error occurred."}`);
+            },
+        });
+    });
 
 function showAlert(message, type) {
     const alertsContainer = document.getElementById('alerts-container');
