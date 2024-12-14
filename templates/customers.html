@@ -359,6 +359,10 @@
             if (response.ok) {
                 $(modalId).modal('hide');
                 showAlert('Customer updated successfully!', 'success');
+                // Refresh the page after showing the alert
+                setTimeout(function() {
+                        window.location.href = document.referrer;  // Reload the page
+                    }, 2000);
                 
             } else {
               $(modalId).modal('hide');
@@ -396,6 +400,10 @@
         if (response.ok) {
             $(modalId).modal('hide');
             showAlert('Customer created successfully!', 'success');
+            // Refresh the page after showing the alert
+            setTimeout(function() {
+                  window.location.href = document.referrer;  // Reload the page
+              }, 2000);
         } else {
           $(modalId).modal('hide');
             showAlert(`Error: ${resultText}`, 'danger');
