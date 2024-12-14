@@ -207,7 +207,7 @@
                             <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                               Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary ms-auto" id="edit_customer{{ customer[0] }}">
+                            <button type="submit" class="btn btn-primary ms-auto" id="edit_customer_submit_button{{ customer[0] }}">
                               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                               Update & Save
@@ -341,7 +341,7 @@
         event.preventDefault();
 
         const formData = new FormData(form);
-        const submitButton = form.querySelector('[id^=edit_customer]');
+        const submitButton = form.querySelector('[id^=edit_customer_submit_button]');
         const customerId = form.id.replace('edit_customer_form', '');
 
         submitButton.disabled = true;
