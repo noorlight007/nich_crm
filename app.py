@@ -162,6 +162,26 @@ def create_part():
     except Exception as e:
         return f"Error creating part: {str(e)}", 500
     
+@app.route('/create-customer', methods=['POST'])
+def live_create_customer():
+    if 'user_id' not in session:
+        return redirect('login')
+
+    accountNumber = request.form.get('account_number')
+    username = request.form.get('username')
+    company = request.form.get('company_name')
+
+    try:
+        db_handler = DatabaseHandler(**db_config)
+        db_handler.create_customer(
+            accountNumber = accountNumber,
+            username=username,
+            company=company
+        )
+        
+    except Exception as e:
+        return f"Error creating part: {str(e)}", 500
+    
 @app.route('/validate-account-number')
 def validate_account_number():
     acc_number = request.args.get('acc_number')

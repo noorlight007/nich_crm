@@ -66,6 +66,7 @@
                     <h5 class="modal-title">Add new customer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                  <form action="{{ url_for('live_create_customer') }}" method="post" id="create_customer_form">
                   <div class="modal-body">
                     <!-- ########## -->
                     <div class="row">
@@ -73,7 +74,7 @@
                         <div class="mb-3">
                           <label class="form-label">Account Number</label>
                           <div class="input-group input-group-flat">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="account_number" id="account_number">
                           </div>
                         </div>
                       </div>
@@ -81,7 +82,7 @@
                         <div class="mb-3">
                           <label class="form-label">Username</label>
                           <div class="input-group input-group-flat">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="username">
                           </div>
                         </div>
                       </div>
@@ -89,7 +90,7 @@
                         <div class="mb-3">
                           <label class="form-label">Company Name</label>
                           <div class="input-group input-group-flat">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="company_name">
                           </div>
                         </div>
                       </div>                    
@@ -102,12 +103,13 @@
                     <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                       Cancel
                     </a>
-                    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <button class="btn btn-primary ms-auto" type="submit" id="upload_customer_submit">
                       <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                       Create & upload
                     </a>
                   </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -331,6 +333,65 @@
     });
   });
 </script>
+
+<!-- for creating new customer -->
+<script>
+  document.getElementById('create_customer_form').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const submitButton = document.getElementById('upload_customer_submit');
+
+    // Disable the button to prevent multiple submissions
+    submitButton.disabled = true;
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+
+        const resultText = await response.text();
+
+        if (response.ok) {
+            showAlert('Customer created successfully!', 'success');
+        } else {
+            showAlert(`Error: ${resultText}`, 'danger');
+        }
+    } catch (error) {
+        showAlert(`An unexpected error occurred: ${error.message}`, 'danger');
+    } finally {
+        // Re-enable the button
+        submitButton.disabled = false;
+    }
+});
+
+function showAlert(message, type) {
+    const alertContainer = document.createElement('div');
+    alertContainer.innerHTML = `
+        <div class="alert alert-important alert-${type} alert-dismissible" role="alert">
+            <div class="d-flex">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24V0z" fill="none"></path>
+                        ${type === 'success' ? '<path d="M5 12l5 5l10 -10" />' : '<path d="M12 5l0 14" /><path d="M5 12l14 0" />'}
+                    </svg>
+                </div>
+                <div>${message}</div>
+            </div>
+            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div>`;
+
+    document.body.appendChild(alertContainer);
+
+    // Automatically remove the alert after 3 seconds
+    setTimeout(() => {
+        alertContainer.remove();
+    }, 3000);
+}
+</script>
+
 {% endblock %}
 
 

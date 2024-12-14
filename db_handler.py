@@ -346,6 +346,25 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
     
+    def create_customer(self, accountNumber, username, company):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = """
+                INSERT INTO customers (accountNumber, username, company, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s)
+            """
+            cursor.execute(query, (accountNumber, username, company, datetime.now(), datetime.now()))
+            self.connection.commit()
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+    
     def delete_part(self, part_id):
         try:
             if not self.connection:
