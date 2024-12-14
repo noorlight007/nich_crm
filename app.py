@@ -174,13 +174,13 @@ def live_create_customer():
     try:
         db_handler = DatabaseHandler(**db_config)
         db_handler.create_customer(
-            accountNumber = accountNumber,
+            accountNumber=accountNumber,
             username=username,
             company=company
         )
-        
+        return jsonify({'status': 'success', 'message': 'Customer created successfully'}), 200
     except Exception as e:
-        return f"Error creating part: {str(e)}", 500
+        return jsonify({'status': 'error', 'message': f"Error creating customer: {str(e)}"}), 500
     
 @app.route('/validate-account-number')
 def validate_account_number():
