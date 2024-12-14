@@ -112,6 +112,31 @@ def update_part_route(part_id):
     # except Exception as e:
     #     return jsonify({"status": "error", "message": str(e)}), 500
 
+@app.route('/update-customer/<int:customer_id>', methods=['POST'])
+def update_customer(customer_id):
+    if 'user_id' not in session:
+        return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
+
+    accountNumber = request.form.get('edited_account_number')
+    username = request.form.get('edited_username')
+    company = request.form.get('edited_company')
+
+    try:
+        db_handler = DatabaseHandler(**db_config)
+        success = db_handler.update_customer(
+            customer_id=customer_id,
+            accountNumber=accountNumber,
+            username=username,
+            company=company
+        )
+
+        if success:
+            return jsonify({'status': 'success', 'message': 'Customer updated successfully'}), 200
+        else:
+            return jsonify({'status': 'error', 'message': 'Customer not found or no changes made'}), 404
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f"Error updating customer: {str(e)}"}), 500
 
 @app.route('/create-part', methods=['POST'])
 def create_part():
