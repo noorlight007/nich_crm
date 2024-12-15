@@ -5,10 +5,10 @@ db_config = {
     "host": "localhost",
     "user": "developer_admin",
     "password": "6984125oO!",
-    "db_name": "AutoParts"
+    "db_name": "ap_autopart"
 }
 
 db_handler = DatabaseHandler(**db_config)
-account_numbers = db_handler.get_top_companies_by_quantity_this_month()
+account_numbers = db_handler.get_goods_salary()
 
 print(account_numbers)

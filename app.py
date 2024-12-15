@@ -18,6 +18,15 @@ db_config = {
     "db_name": "AutoParts"
 }
 
+# Initialize Database Handler
+db_config_ap = {
+    "host": "localhost",
+    "user": "developer_admin",
+    "password": "6984125oO!",
+    "db_name": "ap_autopart"
+}
+
+
 @app.route('/logout')
 def logout():
     # Clear the session

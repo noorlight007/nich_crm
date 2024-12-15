@@ -41,6 +41,7 @@ class DatabaseHandler:
             print(f"Error ensuring connection: {e}")
             raise
 
+    
     def get_parts_data(self):
         """
         Fetch parts data with related user and customer information, ordered by `updated_at` descending.
@@ -609,6 +610,37 @@ class DatabaseHandler:
                 cursor.close()
 
 
+    # ap_autopart database
+    def get_goods_salary(self):
+        """
+        Get the top 5 companies with the highest total quantity of parts for the current month.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            # Calculate the start and end of the current month
+            now = datetime.now()
+            month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            next_month = month_start + timedelta(days=32)
+            month_end = next_month.replace(day=1) - timedelta(seconds=1)
+
+            query = """
+                SELECT 
+                    SUM(Goods) AS total_profit
+                FROM 
+                    iHeads
+                WHERE 
+                    DateTime BETWEEN %s AND %s, Prefix = %s
+            """
+            cursor.execute(query, (month_start, month_end,"C"))
+            result = cursor.fetchone()
+            return result[0] if result else 0
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
     def close(self):
         """
         Close the database connection safely.
