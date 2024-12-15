@@ -91,7 +91,7 @@ class DatabaseHandler:
             # Calculate today's date range: 00:00:00 to 23:59:59
             today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
             today_end = today_start + timedelta(days=1) - timedelta(seconds=1)
-
+            print(f"{today_start} - {today_end}")
             query = """
                 SELECT 
                     SUM(CASE WHEN credited = 1 THEN 1 ELSE 0 END) AS credited_count,
