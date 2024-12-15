@@ -80,7 +80,7 @@ def index():
     print(total_values_count)
     ap_db_handler = DatabaseHandler(**db_config_ap)
     goods_salary = ap_db_handler.get_goods_salary()
-    return render_template('index.html',goods_salary= round(goods_salary, 2)*-1, total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count, total_returned_today = total_returned_today)
+    return render_template('index.html',goods_salary= round(abs(goods_salary), 2), total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count, total_returned_today = total_returned_today)
 
 @app.route('/settings')
 def settings():
