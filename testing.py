@@ -9,7 +9,6 @@ db_config = {
 }
 
 db_handler = DatabaseHandler(**db_config)
-account_numbers = db_handler.get_all_account_number()
+account_numbers = db_handler.get_credit_status_counts_for_today()
 
-flat_list = [item[0] for item in account_numbers]
-print(flat_list)
+print(account_numbers)

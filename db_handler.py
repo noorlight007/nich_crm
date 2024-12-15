@@ -1,5 +1,5 @@
 import MySQLdb
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class DatabaseHandler:
     def __init__(self, host, user, password, db_name):
@@ -73,6 +73,40 @@ class DatabaseHandler:
             cursor.execute(query)
             results = cursor.fetchall()
             return results
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
+    def get_credit_status_counts_for_today(self):
+        """
+        Get the count of credited and not-credited items for today.
+        If `credited` is 1, the item is credited. Otherwise, it is not-credited.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            # Calculate today's date range: 00:00:00 to 23:59:59
+            today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            today_end = today_start + timedelta(days=1) - timedelta(seconds=1)
+
+            query = """
+                SELECT 
+                    SUM(CASE WHEN credited = 1 THEN 1 ELSE 0 END) AS credited_count,
+                    SUM(CASE WHEN credited != 1 THEN 1 ELSE 0 END) AS not_credited_count
+                FROM 
+                    parts
+                WHERE 
+                    created_at BETWEEN %s AND %s
+            """
+            cursor.execute(query, (today_start, today_end))
+            result = cursor.fetchone()
+            return {
+                "credited": result[0] or 0,
+                "not_credited": result[1] or 0
+            }
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise

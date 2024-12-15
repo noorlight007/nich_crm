@@ -98,8 +98,69 @@
           </div>
         </div>
       </div>
+      <div class="col-lg-6 col-xl-4">
+        <div class="card">
+          <div class="card-body">
+            <div id="chart-demo-pie"></div>
+          </div>
+        </div>
+      </div>
     </div>
 </div>
 
 {% endblock %}
 
+{% block js_content %}
+
+<script src="{{ url_for('static', filename='libs/apexcharts/dist/apexcharts.min.js?') }}" defer></script> 
+
+<script>
+  // @formatter:off
+  document.addEventListener("DOMContentLoaded", function () {
+    window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
+      chart: {
+        type: "donut",
+        fontFamily: 'inherit',
+        height: 240,
+        sparkline: {
+          enabled: true
+        },
+        animations: {
+          enabled: false
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      series: [44, 55, 12, 2],
+      labels: ["Credited", "Not Credited"],
+      tooltip: {
+        theme: 'dark'
+      },
+      grid: {
+        strokeDashArray: 4,
+      },
+      colors: [tabler.getColor("primary"), tabler.getColor("primary", 0.8), tabler.getColor("primary", 0.6), tabler.getColor("gray-300")],
+      legend: {
+        show: true,
+        position: 'bottom',
+        offsetY: 12,
+        markers: {
+          width: 10,
+          height: 10,
+          radius: 100,
+        },
+        itemMargin: {
+          horizontal: 8,
+          vertical: 8
+        },
+      },
+      tooltip: {
+        fillSeriesColor: false
+      },
+    })).render();
+  });
+  // @formatter:on
+</script>
+
+{% endblock %}
