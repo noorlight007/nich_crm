@@ -121,6 +121,18 @@
           </div>
         </div>
       </div>
+      <div class="col-lg-6 col-xl-4">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              Today's Update
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="chart-completion-tasks-6"></div>
+          </div>
+        </div>
+      </div>
     </div>
 </div>
 
@@ -145,7 +157,7 @@
           enabled: true
         },
         animations: {
-          enabled: false
+          enabled: true
         },
       },
       fill: {
@@ -181,5 +193,76 @@
   });
 </script>
 
-
+<script>
+  // @formatter:off
+  document.addEventListener("DOMContentLoaded", function () {
+    window.ApexCharts && (new ApexCharts(document.getElementById('chart-completion-tasks-6'), {
+      chart: {
+        type: "bar",
+        fontFamily: 'inherit',
+        height: 240,
+        parentHeightOffset: 0,
+        toolbar: {
+          show: false,
+        },
+        animations: {
+          enabled: true
+        },
+      },
+      plotOptions: {
+        bar: {
+          barHeight: '50%',
+           horizontal: true,
+        }
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      fill: {
+        opacity: 1,
+      },
+      series: [{
+        name: "Returned parts count",
+        data: [155, 65, 465, 265, 225, 325, 80]
+      }],
+      tooltip: {
+        theme: 'dark'
+      },
+      grid: {
+        padding: {
+          top: -20,
+          right: 0,
+          left: -4,
+          bottom: -4
+        },
+        strokeDashArray: 4,
+      },
+      xaxis: {
+        labels: {
+          padding: 0,
+        },
+        tooltip: {
+          enabled: false
+        },
+        axisBorder: {
+          show: false,
+        },
+        type: 'datetime',
+      },
+      yaxis: {
+        labels: {
+          padding: 4
+        },
+      },
+      labels: [
+        'A', 'B', 'C', 'D', 'E', 'F', 'G'
+      ],
+      colors: [tabler.getColor("primary")],
+      legend: {
+        show: false,
+      },
+    })).render();
+  });
+  // @formatter:on
+</script>
 {% endblock %}
