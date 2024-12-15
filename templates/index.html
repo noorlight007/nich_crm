@@ -117,7 +117,7 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Passing Python cr_values to JavaScript
-    
+    const crValues = {{ cr_values|tojson }};
 
     // Initialize the ApexChart
     window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
@@ -135,7 +135,7 @@
       fill: {
         opacity: 1,
       },
-      series: [45, 65], // Use the dynamically passed cr_values list
+      series: crValues, // Use the dynamically passed cr_values list
       labels: ["Credited", "Not Credited"],
       tooltip: {
         theme: 'dark'
