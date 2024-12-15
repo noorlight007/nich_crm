@@ -575,13 +575,15 @@ class DatabaseHandler:
             """
             cursor.execute(query, (month_start, month_end))
             results = cursor.fetchall()
-            return [{"company": row[0], "total_quantity": row[1]} for row in results]
+            # Convert Decimal to int
+            return [{"company": row[0], "total_quantity": int(row[1])} for row in results]
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
         finally:
             if cursor:
                 cursor.close()
+
 
     def close(self):
         """
