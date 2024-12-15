@@ -197,9 +197,12 @@
   // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
     // Passing Python cr_values to JavaScript
-    const top_companies = {{ total_values_company|tojson }};
+    const top_companies = {{ total_values_company | tojson }};
     // Passing Python cr_values to JavaScript
-    const top_counts = {{ total_values_count|tojson }};
+    const top_counts = {{ total_values_count | tojson }};
+
+    console.log(top_companies)
+    console.log(top_counts)
     window.ApexCharts && (new ApexCharts(document.getElementById('chart-completion-tasks-6'), {
       chart: {
         type: "bar",
