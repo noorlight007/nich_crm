@@ -127,6 +127,17 @@
             <div class="card-title">
               Top 5 companies
             </div>
+            <div class="card-actions">
+              <div>
+                <div class="row align-items-center">
+                  
+                  <div class="col">
+                    <div class="card-title" id="show_month_year"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
           <div class="card-body">
             <div id="chart-completion-tasks-6"></div>
@@ -141,6 +152,23 @@
 {% block js_content %}
 
 <script src="{{ url_for('static', filename='libs/apexcharts/dist/apexcharts.min.js') }}" defer></script> 
+
+<script>
+  // Create a new Date object
+  const currentDate = new Date();
+
+  // Get the full year
+  const year = currentDate.getFullYear();
+
+  // Get the month name
+  const month = currentDate.toLocaleString('default', { month: 'long' });
+
+  // Format as "Month, Year"
+  const formattedDate = `${month}, ${year}`;
+
+  // Display it in the HTML element
+  document.getElementById('show_month_year').textContent = formattedDate;
+</script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
