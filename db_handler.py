@@ -630,7 +630,9 @@ class DatabaseHandler:
                 FROM 
                     iHeads
                 WHERE 
-                    DateTime BETWEEN %s AND %s, Prefix = %s
+                    DateTime BETWEEN %s AND %s
+                WHERE
+                    Prefix = %s
             """
             cursor.execute(query, (month_start, month_end,"C"))
             result = cursor.fetchone()
