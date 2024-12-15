@@ -7,6 +7,13 @@
 
 {% endblock %}
 
+{% block style %}
+<style>
+  .apexcharts-radialbar-label {
+  cursor: pointer;
+}
+</style>
+{% endblock %}
 {% block admin_name %}
   <div>{{ admin_name }}</div>
 {% endblock %}
@@ -326,7 +333,7 @@
           enabled: true
         },
         animations: {
-          enabled: false
+          enabled: true
         },
       },
       plotOptions: {
