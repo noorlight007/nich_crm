@@ -309,6 +309,30 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def get_user_data(self, admin_id):
+        """
+        Validate user credentials against the users table.
+        """
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = """
+                SELECT * 
+                FROM users 
+                WHERE id = %s
+            """
+            cursor.execute(query, (admin_id))
+            result = cursor.fetchone()
+            return result  # Returns the user record if found, else None
+        except MySQLdb.MySQLError as e:
+            print(f"Error validating user: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
     def get_customer_by_account_number(self, acc_number):
         try:
             if not self.connection:
