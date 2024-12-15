@@ -543,6 +543,45 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+    
+    def get_top_companies_by_quantity_this_month(self):
+        """
+        Get the top 5 companies with the highest total quantity of parts for the current month.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            # Calculate the start and end of the current month
+            now = datetime.now()
+            month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            next_month = month_start + timedelta(days=32)
+            month_end = next_month.replace(day=1) - timedelta(seconds=1)
+
+            query = """
+                SELECT 
+                    c.company, 
+                    SUM(p.quantity) AS total_quantity
+                FROM 
+                    parts p
+                JOIN 
+                    customers c ON p.customer_id = c.id
+                WHERE 
+                    p.created_at BETWEEN %s AND %s
+                GROUP BY 
+                    c.company
+                ORDER BY 
+                    total_quantity DESC
+                LIMIT 5
+            """
+            cursor.execute(query, (month_start, month_end))
+            results = cursor.fetchall()
+            return [{"company": row[0], "total_quantity": row[1]} for row in results]
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
 
     def close(self):
         """

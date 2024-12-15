@@ -9,6 +9,6 @@ db_config = {
 }
 
 db_handler = DatabaseHandler(**db_config)
-account_numbers = db_handler.get_credit_status_counts_for_today()
+account_numbers = db_handler.get_top_companies_by_quantity_this_month()
 
 print(account_numbers)
