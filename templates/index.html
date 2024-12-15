@@ -317,37 +317,46 @@
 <script>
   // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
-
     window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-reason'), {
       chart: {
         type: "radialBar",
+        fontFamily: 'inherit',
         height: 240,
-        animations: {
+        sparkline: {
           enabled: true
+        },
+        animations: {
+          enabled: false
         },
       },
       plotOptions: {
-          radialBar: {
-            dataLabels: {
-              name: {
-                fontSize: '22px',
+        radialBar: {
+          dataLabels: {
+            total: {
+              show: true,
+              label: 'Totals',
+              formatter: function (val) {
+                return "44%";
               },
-              value: {
-                fontSize: '16px',
-              },
-              total: {
-                show: true,
-                label: 'Reasons',
-                formatter: function (w) {
-                  // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-                  return 249
-                }
-              }
-            }
-          }
+            },
+          },
+        },
       },
-      series: [44, 55, 67, 83],
-      labels: ['Apples', 'Oranges', 'Bananas', 'Berries'],
+      fill: {
+        opacity: 1,
+      },
+      series: [44, 36, 18],
+      labels: ["Total Sent", "Reached", "Opened"],
+      tooltip: {
+        theme: 'dark'
+      },
+      grid: {
+        strokeDashArray: 4,
+      },
+      colors: [tabler.getColor("primary"), tabler.getColor("primary", 0.8), tabler.getColor("primary", 0.6)],
+      legend: {
+        show: false,
+      },
     })).render();
   });
   // @formatter:on
