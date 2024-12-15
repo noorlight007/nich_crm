@@ -64,7 +64,7 @@
                   <h5 class="modal-title">Add new part</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ url_for('create_part') }}" method="post" id="create_part">
+                <form method="post" id="create_part_form">
                 <div class="modal-body">
                   <!-- ########## -->
                   
@@ -150,7 +150,7 @@
                   <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                     Cancel
                   </a>
-                  <button type="submit" class="btn btn-primary ms-auto">
+                  <button type="submit" class="btn btn-primary ms-auto" id="upload_part_submit">
                     <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                     Create & upload
@@ -755,6 +755,47 @@
           }
         });
     });
+
+
+    document.getElementById('create_part_form').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const form = event.target;
+    console.log(form)
+    const formData = new FormData(form);
+    const submitButton = document.getElementById('upload_part_submit');
+    const modalId = `#modal-create-part`;
+
+    // Disable the button to prevent multiple submissions
+    submitButton.disabled = true;
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+
+        const resultText = await response.text();
+
+        if (response.ok) {
+            $(modalId).modal('hide');
+            standard_showAlert('Part created successfully!', 'success');
+            // Refresh the page after showing the alert
+            setTimeout(function() {
+                  window.location.href = document.referrer;  // Reload the page
+              }, 2000);
+        } else {
+          $(modalId).modal('hide');
+          standard_showAlert(`Error: ${resultText}`, 'danger');
+        }
+    } catch (error) {
+        $(modalId).modal('hide');
+        standard_showAlert(`An unexpected error occurred: ${error.message}`, 'danger');
+    } finally {
+        // Re-enable the button
+        submitButton.disabled = false;
+    }
+});
 
     function standard_showAlert(message, type) {
     const alertsContainer = document.getElementById('alerts-container');

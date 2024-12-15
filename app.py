@@ -142,8 +142,6 @@ def create_part():
     if 'user_id' not in session:
         return redirect('login')
 
-    referrer= request.referrer
-
     partname = request.form.get('partname')
     credited = request.form.get('credited')
     quantity = request.form.get('quantity')
@@ -153,17 +151,6 @@ def create_part():
     db_handler = DatabaseHandler(**db_config)
     customer_id = db_handler.get_customerID_by_account_number(acc_number)
     user_id = session.get('user_id')
-
-    print({
-        "customer_id": customer_id,
-        "partname": partname,
-        "credited": credited,
-        "quantity": quantity,
-        "reason": reason,
-        "unique_id": unique_id,
-        "user_id": user_id,
-        "created_at": datetime.now()
-    })
 
     # Validate quantity
     if not quantity.isdigit():
@@ -182,9 +169,9 @@ def create_part():
             created_at= datetime.now(),
             updated_at= datetime.now()
         )
-        return redirect(referrer)  # Redirect to parts table
+        return jsonify({'status': 'success', 'message': 'Customer created successfully'}), 200
     except Exception as e:
-        return f"Error creating part: {str(e)}", 500
+        return jsonify({'status': 'error', 'message': f"Error creating customer: {str(e)}"}), 500
     
 @app.route('/create-customer', methods=['POST'])
 def live_create_customer():
