@@ -65,6 +65,8 @@ def index():
     for item in top_five_company:
         total_values_company.append(item['company'])
         total_values_count.append(item['total_quantity'])
+    
+    print(total_values_count)
     return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count)
 
 
