@@ -100,6 +100,22 @@
       </div>
       <div class="col-lg-6 col-xl-4">
         <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              Today Credited Vs Not credited
+            </div>
+            <div class="card-actions">
+              <div>
+                <div class="row align-items-center">
+                  
+                  <div class="col">
+                    <div class="card-title">Credited: {{ cr_values[0] }}</div>
+                    <div class="card-title">Not credited: {{ cr_values[1] }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="card-body">
             <div id="chart-demo-pie"></div>
           </div>
