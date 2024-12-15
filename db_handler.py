@@ -323,9 +323,9 @@ class DatabaseHandler:
                 FROM users 
                 WHERE id = %s
             """
-            cursor.execute(query, (admin_id))
+            cursor.execute(query, (admin_id,))
             result = cursor.fetchone()
-            return result  # Returns the user record if found, else None
+            return result[0] if result else None  # Returns the user record if found, else None
         except MySQLdb.MySQLError as e:
             print(f"Error validating user: {e}")
             raise
