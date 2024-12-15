@@ -321,12 +321,7 @@
     window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-reason'), {
       chart: {
         type: "radialBar",
-        fontFamily: 'inherit',
         height: 240,
-        parentHeightOffset: 0,
-        toolbar: {
-          show: false,
-        },
         animations: {
           enabled: true
         },
@@ -357,10 +352,6 @@
       fill: {
         opacity: 1,
       },
-      series: [{
-        name: "Total returned parts",
-        data: top_counts
-      }],
       tooltip: {
         theme: 'dark'
       },
