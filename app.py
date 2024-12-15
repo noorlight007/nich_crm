@@ -52,7 +52,11 @@ def index():
     total_parts = db_handler.get_total_parts()
     total_customers = db_handler.get_total_customers()
     total_admins = db_handler.get_total_admins()
-    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'))
+    credit_non_credited = db_handler.get_credit_status_counts_for_today()
+    cr_values = []
+    for _,val in credit_non_credited.items():
+        cr_values.append(val)
+    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values)
 
 
 @app.route('/parts', methods=['GET','POST'])

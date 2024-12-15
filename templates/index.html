@@ -115,8 +115,11 @@
 <script src="{{ url_for('static', filename='libs/apexcharts/dist/apexcharts.min.js?') }}" defer></script> 
 
 <script>
-  // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
+    // Passing Python cr_values to JavaScript
+    const crValues = {{ cr_values|tojson }};
+
+    // Initialize the ApexChart
     window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
       chart: {
         type: "donut",
@@ -132,7 +135,7 @@
       fill: {
         opacity: 1,
       },
-      series: [44, 55, 12, 2],
+      series: crValues, // Use the dynamically passed cr_values list
       labels: ["Credited", "Not Credited"],
       tooltip: {
         theme: 'dark'
@@ -160,7 +163,7 @@
       },
     })).render();
   });
-  // @formatter:on
 </script>
+
 
 {% endblock %}
