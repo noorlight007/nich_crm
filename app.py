@@ -78,7 +78,9 @@ def index():
         total_values_count.append(item['total_quantity'])
     print(total_values_company)
     print(total_values_count)
-    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count, total_returned_today = total_returned_today)
+    ap_db_handler = DatabaseHandler(**db_config_ap)
+    goods_salary = ap_db_handler.get_goods_salary()
+    return render_template('index.html',goods_salary= round(goods_salary, 2), total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count, total_returned_today = total_returned_today)
 
 @app.route('/settings')
 def settings():
