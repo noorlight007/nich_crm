@@ -55,8 +55,10 @@ def index():
     db_handler = DatabaseHandler(**db_config)
     credit_non_credited = db_handler.get_credit_status_counts_for_today()
     cr_values = []
+    total_returned_today = 0
     for _,val in credit_non_credited.items():
         cr_values.append(val)
+        total_returned_today+= val
 
     db_handler = DatabaseHandler(**db_config)
     top_five_company = db_handler.get_top_companies_by_quantity_this_month()
@@ -67,7 +69,7 @@ def index():
         total_values_count.append(item['total_quantity'])
     print(total_values_company)
     print(total_values_count)
-    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count)
+    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count, total_returned_today = total_returned_today)
 
 
 @app.route('/parts', methods=['GET','POST'])

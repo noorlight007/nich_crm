@@ -39,10 +39,10 @@
               </div>
               <div class="col">
                 <div class="font-weight-medium">
-                  95 Parts Today
+                  {{ total_returned_today }} Parts Today
                 </div>
                 <div class="font-weight-medium">
-                  10 Awaiting Credit
+                  {{ cr_values[0] }} Awaiting Credit
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@
               </div>
               <div class="col">
                 <div class="font-weight-medium">
-                  4 Delivery Drivers
+                  {{ total_admins }} Delivery Drivers
                 </div>
                 <div class="text-secondary">
                   Last active 3h ago
