@@ -630,11 +630,9 @@ class DatabaseHandler:
                 FROM 
                     iHeads
                 WHERE 
-                    DateTime BETWEEN %s AND %s
-                WHERE
-                    Prefix = %s
+                    Prefix  = 'C', DateTime BETWEEN %s AND %s      
             """
-            cursor.execute(query, (month_start, month_end,"C"))
+            cursor.execute(query, (month_start, month_end))
             result = cursor.fetchone()
             return result[0] if result else 0
         except MySQLdb.MySQLError as e:
