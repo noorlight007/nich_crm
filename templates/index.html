@@ -196,6 +196,10 @@
 <script>
   // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
+    // Passing Python cr_values to JavaScript
+    const top_companies = {{ total_values_company|tojson }};
+    // Passing Python cr_values to JavaScript
+    const top_counts = {{ total_values_count|tojson }};
     window.ApexCharts && (new ApexCharts(document.getElementById('chart-completion-tasks-6'), {
       chart: {
         type: "bar",
@@ -223,7 +227,7 @@
       },
       series: [{
         name: "Total returned parts",
-        data: [155, 65, 465, 265, 225, 325, 80]
+        data: top_companies
       }],
       tooltip: {
         theme: 'dark'
@@ -254,9 +258,7 @@
           padding: 4
         },
       },
-      labels: [
-        'A', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26'
-      ],
+      labels: top_counts,
       colors: [tabler.getColor("primary")],
       legend: {
         show: false,

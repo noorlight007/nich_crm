@@ -57,7 +57,15 @@ def index():
     cr_values = []
     for _,val in credit_non_credited.items():
         cr_values.append(val)
-    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values)
+
+    db_handler = DatabaseHandler(**db_config)
+    top_five_company = db_handler.get_top_companies_by_quantity_this_month()
+    total_values_company = []
+    total_values_count = []
+    for company,count in top_five_company.items():
+        total_values_company.append(company)
+        total_values_count.append(count)
+    return render_template('index.html', total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count)
 
 
 @app.route('/parts', methods=['GET','POST'])
