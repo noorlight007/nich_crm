@@ -1,0 +1,4 @@
+now create another db_handler.py function to get top 5 company with most quantity of parts item in the parts table for this month.
+
+you can get company name by the customer id from parts table. Customer id is the foreign key here.
+Customers table:
