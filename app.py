@@ -52,6 +52,7 @@ def index():
     total_parts = db_handler.get_total_parts()
     total_customers = db_handler.get_total_customers()
     total_admins = db_handler.get_total_admins()
+    db_handler = DatabaseHandler(**db_config)
     credit_non_credited = db_handler.get_credit_status_counts_for_today()
     cr_values = []
     for _,val in credit_non_credited.items():
