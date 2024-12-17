@@ -32,36 +32,173 @@
 
 {% block main_content %}
 <!-- Filtering Section -->
-<div class="mb-3">
-    <label for="filter" class="form-label">Filter by:</label>
-    <select id="filter" class="form-select">
-        <option value="no_filter">No Filter</option>
-        <optgroup label="Part Name">
-            <option value="partname_asc">Ascending</option>
-            <option value="partname_desc">Descending</option>
-        </optgroup>
-        <optgroup label="Quantity">
-            <option value="quantity_high">High Order</option>
-            <option value="quantity_low">Low Order</option>
-        </optgroup>
-        <optgroup label="Reason">
-            <option value="reason" data-reason="Not required">Not Required</option>
-            <option value="reason" data-reason="Faulty">Faulty</option>
-            <option value="reason" data-reason="Surcharge">Surcharge</option>
-        </optgroup>
-        <optgroup label="Account Number">
-            <option value="account_asc">Ascending</option>
-            <option value="account_desc">Descending</option>
-        </optgroup>
-        <optgroup label="Credited">
-            <option value="credited_yes">Yes</option>
-            <option value="credited_no">No</option>
-        </optgroup>
-        <optgroup label="Created At">
-            <option value="created_at_asc">Ascending</option>
-            <option value="created_at_desc">Descending</option>
-        </optgroup>
-    </select>
+
+
+
+<div class="row">
+    <div class="col-md-2 col-sm-12 mb-1">
+      <div class=" d-flex align-items-center">
+        <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-pill w-100"  data-bs-toggle="modal" data-bs-target="#modal-create-part">
+          + Add new part
+        </a>
+        <div class="modal modal-blur fade" id="modal-create-part" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add new part</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form action="{{ url_for('create_part') }}" method="post" id="create_part_form">
+              <div class="modal-body">
+                <!-- ########## -->
+                
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Part Name</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="partname" required>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Credited?</label>
+                        <select class="form-select" name="credited">
+                          <option value="1" selected>Yes</option>
+                          <option value="2">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="quantity" id="quantity" required >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Reason</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="reason" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Account Number</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="acc_number" id="acc_number" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Unique ID</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control" name="unique_id" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6" id="check_company">
+                      <div class="mb-3">
+                        <label class="form-label">Customer Company</label>
+                        <div class="input-icon mb-3">
+                          <span class="input-icon-addon">
+                            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+                          </span>
+                          <input type="text" class="form-control" placeholder="Wating…" readonly>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6" style="display: none;" id="show_company">
+                      <div class="mb-3">
+                        <label class="form-label">Customer Company</label>
+                        <div class="input-group input-group-flat">
+                          <input type="text" class="form-control is-valid" name="company" required>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                
+                
+
+                <!-- ####### -->
+                
+              </div>
+              <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary ms-auto" id="upload_part_submit">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                  Create & upload
+                </button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 col-sm-12 mb-1">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="d-flex align-items-center">
+                <label for="filter" class="form-label mb-0 me-2">Filter by:</label>
+                <select id="filter" class="form-select form-select-sm">
+                    <option value="no_filter">No Filter</option>
+                    <optgroup label="Part Name">
+                        <option value="partname_asc">Ascending</option>
+                        <option value="partname_desc">Descending</option>
+                    </optgroup>
+                    <optgroup label="Quantity">
+                        <option value="quantity_high">High Order</option>
+                        <option value="quantity_low">Low Order</option>
+                    </optgroup>
+                    <optgroup label="Reason">
+                        <option value="reason" data-reason="Not required">Not Required</option>
+                        <option value="reason" data-reason="Faulty">Faulty</option>
+                        <option value="reason" data-reason="Surcharge">Surcharge</option>
+                    </optgroup>
+                    <optgroup label="Account Number">
+                        <option value="account_asc">Ascending</option>
+                        <option value="account_desc">Descending</option>
+                    </optgroup>
+                    <optgroup label="Credited">
+                        <option value="credited_yes">Yes</option>
+                        <option value="credited_no">No</option>
+                    </optgroup>
+                    <optgroup label="Created At">
+                        <option value="created_at_asc">Ascending</option>
+                        <option value="created_at_desc">Descending</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+      
+    </div>
+    <div class="col-md-5 col-sm-12 mb-1">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <div class="d-flex align-items-center">
+            <label for="from-date" class="form-label mb-0 me-2">From:</label>
+            <input type="date" id="from-date" class="date form-control form-control-sm" placeholder="DD/MM/YYYY">
+        </div>
+        <div class="d-flex align-items-center">
+            <label for="to-date" class="form-label mb-0 me-2">To:</label>
+            <input type="date" id="to-date" class="date form-control form-control-sm" placeholder="DD/MM/YYYY">
+        </div>
+        <div class="d-flex align-items-center">
+            <button id="filter-button" class="btn btn-sm btn-primary me-2">Filter</button>
+            <button id="reset-button" class="btn btn-sm btn-danger">Reset</button>
+        </div>
+    </div>
+    
+    </div>
 </div>
 <!-- Table -->
 <div class="table-container">
