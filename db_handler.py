@@ -81,15 +81,15 @@ class DatabaseHandler:
             }
 
             query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
-            final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
-
             if "reason" in filter_type or "credited" in filter_type:
+                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
                 cursor.execute(final_query, (filter_value, per_page, offset))
             else:
+                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
                 cursor.execute(final_query, (per_page, offset))
 
             results = cursor.fetchall()
-            
+            return results
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
