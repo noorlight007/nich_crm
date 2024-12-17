@@ -118,11 +118,11 @@ def filter_parts():
     page = int(request.json.get('page', 1))
     filter_type = request.json.get('filter_type', 'no_filter')
     filter_value = request.json.get('filter_value', '')
-
+    print(f"filer type: {filter_type}, filervalue: {filter_value}")
     offset = (page - 1) * per_page
 
     results = db_handler.get_filtered_data(filter_type, filter_value, per_page, offset)
-
+    print(results)
     return {"data": results}
 
 @app.route('/parts', methods=['GET','POST'])
