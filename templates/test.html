@@ -133,7 +133,7 @@
                         <td>${part[6]}</td>
                         <td>${part[7]}</td>
                         <td>${part[8] ? 'Yes' : 'No'}</td>
-                        <td>${part[9]}</td>
+                        <td>${new Date(part[9]).toLocaleString()}</td>
                         <td>-</td>
                     </tr>
                 `).join('');
@@ -197,7 +197,7 @@ function populateTable(data) {
             <td>${part[6]}</td>
             <td>${part[7]}</td>
             <td>${part[8] ? 'Yes' : 'No'}</td>
-            <td>${part[9]}</td>
+            <td>${new Date(part[9]).toLocaleString()}</td>
             <td><div class="btn-list flex-nowrap">
                         <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#modal-update${part[0]}">
                             Edit
