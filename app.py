@@ -3,7 +3,6 @@ from flask_session import Session
 from datetime import timedelta, datetime
 from db_handler import DatabaseHandler
 from flask_paginate import Pagination, get_page_parameter
-import mysql.connector
 
 app = Flask(__name__)
 app.config['secret_key'] = '5800d5d9e4405020d527f0587538abbe'
