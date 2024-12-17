@@ -60,13 +60,10 @@ class DatabaseHandler:
                     users u ON p.user_id = u.id
                 JOIN 
                     customers c ON p.customer_id = c.id
-                ORDER BY
-                    p.created_at %s
-                LIMIT %s OFFSET %s
+                ORDER BY p.created_at DESC
             """
-
             filters = {
-                "partname_asc": "ORDER BY p.partname ASC",
+                "partname_asc": "ORDER BY p.partname ASC ",
                 "partname_desc": "ORDER BY p.partname DESC",
                 "quantity_high": "ORDER BY p.quantity DESC",
                 "quantity_low": "ORDER BY p.quantity ASC",
@@ -82,19 +79,14 @@ class DatabaseHandler:
                 "created_at_asc": "ORDER BY p.created_at ASC",
                 "created_at_desc": "ORDER BY p.created_at DESC"
             }
-            
+
             query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
-            final_query = base_query + f" {query_filter}"
-            if "created_at_asc" in filter_type:
-                cursor.execute(final_query, ("ASC",per_page, offset))
-            if "created_at_asc" in filter_type:
-                cursor.execute(final_query, ("DESC",per_page, offset))
             if "reason" in filter_type:
-                final_query = base_query + f" {query_filter}"
-                cursor.execute(final_query, ("DESC", per_page, offset, filter_value))
+                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
+                cursor.execute(final_query, (filter_value, per_page, offset))
             else:
-                final_query = base_query + f" {query_filter}"
-                cursor.execute(final_query, ("DESC", per_page, offset))
+                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
+                cursor.execute(final_query, (per_page, offset))
 
             results = cursor.fetchall()
             return results
