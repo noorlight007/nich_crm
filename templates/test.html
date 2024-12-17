@@ -186,7 +186,6 @@
 function populateTable(data) {
     const tableBody = document.querySelector('#parts-table-body'); // Assuming your table has this ID
     tableBody.innerHTML = ''; // Clear existing rows
-    const markAction = part[8] ? 'Mark as Not-credited' : 'Mark as Credited';
 
     data.forEach(part => {
         const row = document.createElement('tr');
@@ -209,7 +208,7 @@ function populateTable(data) {
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark${part[0]}">
-                                ${markAction}
+                                ${part[8] ? 'Mark as Not-credited' : 'Mark as Credited'}
                             </a>
                             <a class="dropdown-item border-top" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-danger${part[0]}">
                                 Delete
