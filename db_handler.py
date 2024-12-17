@@ -81,11 +81,11 @@ class DatabaseHandler:
 
             query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
             if "reason" in filter_type:
-                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
-                cursor.execute(final_query, (filter_value, per_page, offset))
+                final_query = base_query + f" {query_filter}"
+                cursor.execute(final_query, (filter_value))
             else:
-                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
-                cursor.execute(final_query, (per_page, offset))
+                final_query = base_query + f" {query_filter}"
+                cursor.execute(final_query)
 
             results = cursor.fetchall()
             return results
