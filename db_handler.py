@@ -63,7 +63,7 @@ class DatabaseHandler:
                 ORDER BY p.created_at DESC
             """
             filters = {
-                "partname_asc": "ORDER BY p.partname ASC ",
+                "partname_asc": "AND ORDER BY p.partname ASC ",
                 "partname_desc": "ORDER BY p.partname DESC",
                 "quantity_high": "ORDER BY p.quantity DESC",
                 "quantity_low": "ORDER BY p.quantity ASC",
