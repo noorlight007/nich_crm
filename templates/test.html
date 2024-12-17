@@ -261,14 +261,31 @@
                 tableBody.innerHTML = data.data.map(part => `
                     <tr>
                         <td>${part[1]}</td>
-                        <td>${part[2]}</td>
-                        <td>${part[3]}</td>
-                        <td>${part[4]}</td>
-                        <td>${part[6]}</td>
-                        <td>${part[7]}</td>
-                        <td>${part[8] ? 'Yes' : 'No'}</td>
-                        <td>${new Date(part[9]).toLocaleString()}</td>
-                        <td>-</td>
+            <td>${part[2]}</td>
+            <td>${part[3]}</td>
+            <td>${part[4]}</td>
+            <td>${part[6]}</td>
+            <td>${part[7]}</td>
+            <td>${part[8] ? 'Yes' : 'No'}</td>
+            <td>${new Date(part[9]).toLocaleString()}</td>
+            <td><div class="btn-list flex-nowrap">
+                        <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#modal-update${part[0]}">
+                            Edit
+                        </a>
+                        <div class="dropdown">
+                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                            Actions
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark${part[0]}">
+                                ${part[8] ? 'Mark as Not-credited' : 'Mark as Credited'}
+                            </a>
+                            <a class="dropdown-item border-top" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-danger${part[0]}">
+                                Delete
+                            </a>
+                        </div>
+                        </div>
+                    </div></td>
                     </tr>
                 `).join('');
             }
