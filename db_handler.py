@@ -60,10 +60,12 @@ class DatabaseHandler:
                     users u ON p.user_id = u.id
                 JOIN 
                     customers c ON p.customer_id = c.id
+                ORDER BY p.created_at DESC
+                LIMIT %s OFFSET %s
             """
 
             filters = {
-                "partname_asc": "ORDER BY p.partname ASC",
+                "partname_asc": "ORDER BY p.partname ASC ",
                 "partname_desc": "ORDER BY p.partname DESC",
                 "quantity_high": "ORDER BY p.quantity DESC",
                 "quantity_low": "ORDER BY p.quantity ASC",
@@ -82,10 +84,10 @@ class DatabaseHandler:
 
             query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
             if "reason" in filter_type:
-                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
+                final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query, (filter_value, per_page, offset))
             else:
-                final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
+                final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query, (per_page, offset))
 
             results = cursor.fetchall()
