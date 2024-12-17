@@ -112,6 +112,10 @@
         const tableBody = document.getElementById('table-body');
         const loading = document.getElementById('loading');
 
+        // Get the current page number from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentPage = urlParams.get('page') || 1; // Default to page 1 if `page` is not present
+
         // Show loading animation
         tableBody.innerHTML = '';
         loading.style.display = 'block';
@@ -119,7 +123,7 @@
         fetch('/filter_parts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ filter_type: filterType, filter_value: reason })
+            body: JSON.stringify({ filter_type: filterType, filter_value: reason, page: currentPage })
         })
         .then(response => response.json())
         .then(data => {
