@@ -2,6 +2,8 @@ from flask import Flask, render_template, jsonify,request,session, redirect, url
 from flask_session import Session
 from datetime import timedelta, datetime
 from db_handler import DatabaseHandler
+from flask_paginate import Pagination, get_page_parameter
+import mysql.connector
 
 app = Flask(__name__)
 app.config['secret_key'] = '5800d5d9e4405020d527f0587538abbe'
@@ -91,6 +93,23 @@ def settings():
     print(admin_info)
     return render_template("settings.html", admin_name = session.get('username'), admin_info = admin_info)
 
+# Route for displaying parts with pagination
+@app.route('/parts')
+def parts():
+    # Get the current page number (default is 1)
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    per_page = 100  # Items per page
+    offset = (page - 1) * per_page
+
+    # Connect to the database
+    db_handler = DatabaseHandler(**db_config)
+    part_results , total_parts = db_handler.get_parts_data(per_page, offset)
+    
+
+    # Initialize Flask-Paginate
+    pagination = Pagination(page=page, per_page=per_page, total=total_parts, css_framework="bootstrap5")
+
+    return render_template("parts.html", parts=part_results, pagination=pagination)
 
 @app.route('/parts', methods=['GET','POST'])
 def parts_table():

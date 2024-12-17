@@ -42,7 +42,7 @@ class DatabaseHandler:
             raise
 
     
-    def get_parts_data(self):
+    def get_parts_data(self, per_page, offset):
         """
         Fetch parts data with related user and customer information, ordered by `updated_at` descending.
         """
@@ -70,10 +70,15 @@ class DatabaseHandler:
                     customers c ON p.customer_id = c.id
                 ORDER BY 
                     p.updated_at DESC
+                LIMIT %s OFFSET %s
             """
-            cursor.execute(query)
+            cursor.execute(query, (per_page, offset))
             results = cursor.fetchall()
-            return results
+
+            # Get total number of rows for pagination
+            cursor.execute("SELECT COUNT(*) AS total FROM parts")
+            total_parts = cursor.fetchone()["total"]
+            return results , total_parts
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
