@@ -30,9 +30,9 @@
                 <tbody>
                     {% for part in parts %}
                     <tr>
-                        <td>{{ part.id }}</td>
-                        <td>{{ part.partname }}</td>
-                        <td>{{ part.quantity }}</td>
+                        <td>{{ part[0] }}</td>
+                        <td>{{ part[1] }}</td>
+                        <td>{{ part[2] }}</td>
                         
                     </tr>
                     {% else %}
