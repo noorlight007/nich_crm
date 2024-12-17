@@ -73,12 +73,10 @@
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
                 <th>Part Name</th>
                 <th>Quantity</th>
                 <th>Reason</th>
                 <th>Account Number</th>
-                <th>Company</th>
                 <th>Unique ID</th>
                 <th>Added By</th>
                 <th>Credited</th>
@@ -128,12 +126,10 @@
             } else {
                 tableBody.innerHTML = data.data.map(part => `
                     <tr>
-                        <td>${part[0]}</td>
                         <td>${part[1]}</td>
                         <td>${part[2]}</td>
                         <td>${part[3]}</td>
                         <td>${part[4]}</td>
-                        
                         <td>${part[6]}</td>
                         <td>${part[7]}</td>
                         <td>${part[8] ? 'Yes' : 'No'}</td>
@@ -194,15 +190,14 @@ function populateTable(data) {
     data.forEach(part => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${part[0]}</td>
             <td>${part[1]}</td>
             <td>${part[2]}</td>
             <td>${part[3]}</td>
             <td>${part[4]}</td>
             <td>${part[6]}</td>
             <td>${part[7]}</td>
-            <td>${part[8] === 1 ? 'Yes' : 'No'}</td>
-            <td>${part[9]}}</td>
+            <td>${part[8] ? 'Yes' : 'No'}</td>
+            <td>${part[9]}</td>
             <td>-</td>
         `;
         tableBody.appendChild(row);
