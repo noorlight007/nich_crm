@@ -74,23 +74,8 @@
                 <th>Added By</th><th>Credited</th><th>Created At</th><th>Updated At</th>
             </tr>
         </thead>
-        <tbody id="table-body">
-            <!-- Table rows will be populated dynamically -->
-            {% for part in parts %}
-            <tr>
-                <td>{{ part[0] }}</td>
-                <td>{{ part[1] }}</td>
-                <td>{{ part[2] }}</td>
-                <td>{{ part[3] }}</td>
-                <td>{{ part[4] }}</td>
-                <td>{{ part[5] }}</td>
-                <td>{{ part[6] }}</td>
-                <td>{{ part[7] }}</td>
-                <td>{% if part[8] == 1 %}Yes{% elif part[8] == 2 %}No{% else %}No{% endif %}</td>
-                <td>{{ part[9] }}</td>
-                <td>{{ part[10] }}</td>
-            </tr>
-            {% endfor %}
+        <tbody id="parts-table-body">
+            <!-- Rows will be populated here -->
         </tbody>
     </table>
 </div>
@@ -152,6 +137,64 @@
             }
         });
     });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Automatically fetch data with "No Filter" on page load
+    const filterType = 'no_filter'; // Default filter type
+    const filterValue = '';         // No specific value for "No Filter"
+
+    // Get the current page number from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentPage = urlParams.get('page') || 1; // Default to page 1 if `page` is not present
+
+    // Prepare the request body
+    const requestBody = {
+        filter_type: filterType,
+        filter_value: filterValue,
+        page: currentPage
+    };
+
+    // Fetch data and populate the table
+    fetch('/filter_parts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Data fetched on page load:', data);
+        populateTable(data.data); // Function to update the table with received data
+    })
+    .catch(error => {
+        console.error('Error fetching data on page load:', error);
+    });
+});
+
+// Function to populate the table with data
+function populateTable(data) {
+    const tableBody = document.querySelector('#parts-table-body'); // Assuming your table has this ID
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    data.forEach(part => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${part[0]}</td>
+            <td>${part[1]}</td>
+            <td>${part[2]}</td>
+            <td>${part[3]}</td>
+            <td>${part[4]}</td>
+            <td>${part[5]}</td>
+            <td>${part[6]}</td>
+            <td>${part[7]}</td>
+            <td>${part[8] === 1 ? 'Yes' : 'No'}</td>
+            <td>${new Date(part[9]).toLocaleString()}</td>
+            <td>${new Date(part[10]).toLocaleString()}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
 </script>
 {% endblock %}
 </body>
