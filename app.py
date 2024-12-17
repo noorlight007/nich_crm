@@ -97,7 +97,7 @@ def settings():
 def tests():
     # Get the current page number (default is 1)
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    per_page = 100  # Items per page
+    per_page = 50  # Items per page
     offset = (page - 1) * per_page
 
     # Connect to the database
