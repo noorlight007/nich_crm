@@ -86,7 +86,7 @@
                 <td>{{ part[5] }}</td>
                 <td>{{ part[6] }}</td>
                 <td>{{ part[7] }}</td>
-                <td>{{ 'Yes' if part[8] == 1 else 'No' }}</td>
+                <td>{% if part[8] == 1 %}Yes{% else %}No{% endif %}</td>
                 <td>{{ part[9] }}</td>
                 <td>{{ part[10] }}</td>
             </tr>
