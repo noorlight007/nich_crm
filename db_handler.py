@@ -41,6 +41,63 @@ class DatabaseHandler:
             print(f"Error ensuring connection: {e}")
             raise
 
+    def get_filtered_data(self,filter_type , filter_value, per_page, offset):
+        """
+        Fetch parts data with related user and customer information, ordered by `updated_at` descending.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            # Dynamically build the query based on filter
+            base_query = """
+                SELECT 
+                    p.id, p.partname, p.quantity, p.reason, 
+                    c.accountNumber, c.company, p.unique_id, 
+                    u.name AS added_by, p.credited, p.created_at, p.updated_at
+                FROM 
+                    parts p
+                JOIN 
+                    users u ON p.user_id = u.id
+                JOIN 
+                    customers c ON p.customer_id = c.id
+            """
+
+            filters = {
+                "partname_asc": "ORDER BY p.partname ASC",
+                "partname_desc": "ORDER BY p.partname DESC",
+                "quantity_high": "ORDER BY p.quantity DESC",
+                "quantity_low": "ORDER BY p.quantity ASC",
+                "reason": "WHERE p.reason = %s ORDER BY p.updated_at DESC",
+                "account_asc": "ORDER BY c.accountNumber ASC",
+                "account_desc": "ORDER BY c.accountNumber DESC",
+                "uniqueid_asc": "ORDER BY p.unique_id ASC",
+                "uniqueid_desc": "ORDER BY p.unique_id DESC",
+                "addedby_asc": "ORDER BY u.name ASC",
+                "addedby_desc": "ORDER BY u.name DESC",
+                "credited_yes": "WHERE p.credited = 1 ORDER BY p.updated_at DESC",
+                "credited_no": "WHERE p.credited = 0 ORDER BY p.updated_at DESC",
+                "created_at_asc": "ORDER BY p.created_at ASC",
+                "created_at_desc": "ORDER BY p.created_at DESC"
+            }
+
+            query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
+            final_query = base_query + f" {query_filter} LIMIT %s OFFSET %s"
+
+            if "reason" in filter_type or "credited" in filter_type:
+                cursor.execute(final_query, (filter_value, per_page, offset))
+            else:
+                cursor.execute(final_query, (per_page, offset))
+
+            results = cursor.fetchall()
+            
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
+
     
     def get_parts_data(self, per_page, offset):
         """

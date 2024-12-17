@@ -110,6 +110,21 @@ def tests():
 
     return render_template("test.html", parts=part_results, pagination=pagination)
 
+@app.route('/filter_parts', methods=['POST'])
+def filter_parts():
+    # Connect to the database
+    db_handler = DatabaseHandler(**db_config)
+    per_page = 100
+    page = int(request.json.get('page', 1))
+    filter_type = request.json.get('filter_type', 'no_filter')
+    filter_value = request.json.get('filter_value', '')
+
+    offset = (page - 1) * per_page
+
+    results = db_handler.get_filtered_data(filter_type, filter_value, per_page, offset)
+
+    return {"data": results}
+
 @app.route('/parts', methods=['GET','POST'])
 def parts_table():
     if 'user_id' not in session:

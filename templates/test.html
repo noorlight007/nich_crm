@@ -12,6 +12,9 @@
         max-height: 300px; /* Adjust the scrollable table height */
         overflow-y: auto;
     }
+    .loading { 
+        text-align: center; font-weight: bold; padding: 20px; display: none; 
+    }
 </style>
 {% endblock %}
 
@@ -28,7 +31,38 @@
 {% endblock %}
 
 {% block main_content %}
-
+<!-- Filtering Section -->
+<div class="mb-3">
+    <label for="filter" class="form-label">Filter by:</label>
+    <select id="filter" class="form-select">
+        <option value="no_filter">No Filter</option>
+        <optgroup label="Part Name">
+            <option value="partname_asc">Ascending</option>
+            <option value="partname_desc">Descending</option>
+        </optgroup>
+        <optgroup label="Quantity">
+            <option value="quantity_high">High Order</option>
+            <option value="quantity_low">Low Order</option>
+        </optgroup>
+        <optgroup label="Reason">
+            <option value="reason" data-reason="Not required">Not Required</option>
+            <option value="reason" data-reason="Faulty">Faulty</option>
+            <option value="reason" data-reason="Surcharge">Surcharge</option>
+        </optgroup>
+        <optgroup label="Account Number">
+            <option value="account_asc">Ascending</option>
+            <option value="account_desc">Descending</option>
+        </optgroup>
+        <optgroup label="Credited">
+            <option value="credited_yes">Yes</option>
+            <option value="credited_no">No</option>
+        </optgroup>
+        <optgroup label="Created At">
+            <option value="created_at_asc">Ascending</option>
+            <option value="created_at_desc">Descending</option>
+        </optgroup>
+    </select>
+</div>
 <div class="table-container">
     <table class="table table-bordered text-center align-middle">
         <thead class="table-dark">
@@ -99,5 +133,50 @@
 
 {% endblock %}
 
+{% block js_content %}
+<!-- JavaScript -->
+<script>
+    document.getElementById('filter').addEventListener('change', function () {
+        const filterType = this.value;
+        const reason = this.options[this.selectedIndex].getAttribute('data-reason') || '';
+
+        const tableBody = document.getElementById('table-body');
+        const loading = document.getElementById('loading');
+
+        // Show loading animation
+        tableBody.innerHTML = '';
+        loading.style.display = 'block';
+
+        fetch('/filter_parts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filter_type: filterType, filter_value: reason })
+        })
+        .then(response => response.json())
+        .then(data => {
+            loading.style.display = 'none';
+            if (data.error) {
+                tableBody.innerHTML = `<tr><td colspan="11">Error: ${data.error}</td></tr>`;
+            } else {
+                tableBody.innerHTML = data.data.map(part => `
+                    <tr>
+                        <td>${part[0]}</td>
+                        <td>${part[1]}</td>
+                        <td>${part[2]}</td>
+                        <td>${part[3]}</td>
+                        <td>${part[4]}</td>
+                        <td>${part[5]}</td>
+                        <td>${part[6]}</td>
+                        <td>${part[7]}</td>
+                        <td>${part[8] ? 'Yes' : 'No'}</td>
+                        <td>${part[9]}</td>
+                        <td>${part[10]}</td>
+                    </tr>
+                `).join('');
+            }
+        });
+    });
+</script>
+{% endblock %}
 </body>
 </html>
