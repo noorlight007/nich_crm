@@ -9,7 +9,7 @@
 {% block style %}
 <style>
     .table-container {
-        max-height: 600px; /* Adjust the scrollable table height */
+        max-height: 300px; /* Adjust the scrollable table height */
         overflow-y: auto;
     }
 </style>
@@ -33,19 +33,55 @@
     <table class="table table-bordered text-center align-middle">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
                 <th>Part Name</th>
                 <th>Quantity</th>
-                
+                <th>Reason</th>
+                <th>Account Number</th>
+                <th>Unique ID</th>
+                <th>Added By</th>
+                <th>Credited</th>
+                <th>Created at</th>
+                <th class="w-1"></th>
             </tr>
         </thead>
         <tbody>
             {% for part in parts %}
             <tr>
-                <td>{{ part[0] }}</td>
-                <td>{{ part[1] }}</td>
-                <td>{{ part[2] }}</td>
-                
+                <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-details{{ part[0] }}">{{ part[1] | upper }}</a></td>
+                  <td class="text-secondary">{{ part[2] }}</td>
+                  <td class="text-secondary">{{ part[3] }}</td>
+                  <td class="text-secondary">{{ part[4] }}</td>
+                  <td class="text-secondary">{{ part[6] }}</td>
+                  <td class="text-secondary">{{ part[7] }}</td>
+                  <td class="text-secondary">{% if part[8] == 1 %} Yes {% else %} No {% endif %}</td>
+                  <td class="text-secondary">{{ part[9] }}</td>
+                  <td>
+                    <div class="btn-list flex-nowrap">
+                        <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#modal-update{{ part[0] }}">
+                            Edit
+                        </a>
+                        <div class="dropdown">
+                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                            Actions
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            {% if part[8] == 1 %}
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
+                                Mark as Not-credited
+                            </a>
+                            {% else %}
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark{{ part[0] }}">
+                                Mark as Credited
+                            </a>
+                            {% endif %}
+                            
+                            <a class="dropdown-item border-top" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-danger{{ part[0] }}">
+                            Delete
+                            </a>
+                        </div>
+                        </div>
+                    </div>
+                  </td>
             </tr>
             {% else %}
             <tr>
