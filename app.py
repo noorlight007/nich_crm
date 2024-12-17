@@ -103,7 +103,7 @@ def tests():
     # Connect to the database
     db_handler = DatabaseHandler(**db_config)
     part_results , total_parts = db_handler.get_parts_data(per_page, offset)
-    
+    print(part_results)
 
     # Initialize Flask-Paginate
     pagination = Pagination(page=page, per_page=per_page, total=total_parts, css_framework="bootstrap5")
