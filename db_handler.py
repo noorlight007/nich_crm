@@ -62,8 +62,7 @@ class DatabaseHandler:
                     customers c ON p.customer_id = c.id
                 ORDER BY
                     p.created_at %s
-                LIMIT 
-                    %s OFFSET %s
+                LIMIT %s OFFSET %s
             """
 
             filters = {
