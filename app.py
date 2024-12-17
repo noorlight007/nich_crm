@@ -123,7 +123,7 @@ def filter_parts():
     offset = (page - 1) * per_page
 
     results = db_handler.get_filtered_data(filter_type, filter_value, per_page, offset)
-    print(results)
+    #print(results)
     return {"data": results}
 
 @app.route('/parts', methods=['GET','POST'])
