@@ -116,6 +116,7 @@ def filter_parts():
     db_handler = DatabaseHandler(**db_config)
     per_page = 100
     page = int(request.json.get('page', 1))
+    print(page)
     filter_type = request.json.get('filter_type', 'no_filter')
     filter_value = request.json.get('filter_value', '')
     print(f"filer type: {filter_type}, filervalue: {filter_value}")
