@@ -41,7 +41,7 @@ class DatabaseHandler:
             print(f"Error ensuring connection: {e}")
             raise
 
-    def get_filtered_data(self,filter_type , filter_value, per_page, offset):
+    def get_filtered_data(self,filter_type , filter_value):
         """
         Fetch parts data with related user and customer information, ordered by `updated_at` descending.
         """
