@@ -151,6 +151,10 @@
             <label for="filter" class="form-label mb-0 me-1">Filter:</label>
             <select id="filter" class="form-select form-select-sm">
                 <option value="no_filter">No Filter</option>
+                <optgroup label="Credited">
+                    <option value="credited_yes">Yes</option>
+                    <option value="credited_no">No</option>
+                </optgroup>
                 <optgroup label="Part Name">
                     <option value="partname_asc">Ascending</option>
                     <option value="partname_desc">Descending</option>
@@ -164,17 +168,21 @@
                     <option value="reason" data-reason="Faulty">Faulty</option>
                     <option value="reason" data-reason="Surcharge">Surcharge</option>
                 </optgroup>
+                <optgroup label="Created At">
+                    <option value="created_at_asc">Ascending</option>
+                    <option value="created_at_desc">Descending</option>
+                </optgroup>
                 <optgroup label="Account Number">
                     <option value="account_asc">Ascending</option>
                     <option value="account_desc">Descending</option>
                 </optgroup>
-                <optgroup label="Credited">
-                    <option value="credited_yes">Yes</option>
-                    <option value="credited_no">No</option>
+                <optgroup label="Unique ID">
+                    <option value="uniqueid_asc">Ascending</option>
+                    <option value="uniqueid_desc">Descending</option>
                 </optgroup>
-                <optgroup label="Created At">
-                    <option value="created_at_asc">Ascending</option>
-                    <option value="created_at_desc">Descending</option>
+                <optgroup label="Added By">
+                    <option value="addedby_asc">Ascending</option>
+                    <option value="addedby_desc">Descending</option>
                 </optgroup>
             </select>
         </div>
