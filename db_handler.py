@@ -75,7 +75,7 @@ class DatabaseHandler:
                 "addedby_asc": "ORDER BY u.name ASC",
                 "addedby_desc": "ORDER BY u.name DESC",
                 "credited_yes": "WHERE p.credited = 1 ORDER BY p.updated_at DESC",
-                "credited_no": "WHERE p.credited = 0 ORDER BY p.updated_at DESC",
+                "credited_no": "WHERE p.credited != 1 ORDER BY p.updated_at DESC",
                 "created_at_asc": "ORDER BY p.created_at ASC",
                 "created_at_desc": "ORDER BY p.created_at DESC"
             }
