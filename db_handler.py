@@ -77,7 +77,7 @@ class DatabaseHandler:
 
             # Get total number of rows for pagination
             cursor.execute("SELECT COUNT(*) AS total FROM parts")
-            total_parts = cursor.fetchone()["total"]
+            total_parts = cursor.fetchone()[0]
             return results , total_parts
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")

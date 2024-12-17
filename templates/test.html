@@ -24,30 +24,16 @@
                         <th>ID</th>
                         <th>Part Name</th>
                         <th>Quantity</th>
-                        <th>Reason</th>
-                        <th>Account Number</th>
-                        <th>Company</th>
-                        <th>Unique ID</th>
-                        <th>Added By</th>
-                        <th>Credited</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     {% for part in parts %}
                     <tr>
-                        <td>{{ part.id }}</td>
-                        <td>{{ part.partname }}</td>
-                        <td>{{ part.quantity }}</td>
-                        <td>{{ part.reason }}</td>
-                        <td>{{ part.accountNumber }}</td>
-                        <td>{{ part.company }}</td>
-                        <td>{{ part.unique_id }}</td>
-                        <td>{{ part.added_by }}</td>
-                        <td>{{ 'Yes' if part.credited == 1 else 'No' }}</td>
-                        <td>{{ part.created_at }}</td>
-                        <td>{{ part.updated_at }}</td>
+                        <td>{{ part.[0] }}</td>
+                        <td>{{ part.[1] }}</td>
+                        <td>{{ part.[2] }}</td>
+                        
                     </tr>
                     {% else %}
                     <tr>
