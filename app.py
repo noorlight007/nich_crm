@@ -95,20 +95,9 @@ def settings():
 # Route for displaying parts with pagination
 @app.route('/testing')
 def tests():
-    # Get the current page number (default is 1)
-    page = request.args.get(get_page_parameter(), type=int, default=1)
-    per_page = 50  # Items per page
-    offset = (page - 1) * per_page
-
-    # Connect to the database
-    db_handler = DatabaseHandler(**db_config)
-    part_results , total_parts = db_handler.get_parts_data(per_page, offset)
-    print(part_results)
-
-    # Initialize Flask-Paginate
-    pagination = Pagination(page=page, per_page=per_page, total=total_parts, css_framework="bootstrap5")
-
-    return render_template("test.html", parts=part_results, pagination=pagination)
+    if 'user_id' not in session:
+        return redirect('login')
+    return render_template("test.html", admin_name = session.get('username'))
 
 @app.route('/filter_parts', methods=['POST'])
 def filter_parts():
