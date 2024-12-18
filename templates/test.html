@@ -357,13 +357,20 @@ function populateTable(data) {
     let optionsHtml = '';
     // Passing Python cr_values to JavaScript
     const accountNumbers = {{ accountNumbers|tojson }};
-    accountNumbers.forEach(account => {
-        // Build the option as a string
-        optionsHtml += `<option value="${account}" ${account === selectedAccount ? 'selected' : ''}>
-                            ${account}
-                        </option>`;
-    });
+    function populateAccountNumbersWithText(accountNumbers, selectedAccount) {
+            let optionsHtml = ''; // Initialize an empty string to hold the options
 
+            accountNumbers.forEach(account => {
+                // Build the option as a string
+                optionsHtml += `<option value="${account}" ${account === selectedAccount ? 'selected' : ''}>
+                                    ${account}
+                                </option>`;
+            });
+
+            // Set the HTML of the select element
+            document.getElementById('account-select').innerHTML = optionsHtml;
+        }
+    const result_texts = populateAccountNumbersWithText(accountNumbers, $(part[4]))
     data.forEach(part => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -520,7 +527,7 @@ function populateTable(data) {
                                 <div class="mb-3">
                                   <label class="form-label">Account Number</label>
                                   <select class="form-select" name="edited_account_number">
-                                    ${optionsHtml}
+                                    ${result_texts}
                                 </select>
                                 
                                 </div>
