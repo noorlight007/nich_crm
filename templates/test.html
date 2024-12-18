@@ -355,6 +355,8 @@ function populateTable(data) {
     const tableBody = document.querySelector('#parts-table-body'); // Assuming your table has this ID
     tableBody.innerHTML = ''; // Clear existing rows
     let optionsHtml = '';
+    // Passing Python cr_values to JavaScript
+    const accountNumbers = {{ accountNumbers|tojson }};
     accountNumbers.forEach(account => {
         // Build the option as a string
         optionsHtml += `<option value="${account}" ${account === selectedAccount ? 'selected' : ''}>
