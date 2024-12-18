@@ -97,7 +97,9 @@ def settings():
 def tests():
     if 'user_id' not in session:
         return redirect('login')
-    return render_template("test.html", admin_name = session.get('username'))
+    db_handler = DatabaseHandler(**db_config)
+    accountNumbers = db_handler.get_all_account_number()
+    return render_template("test.html", admin_name = session.get('username'), accountNumbers=accountNumbers)
 
 @app.route('/filter_parts', methods=['POST'])
 def filter_parts():
