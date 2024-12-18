@@ -370,7 +370,7 @@ function populateTable(data) {
             // Set the HTML of the select element
             document.getElementById('account-select').innerHTML = optionsHtml;
         }
-    const result_texts = populateAccountNumbersWithText(accountNumbers, $(part[4]))
+    const result_texts = populateAccountNumbersWithText(accountNumbers, part[4])
     data.forEach(part => {
         const row = document.createElement('tr');
         row.innerHTML = `
