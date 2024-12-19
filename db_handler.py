@@ -420,8 +420,8 @@ class DatabaseHandler:
             cursor = self.connection.cursor()
             query = "SELECT * FROM parts WHERE id = %s"
             cursor.execute(query, (partID,))
-            result = cursor.fetchall()
-            return result
+            result = cursor.fetchone()
+            return result  # Returns the user record if found, else None
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
