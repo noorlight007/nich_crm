@@ -675,18 +675,41 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         </td>
                     `;
-                    alert(result.message); // Show success message
+                    showAlert(result.message, 'success'); // Show success message
                 } else {
-                    alert(result.message); // Show error message
+                    showAlert(result.message, 'danger'); // Show error message
                 }
             } catch (error) {
-                console.error('Error updating part:', error);
-                alert('An unexpected error occurred.');
+                
+                showAlert('An unexpected error occurred.', 'danger');
             }
         });
     });
 });
+function showAlert(message, type) {
+    const alertsContainer = document.getElementById('alerts-container');
+    const alertElement = document.createElement('div');
+    alertElement.innerHTML = `
+        <div class="alert alert-important alert-${type} alert-dismissible" role="alert">
+            <div class="d-flex">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24V0z" fill="none"></path>
+                        ${type === 'success' ? '<path d="M5 12l5 5l10 -10" />' : '<path d="M12 5l0 14" /><path d="M5 12l14 0" />'}
+                    </svg>
+                </div>
+                <div>${message}</div>
+            </div>
+            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div>`;
 
+    alertsContainer.appendChild(alertElement);
+
+    // Automatically remove the alert after 3 seconds
+    setTimeout(() => {
+        alertElement.remove();
+    }, 3000);
+}
 </script>
 {% endblock %}
 </body>
