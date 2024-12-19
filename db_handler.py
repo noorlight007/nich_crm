@@ -418,7 +418,7 @@ class DatabaseHandler:
                 self.connect()
 
             cursor = self.connection.cursor()
-            query = "SELECT * parts WHERE id = %s"
+            query = "SELECT * FROM parts WHERE id = %s"
             cursor.execute(query, (partID,))
             result = cursor.fetchall()
             return result
