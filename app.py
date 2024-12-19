@@ -134,7 +134,7 @@ def parts_table():
         return f"Error: {str(e)}"
 
 
-@app.route('/testing/<part_id>/edit', methods=['POST'])
+@app.route('/testing/edit/<part_id>', methods=['GET','POST'])
 def edit_part_page(part_id):
     db_handler = DatabaseHandler(**db_config)
     part_info = db_handler.get_part_by_partID(part_id)
