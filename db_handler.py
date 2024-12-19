@@ -412,6 +412,23 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
     
+    def get_part_by_partID(self, partID):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT * parts WHERE id = %s"
+            cursor.execute(query, (partID,))
+            result = cursor.fetchall()
+            return result
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+    
     def get_customerID_by_account_number(self, acc_number):
         try:
             if not self.connection:

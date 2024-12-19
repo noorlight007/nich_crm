@@ -1,0 +1,49 @@
+<!-- loading the page from base.html -->
+{% extends 'base.html' %}
+
+{% block page_title %}
+
+    <title>Parts - AutoPart</title>
+
+{% endblock %}
+
+{% block style %}
+<!-- DataTables CSS -->
+<!-- Add this in your <head> section -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<style>
+    .drop-zone {
+        border: 2px dashed #6c757d;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        color: #6c757d;
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .drop-zone.dragover {
+        background-color: #e9ecef;
+    }
+
+    .preview-container img {
+        max-width: 100px;
+        margin: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block admin_name %}
+  <div>{{ admin_name }}</div>
+{% endblock %}
+
+{% block content_title %}
+
+    <h2 class="page-title">
+       <a href="">Products</a> > <a href="#">Edit part {{ part_info[1] }} </a> 
+    </h2>
+
+{% endblock %}
