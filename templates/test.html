@@ -462,7 +462,7 @@ function populateTable(data) {
                           <h5 class="modal-title">Edit Part - <strong>${part[1]}</strong></h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form method="post" id="edit_part_form${part[0]}">
+                        <form method="post" id="sp_edit_part_form${part[0]}">
                         <div class="modal-body">
                           <!-- ########## -->
                             
@@ -595,12 +595,12 @@ function populateTable(data) {
 }
 
 // Add event listeners to all edit buttons
-document.querySelectorAll('[id^="edit_part_form"]').forEach(form => {
+document.querySelectorAll('[id^="sp_edit_part_form"]').forEach(form => {
         form.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default form submission
             console.log("we are here")
 
-            const partId = form.id.replace('edit_part_form', ''); // Extract part ID
+            const partId = form.id.replace('sp_edit_part_form', ''); // Extract part ID
             const formData = new FormData(form); // Gather form data
             const modalId = `#modal-update${partId}`; // Modal ID
 
