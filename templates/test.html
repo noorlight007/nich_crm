@@ -622,6 +622,72 @@ function populateTable(data) {
   });
   
   </script>
+
+
+<!-- this is for editing -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Add event listeners to all edit buttons
+    document.querySelectorAll('[id^="edit_part_form"]').forEach(form => {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const partId = form.id.replace('edit_part_form', ''); // Extract part ID
+            const formData = new FormData(form); // Gather form data
+            const modalId = `#modal-update${partId}`; // Modal ID
+
+            try {
+                const response = await fetch(`/update-part/${partId}`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                $(modalId).modal('hide');
+                if (response.ok) {
+                    // Update the table row with new data
+                    const updatedRow = document.querySelector(`#modal-update${partId}`).closest('tr');
+                    console.log(updatedRow)
+                    updatedRow.innerHTML = `
+                        <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-details${partId}">${formData.get('edited_partname')}</a></td>
+                        <td>${formData.get('edited_quantity')}</td>
+                        <td>${formData.get('edited_reason')}</td>
+                        <td>${formData.get('edited_unique_id')}</td>
+                        <td>${formData.get('edited_account_number')}</td>
+                        <td>${formData.get('edited_credited') === '1' ? 'Yes' : 'No'}</td>
+                        <td>${new Date().toLocaleString()}</td>
+                        <td>
+                            <div class="btn-list flex-nowrap">
+                                <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#modal-update${partId}">Edit</a>
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark${partId}">
+                                            ${formData.get('edited_credited') === '1' ? 'Mark as Not-credited' : 'Mark as Credited'}
+                                        </a>
+                                        <a class="dropdown-item border-top" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-danger${partId}">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    alert(result.message); // Show success message
+                } else {
+                    alert(result.message); // Show error message
+                }
+            } catch (error) {
+                console.error('Error updating part:', error);
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+});
+
+</script>
 {% endblock %}
 </body>
 </html>

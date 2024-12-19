@@ -565,7 +565,7 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
     
-    def update_part(self, part_id, part_name, credited, quantity, reason, unique_id, customer_id):
+    def update_part(self, part_id, part_name, credited, quantity, reason, unique_id):
         """
         Update part details in the database.
         """
@@ -582,12 +582,11 @@ class DatabaseHandler:
                     quantity = %s,
                     reason = %s,
                     unique_id = %s,
-                    customer_id = %s,
                     updated_at = NOW()
                 WHERE 
                     id = %s
             """
-            cursor.execute(query, (part_name, credited, quantity, reason, unique_id, customer_id, part_id))
+            cursor.execute(query, (part_name, credited, quantity, reason, unique_id, part_id))
             self.connection.commit()
 
             # Return success status

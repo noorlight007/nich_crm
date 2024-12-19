@@ -97,9 +97,7 @@ def settings():
 def tests():
     if 'user_id' not in session:
         return redirect('login')
-    db_handler = DatabaseHandler(**db_config)
-    accountNumbers = db_handler.get_all_account_number()
-    return render_template("test.html", admin_name = session.get('username'), accountNumbers=accountNumbers)
+    return render_template("test.html", admin_name = session.get('username'))
 
 @app.route('/filter_parts', methods=['POST'])
 def filter_parts():
@@ -148,18 +146,14 @@ def update_part_route(part_id):
     quantity = request.form.get('edited_quantity')
     reason = request.form.get('edited_reason')
     unique_id = request.form.get('edited_unique_id')
-    account_number = request.form.get('edited_account_number')
-    print(f"{part_name}, {credited}, {quantity}, {reason}, {unique_id}, {account_number}")
-
-    # Initialize the database handler
-    db_handler = DatabaseHandler(**db_config)
-    customer_id = db_handler.get_customerID_by_account_number(account_number)
+    
+    print(f"{part_name}, {credited}, {quantity}, {reason}, {unique_id}")
     db_handler = DatabaseHandler(**db_config)
     # Validate inputs (optional)
     
     try:
         # Update part in the database
-        success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id, customer_id)
+        success = db_handler.update_part(part_id, part_name, credited, quantity, reason, unique_id)
         if success:
             return jsonify({
                 "status": "success",
