@@ -598,6 +598,7 @@ function populateTable(data) {
 document.querySelectorAll('[id^="edit_part_form"]').forEach(form => {
         form.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default form submission
+            console.log("we are here")
 
             const partId = form.id.replace('edit_part_form', ''); // Extract part ID
             const formData = new FormData(form); // Gather form data
@@ -652,7 +653,7 @@ document.querySelectorAll('[id^="edit_part_form"]').forEach(form => {
             }
         });
     });
-    function showAlert(message, type) {
+  function showAlert(message, type) {
     const alertsContainer = document.getElementById('alerts-container');
     const alertElement = document.createElement('div');
     alertElement.innerHTML = `
