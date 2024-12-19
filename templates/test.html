@@ -311,6 +311,10 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+
+
+
     // Automatically fetch data with "No Filter" on page load
     const filterType = 'no_filter'; // Default filter type
     const filterValue = '';         // No specific value for "No Filter"
@@ -590,45 +594,8 @@ function populateTable(data) {
     });
 }
 
-</script>
-<script>
-    document.getElementById("acc_number").addEventListener("input", function () {
-      const accNumber = this.value;
-      const checkCompanyDiv = document.getElementById("check_company");
-      const showCompanyDiv = document.getElementById("show_company");
-      const companyInput = showCompanyDiv.querySelector("input[name='company']");
-  
-      if (accNumber.trim() === "") {
-          checkCompanyDiv.style.display = "block";
-          showCompanyDiv.style.display = "none";
-          return;
-      }
-  
-      fetch(`/validate-account-number?acc_number=${accNumber}`)
-          .then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  checkCompanyDiv.style.display = "none";
-                  showCompanyDiv.style.display = "block";
-                  companyInput.value = data.company;
-              } else {
-                  checkCompanyDiv.style.display = "block";
-                  showCompanyDiv.style.display = "none";
-              }
-          })
-          .catch(error => {
-              console.error("Error:", error);
-          });
-  });
-  
-  </script>
-
-
-<!-- this is for editing -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Add event listeners to all edit buttons
-    document.querySelectorAll('[id^="edit_part_form"]').forEach(form => {
+// Add event listeners to all edit buttons
+document.querySelectorAll('[id^="edit_part_form"]').forEach(form => {
         form.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default form submission
 
@@ -685,8 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
-function showAlert(message, type) {
+    function showAlert(message, type) {
     const alertsContainer = document.getElementById('alerts-container');
     const alertElement = document.createElement('div');
     alertElement.innerHTML = `
@@ -710,6 +676,42 @@ function showAlert(message, type) {
         alertElement.remove();
     }, 3000);
 }
+
+</script>
+<script>
+    document.getElementById("acc_number").addEventListener("input", function () {
+      const accNumber = this.value;
+      const checkCompanyDiv = document.getElementById("check_company");
+      const showCompanyDiv = document.getElementById("show_company");
+      const companyInput = showCompanyDiv.querySelector("input[name='company']");
+  
+      if (accNumber.trim() === "") {
+          checkCompanyDiv.style.display = "block";
+          showCompanyDiv.style.display = "none";
+          return;
+      }
+  
+      fetch(`/validate-account-number?acc_number=${accNumber}`)
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  checkCompanyDiv.style.display = "none";
+                  showCompanyDiv.style.display = "block";
+                  companyInput.value = data.company;
+              } else {
+                  checkCompanyDiv.style.display = "block";
+                  showCompanyDiv.style.display = "none";
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+          });
+  });
+  
+  </script>
+
+
+
 </script>
 {% endblock %}
 </body>
