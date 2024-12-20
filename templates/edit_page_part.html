@@ -41,7 +41,7 @@
 {% endblock %}
 
 {% block content_title %}
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-between">
         <h2 class="page-title">
             <a href="{{ url_for('tests') }}">Products</a> <span class="me-2">></span> <a href="{{ url_for('edit_part_page', part_id= part_info[0]) }}" >Edit part <span class="text-danger">{{ part_info[2] }}</span> </a> 
         </h2>
