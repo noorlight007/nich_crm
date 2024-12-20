@@ -62,7 +62,7 @@
     <button class="btn btn-danger me-2">Delete</button>
 </div>
 <div class="card">
-    <form method="post" id="edit_part">
+    <form action="{{ url_for('update_part_route', part_id = part_info[0]) }}" method="post" id="edit_part">
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-7">
@@ -148,35 +148,63 @@
 {% block js_content %}
 
 <script>
-    document.getElementById("acc_number").addEventListener("input", function () {
-      const accNumber = this.value;
-      const checkCompanyDiv = document.getElementById("check_company");
-      const showCompanyDiv = document.getElementById("show_company");
-      const companyInput = showCompanyDiv.querySelector("input[name='company']");
-  
-      if (accNumber.trim() === "") {
-          checkCompanyDiv.style.display = "block";
-          showCompanyDiv.style.display = "none";
-          return;
-      }
-  
-      fetch(`/validate-account-number?acc_number=${accNumber}`)
-          .then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  checkCompanyDiv.style.display = "none";
-                  showCompanyDiv.style.display = "block";
-                  companyInput.value = data.company;
-              } else {
-                  checkCompanyDiv.style.display = "block";
-                  showCompanyDiv.style.display = "none";
-              }
-          })
-          .catch(error => {
-              console.error("Error:", error);
-          });
-  });
-  
+    document.getElementById('edit_part').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Form data
+        const form = event.target;
+        const formData = new FormData(form);
+        const alertDiv = document.getElementById('alert-show');
+
+        // Clear previous alert messages
+        alertDiv.innerHTML = '';
+
+        try {
+            // Send the POST request to the Flask route
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            // Parse the JSON response
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                // Display success alert
+                alertDiv.innerHTML = `
+                    <div class="alert alert-success" role="alert">
+                        ${result.message}
+                    </div>`;
+                // Automatically hide the alert after 4 seconds
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                }, 4000);
+                window.location.href = document.referrer;
+            } else {
+                // Display error alert
+                alertDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        ${result.message}
+                    </div>`;
+                // Automatically hide the alert after 4 seconds
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                }, 4000);
+            }
+
+            
+        } catch (error) {
+            // Handle fetch errors
+            alertDiv.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    Something went wrong! Please try again.
+                </div>`;
+            setTimeout(() => {
+                alertDiv.innerHTML = '';
+            }, 4000);
+        }
+    });
 </script>
+
 
 {% endblock %}
