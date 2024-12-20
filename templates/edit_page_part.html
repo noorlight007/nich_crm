@@ -51,29 +51,29 @@
 {% block main_content %}
 
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-7">
       <div class="mb-3">
         <label class="form-label">Part Name</label>
         <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="partname" required>
+          <input type="text" class="form-control" name="edited_partname" value="{{ part_info[2] }}" required>
         </div>
       </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-2">
       <div class="mb-3">
         <label class="form-label">Credited?</label>
-        <select class="form-select" name="credited">
+        <select class="form-select" name="edited_credited">
           <option value="1" selected>Yes</option>
           <option value="2">No</option>
         </select>
       </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
       <div class="mb-3">
         <label class="form-label">Quantity</label>
         <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="quantity" id="quantity" required >
+          <input type="text" class="form-control" name="edited_quantity" id="quantity" required >
         </div>
       </div>
     </div>
@@ -81,42 +81,16 @@
       <div class="mb-3">
         <label class="form-label">Reason</label>
         <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="reason" required>
+          <input type="text" class="form-control" name="edited_reason" required>
         </div>
       </div>
     </div>
-    <div class="col-lg-6">
-      <div class="mb-3">
-        <label class="form-label">Account Number</label>
-        <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="acc_number" id="acc_number" required>
-        </div>
-      </div>
-    </div>
+
     <div class="col-lg-6">
       <div class="mb-3">
         <label class="form-label">Unique ID</label>
         <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="unique_id" required>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6" id="check_company">
-      <div class="mb-3">
-        <label class="form-label">Customer Company</label>
-        <div class="input-icon mb-3">
-          <span class="input-icon-addon">
-            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-          </span>
-          <input type="text" class="form-control" placeholder="Wating…" readonly>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6" style="display: none;" id="show_company">
-      <div class="mb-3">
-        <label class="form-label">Customer Company</label>
-        <div class="input-group input-group-flat">
-          <input type="text" class="form-control is-valid" name="company" required>
+          <input type="text" class="form-control" name="edited_unique_id" required>
         </div>
       </div>
     </div>
