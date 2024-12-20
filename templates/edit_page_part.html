@@ -50,49 +50,113 @@
 
 {% block main_content %}
 
-<form class="row g-3">
-    <div class="col-md-6">
-      <label for="inputEmail4" class="form-label">Email</label>
-      <input type="email" class="form-control" id="inputEmail4">
-    </div>
-    <div class="col-md-6">
-      <label for="inputPassword4" class="form-label">Password</label>
-      <input type="password" class="form-control" id="inputPassword4">
-    </div>
-    <div class="col-12">
-      <label for="inputAddress" class="form-label">Address</label>
-      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-    </div>
-    <div class="col-12">
-      <label for="inputAddress2" class="form-label">Address 2</label>
-      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-    </div>
-    <div class="col-md-6">
-      <label for="inputCity" class="form-label">City</label>
-      <input type="text" class="form-control" id="inputCity">
-    </div>
-    <div class="col-md-4">
-      <label for="inputState" class="form-label">State</label>
-      <select id="inputState" class="form-select">
-        <option selected>Choose...</option>
-        <option>...</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <label for="inputZip" class="form-label">Zip</label>
-      <input type="text" class="form-control" id="inputZip">
-    </div>
-    <div class="col-12">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="gridCheck">
-        <label class="form-check-label" for="gridCheck">
-          Check me out
-        </label>
+<div class="row">
+    <div class="col-lg-4">
+      <div class="mb-3">
+        <label class="form-label">Part Name</label>
+        <div class="input-group input-group-flat">
+          <input type="text" class="form-control" name="partname" required>
+        </div>
       </div>
     </div>
-    <div class="col-12">
-      <button type="submit" class="btn btn-primary">Sign in</button>
+
+    <div class="col-lg-4">
+      <div class="mb-3">
+        <label class="form-label">Credited?</label>
+        <select class="form-select" name="credited">
+          <option value="1" selected>Yes</option>
+          <option value="2">No</option>
+        </select>
+      </div>
     </div>
-  </form>
+    <div class="col-lg-4">
+      <div class="mb-3">
+        <label class="form-label">Quantity</label>
+        <div class="input-group input-group-flat">
+          <input type="text" class="form-control" name="quantity" id="quantity" required >
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="mb-3">
+        <label class="form-label">Reason</label>
+        <div class="input-group input-group-flat">
+          <input type="text" class="form-control" name="reason" required>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="mb-3">
+        <label class="form-label">Account Number</label>
+        <div class="input-group input-group-flat">
+          <input type="text" class="form-control" name="acc_number" id="acc_number" required>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="mb-3">
+        <label class="form-label">Unique ID</label>
+        <div class="input-group input-group-flat">
+          <input type="text" class="form-control" name="unique_id" required>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6" id="check_company">
+      <div class="mb-3">
+        <label class="form-label">Customer Company</label>
+        <div class="input-icon mb-3">
+          <span class="input-icon-addon">
+            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+          </span>
+          <input type="text" class="form-control" placeholder="Wating…" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6" style="display: none;" id="show_company">
+      <div class="mb-3">
+        <label class="form-label">Customer Company</label>
+        <div class="input-group input-group-flat">
+          <input type="text" class="form-control is-valid" name="company" required>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+{% endblock %}
+
+{% block js_content %}
+
+<script>
+    document.getElementById("acc_number").addEventListener("input", function () {
+      const accNumber = this.value;
+      const checkCompanyDiv = document.getElementById("check_company");
+      const showCompanyDiv = document.getElementById("show_company");
+      const companyInput = showCompanyDiv.querySelector("input[name='company']");
+  
+      if (accNumber.trim() === "") {
+          checkCompanyDiv.style.display = "block";
+          showCompanyDiv.style.display = "none";
+          return;
+      }
+  
+      fetch(`/validate-account-number?acc_number=${accNumber}`)
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  checkCompanyDiv.style.display = "none";
+                  showCompanyDiv.style.display = "block";
+                  companyInput.value = data.company;
+              } else {
+                  checkCompanyDiv.style.display = "block";
+                  showCompanyDiv.style.display = "none";
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+          });
+  });
+  
+</script>
 
 {% endblock %}
