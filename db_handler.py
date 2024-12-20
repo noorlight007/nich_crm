@@ -418,7 +418,28 @@ class DatabaseHandler:
                 self.connect()
 
             cursor = self.connection.cursor()
-            query = "SELECT * FROM parts WHERE id = %s"
+            query = """
+                    SELECT 
+                    p.id,
+                    p.partname, 
+                    p.quantity, 
+                    p.reason, 
+                    c.accountNumber, 
+                    c.company, 
+                    p.unique_id, 
+                    u.name AS added_by, 
+                    p.credited,
+                    p.created_at,
+                    p.updated_at
+                FROM 
+                    parts p
+                JOIN 
+                    users u ON p.user_id = u.id
+                JOIN 
+                    customers c ON p.customer_id = c.id
+                WHERE 
+                    p.id = %s
+                """
             cursor.execute(query, (partID,))
             result = cursor.fetchone()
             return result  # Returns the user record if found, else None

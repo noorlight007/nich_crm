@@ -62,14 +62,14 @@
     <button class="btn btn-danger me-2">Delete</button>
 </div>
 <div class="card">
-    <form action="" method="post" id="edit_part">
+    <form method="post" id="edit_part">
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-7">
                   <div class="mb-3">
                     <label class="form-label">Part Name</label>
                     <div class="input-group input-group-flat">
-                      <input type="text" class="form-control" name="edited_partname" value="{{ part_info[2] }}" required>
+                      <input type="text" class="form-control" name="edited_partname" value="{{ part_info[1] }}" required>
                     </div>
                   </div>
                 </div>
@@ -94,29 +94,44 @@
                   <div class="mb-3">
                     <label class="form-label">Quantity</label>
                     <div class="input-group input-group-flat">
-                      <input type="text" class="form-control" name="edited_quantity" value="{{ part_info[3] }}" id="quantity" required >
+                      <input type="text" class="form-control" name="edited_quantity" value="{{ part_info[2] }}" id="quantity" required >
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label">Reason</label>
                     <select class="form-select" name="edited_reason">
-                        <option value="Faulty" {% if part_info[4] == 'Faulty' %} selected {% endif %}>Faulty</option>
-                        <option value="Not required" {% if part_info[4] == 'Not required' %} selected {% endif %}>Not required</option>
-                        <option value="Surcharge" {% if part_info[4] == 'Surcharge' %} selected {% endif %}>Surcharge</option>
+                        <option value="Faulty" {% if part_info[3] == 'Faulty' %} selected {% endif %}>Faulty</option>
+                        <option value="Not required" {% if part_info[3] == 'Not required' %} selected {% endif %}>Not required</option>
+                        <option value="Surcharge" {% if part_info[3] == 'Surcharge' %} selected {% endif %}>Surcharge</option>
                     </select>
                   </div>
                 </div>
             
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <div class="mb-3">
                     <label class="form-label">Unique ID</label>
                     <div class="input-group input-group-flat">
-                      <input type="text" class="form-control" name="edited_unique_id" value="{{ part_info[5] }}" required>
+                      <input type="text" class="form-control" name="edited_unique_id" value="{{ part_info[6] }}" required>
                     </div>
                   </div>
                 </div>
+
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label class="form-label">Account Number</label>
+                        <select class="form-select" name="edited_account_number">
+                          {% for i in account_numbers %}
+                              <option value="{{ i }}" {% if i == part_info[4] %} selected {% endif %}>
+                                  {{ i }}
+                              </option>
+                          {% endfor %}
+                      </select>
+                      
+                    </div>
+                </div>
+                
                 
             </div>
         </div>

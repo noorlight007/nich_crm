@@ -139,8 +139,9 @@ def edit_part_page(part_id):
     db_handler = DatabaseHandler(**db_config)
     part_info = db_handler.get_part_by_partID(part_id)
     print(part_info)
-
-    return render_template("edit_page_part.html", part_info = part_info, admin_name = session.get('username'))
+    db_handler = DatabaseHandler(**db_config)
+    account_numbers = db_handler.get_all_account_number()
+    return render_template("edit_page_part.html", part_info = part_info, admin_name = session.get('username'), account_numbers = account_numbers)
 
 @app.route('/update-part/<int:part_id>', methods=['POST'])
 def update_part_route(part_id):
