@@ -63,26 +63,35 @@
     <div class="col-lg-2">
       <div class="mb-3">
         <label class="form-label">Credited?</label>
+        {% if part[9] == 1 %} 
         <select class="form-select" name="edited_credited">
-          <option value="1" selected>Yes</option>
-          <option value="2">No</option>
+        <option value="1" selected>Yes</option>
+        <option value="2">No</option>
         </select>
+        {% else %}
+        <select class="form-select" name="edited_credited">
+        <option value="1">Yes</option>
+        <option value="2" selected>No</option>
+        </select>
+        {% endif %}
       </div>
     </div>
     <div class="col-lg-3">
       <div class="mb-3">
         <label class="form-label">Quantity</label>
         <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="edited_quantity" id="quantity" required >
+          <input type="text" class="form-control" name="edited_quantity" value="{{ part_info[3] }}" id="quantity" required >
         </div>
       </div>
     </div>
     <div class="col-lg-6">
       <div class="mb-3">
         <label class="form-label">Reason</label>
-        <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="edited_reason" required>
-        </div>
+        <select class="form-select" name="edited_reason">
+            <option value="Faulty" {% if part_info[4] == 'Faulty' %} selected {% endif %}>Faulty</option>
+            <option value="Not required" {% if part_info[4] == 'Not required' %} selected {% endif %}>Not required</option>
+            <option value="Surcharge" {% if part_info[4] == 'Surcharge' %} selected {% endif %}>Surcharge</option>
+        </select>
       </div>
     </div>
 
@@ -90,7 +99,7 @@
       <div class="mb-3">
         <label class="form-label">Unique ID</label>
         <div class="input-group input-group-flat">
-          <input type="text" class="form-control" name="edited_unique_id" required>
+          <input type="text" class="form-control" name="edited_unique_id" value="{{ part_info[5] }}" required>
         </div>
       </div>
     </div>
