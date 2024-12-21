@@ -58,7 +58,7 @@
 <div class="d-flex justify-content-end mb-2">
     <button class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#modal-delete">Delete Item</button>
 
-    <div class="modal modal-blur fade" id="modal-delete{{ part_info[0] }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -239,11 +239,11 @@
         const deleteButton = document.querySelector('[id^="delete_part"]');
         const modal = document.getElementById("modal-delete");
         const alertDiv = document.getElementById('alert-show');
-        const partId = deleteButton.id.replace("delete_part", ""); // Extract part ID from button ID
-
+        const modalId = `#modal-delete`; // Modal ID
         // Add click event listener to the delete button
         deleteButton.addEventListener("click", async () => {
-            
+            const partId = deleteButton.id.replace("delete_part", ""); // Extract part ID from button ID
+
             try {
                 // Send DELETE request to Flask route
                 const response = await fetch(`/delete-part/${partId}`, { method: 'DELETE' });
@@ -251,6 +251,7 @@
                 const data = await response.json();
 
                 if (data.status == 'success') {
+                    modal.modal('hide');
                     // Show success alert
                     alertDiv.innerHTML = `
                         <div class="alert alert-success" role="alert">
@@ -264,6 +265,7 @@
                           window.location.href = "http://88.208.224.141:8000/testing";  // Reload the page
                       }, 2000);
                 } else {
+                    modal.modal('hide');
                     // Show error alert
                     alertDiv.innerHTML = `
                         <div class="alert alert-danger" role="alert">
@@ -275,7 +277,7 @@
                     }, 4000);
                 }
             } catch (error) {
-
+                modal.modal('hide');
                 // Handle fetch errors
                 alertDiv.innerHTML = `
                     <div class="alert alert-danger" role="alert">
