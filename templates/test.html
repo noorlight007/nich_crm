@@ -286,25 +286,79 @@
             <td>${part[8] ? 'Yes' : 'No'}</td>
             <td>${new Date(part[9]).toLocaleString()}</td>
             <td><div class="btn-list flex-nowrap">
-                        <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#modal-update${part[0]}">
-                            Edit
-                        </a>
-                        <div class="dropdown">
-                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                            Actions
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-mark${part[0]}">
-                                ${part[8] ? 'Mark as Not-credited' : 'Mark as Credited'}
-                            </a>
-                            <a class="dropdown-item border-top" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-danger${part[0]}">
-                                Delete
-                            </a>
+                              <a href="{{ url_for('edit_part_page', part_id='') }}${part[0]}" class="btn"">
+                                  Edit
+                              </a>
+                          </div></td>
+                          <div class="modal modal-blur fade" id="modal-details${part[0]}" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Part Details - <strong>${part[1]}</strong></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              
+                              <div class="modal-body">
+                                <div class="card">
+                                  
+                                  <div class="card-body">
+                                    <div class="datagrid">
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Part Name</div>
+                                        <div class="datagrid-content">${part[1]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Quantity</div>
+                                        <div class="datagrid-content">${part[2]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Reason</div>
+                                        <div class="datagrid-content">${part[3]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Account Number</div>
+                                        <div class="datagrid-content">${part[4]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Company</div>
+                                        <div class="datagrid-content">${part[5]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Unique ID</div>
+                                        <div class="datagrid-content">${part[6]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Added By</div>
+                                        <div class="datagrid-content">${part[7]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Credited</div>
+                                        <div class="datagrid-content">${part[8] ? 'Yes' : 'No'}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Created at</div>
+                                        <div class="datagrid-content">${part[9]}</div>
+                                      </div>
+                                      <div class="datagrid-item">
+                                        <div class="datagrid-title">Updated at</div>
+                                        <div class="datagrid-content">${part[10]}</div>
+                                      </div>
+  
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                  Cancel
+                                </button>
+                                
+                              </div>
+                              </form>
+                            </div>
+                          </div>
                         </div>
-                        </div>
-                    </div></td>
-                    </tr>
-                `).join('');
+              `).join('');
             }
         });
     });
