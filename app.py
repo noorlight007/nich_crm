@@ -93,7 +93,7 @@ def settings():
     return render_template("settings.html", admin_name = session.get('username'), admin_info = admin_info)
 
 # Route for displaying parts with pagination
-@app.route('/testing')
+@app.route('/returned-parts')
 def tests():
     if 'user_id' not in session:
         return redirect('login')
@@ -116,26 +116,26 @@ def filter_parts():
     #print(results)
     return {"data": results}
 
-@app.route('/parts', methods=['GET','POST'])
-def parts_table():
-    if 'user_id' not in session:
-        return redirect('login')
-    db_handler = DatabaseHandler(**db_config)
-    all_companies = db_handler.get_all_company_with_acccount_no()
-    db_handler = DatabaseHandler(**db_config)
-    account_numbers = db_handler.get_all_account_number()
-    try:
-        db_handler = DatabaseHandler(**db_config)
-        # Check the query parameter
-        checked = request.args.get('checked')
-        if checked == 'true':
-            parts_data = db_handler.get_credited_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="yes", all_companies = all_companies, admin_name = session.get('username'), account_numbers = account_numbers)
-        else:
-            parts_data = db_handler.get_parts_data()
-            return render_template('parts.html', parts=parts_data, checked="no", all_companies = all_companies, admin_name = session.get('username'), account_numbers = account_numbers)
-    except Exception as e:
-        return f"Error: {str(e)}"
+# @app.route('/parts', methods=['GET','POST'])
+# def parts_table():
+#     if 'user_id' not in session:
+#         return redirect('login')
+#     db_handler = DatabaseHandler(**db_config)
+#     all_companies = db_handler.get_all_company_with_acccount_no()
+#     db_handler = DatabaseHandler(**db_config)
+#     account_numbers = db_handler.get_all_account_number()
+#     try:
+#         db_handler = DatabaseHandler(**db_config)
+#         # Check the query parameter
+#         checked = request.args.get('checked')
+#         if checked == 'true':
+#             parts_data = db_handler.get_credited_parts_data()
+#             return render_template('parts.html', parts=parts_data, checked="yes", all_companies = all_companies, admin_name = session.get('username'), account_numbers = account_numbers)
+#         else:
+#             parts_data = db_handler.get_parts_data()
+#             return render_template('parts.html', parts=parts_data, checked="no", all_companies = all_companies, admin_name = session.get('username'), account_numbers = account_numbers)
+#     except Exception as e:
+#         return f"Error: {str(e)}"
 
 
 @app.route('/testing/edit/<part_id>', methods=['GET','POST'])
