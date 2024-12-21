@@ -107,8 +107,12 @@ def filter_parts():
     filter_type = request.json.get('filter_type', 'no_filter')
     filter_value = request.json.get('filter_value', '')
     print(f"filer type: {filter_type}, filervalue: {filter_value}")
-
-    results = db_handler.get_filtered_data(filter_type, filter_value)
+    if filter_type == 'date_range':
+        from_date = filter_value.get('from')
+        to_date = filter_value.get('to')
+        results = db_handler.get_filtered_by_date_range(from_date, to_date)
+    else:
+        results = db_handler.get_filtered_data(filter_type, filter_value)
     #print(results)
     return {"data": results}
 

@@ -96,7 +96,38 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
-
+    def get_filtered_by_date_range(self, from_date, to_date):
+        """
+        Fetch parts data filtered by a date range.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            query = """
+                SELECT 
+                    p.id, p.partname, p.quantity, p.reason, 
+                    c.accountNumber, c.company, p.unique_id, 
+                    u.name AS added_by, p.credited, p.created_at, p.updated_at
+                FROM 
+                    parts p
+                JOIN 
+                    users u ON p.user_id = u.id
+                JOIN 
+                    customers c ON p.customer_id = c.id
+                WHERE 
+                    p.created_at BETWEEN %s AND %s
+                ORDER BY 
+                    p.created_at DESC
+            """
+            cursor.execute(query, (from_date, to_date))
+            results = cursor.fetchall()
+            return results
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
     
     def get_parts_data(self, per_page, offset):
         """
