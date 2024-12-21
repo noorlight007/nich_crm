@@ -239,7 +239,7 @@
         const deleteButton = document.querySelector('[id^="delete_part"]');
         const modal = document.getElementById("modal-delete");
         const alertDiv = document.getElementById('alert-show');
-        const modalId = `#modal-update`; // Modal ID
+        const modalId = `#modal-delete`; // Modal ID
         // Add click event listener to the delete button
         deleteButton.addEventListener("click", async () => {
             const partId = deleteButton.id.replace("delete_part", ""); // Extract part ID from button ID
