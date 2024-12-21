@@ -111,6 +111,17 @@ def filter_parts():
         from_date = filter_value.get('from')
         to_date = filter_value.get('to')
         results = db_handler.get_filtered_by_date_range(from_date, to_date)
+    if filter_type == 'live_search':
+        # Fetch all parts from the database
+        parts = db_handler.get_filtered_data("no_filter", "")  # Replace with your database query logic
+
+        # Filter parts by excluding column 8 (index 7) and matching the query
+        filtered_parts = [
+            part for part in parts
+            if any(filter_value in str(part[i]).lower() for i in range(len(part)) if i != 7)
+        ]
+
+        return jsonify({'data': filtered_parts})
     else:
         results = db_handler.get_filtered_data(filter_type, filter_value)
     #print(results)
