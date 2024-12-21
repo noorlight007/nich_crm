@@ -293,8 +293,8 @@ class DatabaseHandler:
                 "id_desc": "ORDER BY id DESC",
                 "account_desc": "ORDER BY accountNumber DESC",
                 "account_asc": "ORDER BY accountNumber ASC",
-                "username_asc": "ORDER BY usernameNumber ASC",
-                "username_desc": "ORDER BY usernameNumber DESC",
+                "username_asc": "ORDER BY username ASC",
+                "username_desc": "ORDER BY username DESC",
                 "company_asc": "ORDER BY company ASC",
                 "company_desc": "ORDER BY company DESC",
                 "created_at_asc": "ORDER BY created_at ASC",
@@ -307,6 +307,7 @@ class DatabaseHandler:
             cursor.execute(final_query)
 
             results = cursor.fetchall()
+            print(results)
             return results
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
