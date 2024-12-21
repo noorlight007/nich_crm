@@ -284,7 +284,7 @@ class DatabaseHandler:
             # Dynamically build the query based on filter
             base_query = """
                 SELECT 
-                    SELECT id, accountNumber, username, company, created_at, updated_at
+                    id, accountNumber, username, company, created_at, updated_at
                 FROM 
                     customers
             """
