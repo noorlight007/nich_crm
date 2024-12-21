@@ -274,6 +274,47 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
     
+    def get_filtered_customer_data(self,filter_type , filter_value):
+        """
+        Fetch parts data with related user and customer information, ordered by `updated_at` descending.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            # Dynamically build the query based on filter
+            base_query = """
+                SELECT 
+                    SELECT id, accountNumber, username, company, created_at, updated_at
+                FROM 
+                    customers
+            """
+            filters = {
+                "id_asc": "ORDER BY id ASC ",
+                "id_desc": "ORDER BY id DESC",
+                "account_desc": "ORDER BY accountNumber DESC",
+                "account_asc": "ORDER BY accountNumber ASC",
+                "username_asc": "ORDER BY usernameNumber ASC",
+                "username_desc": "ORDER BY usernameNumber DESC",
+                "company_asc": "ORDER BY company ASC",
+                "company_desc": "ORDER BY company DESC",
+                "created_at_asc": "ORDER BY created_at ASC",
+                "created_at_desc": "ORDER BY created_at DESC"
+            }
+
+            query_filter = filters.get(filter_type, "ORDER BY updated_at DESC")
+
+            final_query = base_query + f" {query_filter}"
+            cursor.execute(final_query)
+
+            results = cursor.fetchall()
+            return results
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
     def get_all_company_with_acccount_no(self):
         """
         Fetch customer data with optional start and end to slice the result set.

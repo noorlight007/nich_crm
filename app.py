@@ -116,6 +116,18 @@ def filter_parts():
     #print(results)
     return {"data": results}
 
+@app.route('/filter_customers', methods=['POST'])
+def filter_customers():
+    # Connect to the database
+    db_handler = DatabaseHandler(**db_config)
+    
+    filter_type = request.json.get('filter_type', 'no_filter')
+    filter_value = request.json.get('filter_value', '')
+    print(f"filer type: {filter_type}, filervalue: {filter_value}")
+
+    results = db_handler.get_filtered_customer_data(filter_type, filter_value)
+    return {"data": results}
+
 # @app.route('/parts', methods=['GET','POST'])
 # def parts_table():
 #     if 'user_id' not in session:

@@ -1,0 +1,388 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+
+    <title>Customers - Autoparts</title>
+
+{% endblock %}
+
+{% block style %}
+<style>
+    .table-container {
+        max-height: 300px; /* Adjust the scrollable table height */
+        overflow-y: auto;
+    }
+    .loading { 
+        text-align: center; font-weight: bold; padding: 20px; display: none; 
+    }
+</style>
+{% endblock %}
+
+{% block admin_name %}
+  <div>{{ admin_name }}</div>
+{% endblock %}
+
+{% block content_title %}
+
+<div class="d-flex justify-content-between">
+    <h2 class="page-title">
+        Customers
+    <div id="alert-show">
+        
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block main_content %}
+<!-- Filtering Section -->
+
+
+
+<div class="row">
+    <div class="col-md-1 col-sm-4 mb-1">
+        <div class=" d-flex align-items-center">
+            <a href="javascript:void(0)" class="btn btn-primary btn-pill w-100" data-bs-toggle="modal" data-bs-target="#modal-create-customer">
+              + Add new customer
+            </a>
+            <div class="modal modal-blur fade" id="modal-create-customer" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Add new customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form action="{{ url_for('live_create_customer') }}" method="post" id="create_customer_form">
+                  <div class="modal-body">
+                    <!-- ########## -->
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label class="form-label">Account Number</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="account_number" id="account_number">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-8">
+                        <div class="mb-3">
+                          <label class="form-label">Username</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="username">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-8">
+                        <div class="mb-3">
+                          <label class="form-label">Company Name</label>
+                          <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" name="company_name">
+                          </div>
+                        </div>
+                      </div>                    
+                    </div>
+    
+                    <!-- ####### -->
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                      Cancel
+                    </a>
+                    <button class="btn btn-primary ms-auto" type="submit" id="upload_customer_submit">
+                      <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                      Create & upload
+                    </a>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-12 mb-1">
+        <div class="d-flex align-items-center gap-1">
+            <label for="filter" class="form-label mb-0 me-1">Filter:</label>
+            <select id="filter" class="form-select form-select-sm">
+                <option value="no_filter">No Filter</option>
+                <optgroup label="ID">
+                    <option value="id_asc">Ascending - ID</option>
+                    <option value="id_desc">Descending - ID</option>
+                </optgroup>
+                <optgroup label="Created At">
+                    <option value="created_at_asc">Ascending - Created At</option>
+                    <option value="created_at_desc">Descending - Created At</option>
+                </optgroup>
+                <optgroup label="Account Number">
+                    <option value="account_asc">Ascending - Account Number</option>
+                    <option value="account_desc">Descending - Account Number</option>
+                </optgroup>
+                <optgroup label="Username">
+                    <option value="username_asc">Ascending - Username</option>
+                    <option value="username_desc">Descending - Username</option>
+                </optgroup>
+                <optgroup label="Company">
+                    <option value="company_asc">Ascending - Company</option>
+                    <option value="company_desc">Descending - Company</option>
+                </optgroup>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+      <div class="input-icon">
+          <input type="text" id="all_search" class="form-control form-control-rounded form-control-sm" placeholder="Search…">
+          <span class="input-icon-addon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/>
+                  <path d="M21 21l-6 -6"/>
+              </svg>
+          </span>
+      </div>
+    </div>
+</div>
+<!-- Table -->
+<div class="table-container">
+    <div class="loading" id="loading" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Account Number</th>
+                <th>Username</th>
+                <th>Company</th>
+                <th>Created at</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="customers-table-body">
+            <!-- Rows will be populated here -->
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block js_content %}
+<!-- JavaScript -->
+<script>
+    document.getElementById('filter').addEventListener('change', function () {
+        const filterType = this.value;
+        const reason = this.options[this.selectedIndex].getAttribute('data-reason') || '';
+
+        const tableBody = document.getElementById('customers-table-body');
+        const loading = document.getElementById('loading');
+
+        // Show loading animation
+        tableBody.innerHTML = '';
+        loading.style.display = 'block';
+
+        fetch('/filter_customers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filter_type: filterType, filter_value: reason })
+        })
+        .then(response => response.json())
+        .then(data => {
+            loading.style.display = 'none';
+            if (data.error) {
+                tableBody.innerHTML = `<tr><td colspan="11">Error: ${data.error}</td></tr>`;
+            } else {
+                tableBody.innerHTML = data.data.map(part => `
+                    <tr>
+                  <td>${customer[0]}</td>
+                  <td>${customer[1]}</td>
+                  <td>${customer[2]}</td>
+                  <td>${customer[3]}</td>
+                  <td>${new Date(customer[4]).toLocaleString()}</td>
+                  <td><div class="btn-list flex-nowrap">
+                              <a href="#" class="btn">
+                                  Edit
+                              </a>
+                          </div></td>
+              `).join('');
+            }
+        });
+    });
+</script>
+
+
+
+<!-- Auto loading js script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const loadingElement = document.getElementById('loading');
+      const tableBody = document.querySelector('#customers-table-body');
+      
+      // Automatically fetch data with "No Filter" on page load
+      const filterType = 'no_filter'; // Default filter type
+      const filterValue = '';         // No specific value for "No Filter"
+  
+      // Prepare the request body
+      const requestBody = {
+          filter_type: filterType,
+          filter_value: filterValue
+      };
+  
+      // Fetch data on page load
+      fetchData(requestBody);
+
+      // Function to fetch data and populate the table
+      function fetchData(requestBody) {
+          loadingElement.style.display = 'block'; // Show the loading animation
+          tableBody.innerHTML = ''; // Clear table data
+  
+          fetch('/filter_customers', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(requestBody)
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Data fetched:', data);
+              populateTable(data.data); // Update the table with received data
+          })
+          .catch(error => {
+              console.error('Error fetching data:', error);
+          })
+          .finally(() => {
+              loadingElement.style.display = 'none'; // Hide the loading animation
+          });
+      }
+  
+      // Function to populate the table with data
+      function populateTable(data) {
+          tableBody.innerHTML = ''; // Clear existing rows
+          data.forEach(customer => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                  <td>${customer[0]}</td>
+                  <td>${customer[1]}</td>
+                  <td>${customer[2]}</td>
+                  <td>${customer[3]}</td>
+                  <td>${new Date(customer[4]).toLocaleString()}</td>
+                  <td><div class="btn-list flex-nowrap">
+                              <a href="#" class="btn">
+                                  Edit
+                              </a>
+                          </div></td>
+              `;
+              tableBody.appendChild(row);
+          });
+      }
+  });
+</script>
+
+<!-- Include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Live Search Script -->
+<script>
+  $(document).ready(function () {
+      $('#all_search').on('keyup', function () {
+          let query = $(this).val().toLowerCase();
+  
+          // Iterate through each table row
+          $('#customers-table-body tr').each(function () {
+              let row = $(this);
+              let match = false;
+  
+              // Iterate through each column except the 8th (index 7)
+              row.find('td').each(function (index) {
+                  if (index !== 5) { // Exclude column 8
+                      if ($(this).text().toLowerCase().includes(query)) {
+                          match = true;
+                          return false; // Exit loop once a match is found
+                      }
+                  }
+              });
+  
+              // Toggle row visibility based on match
+              if (match) {
+                  row.show();
+              } else {
+                  row.hide();
+              }
+          });
+      });
+  });
+  </script>
+
+
+<script>
+    document.getElementById('create_customer_form').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const form = event.target;
+    console.log(form)
+    const formData = new FormData(form);
+    const submitButton = document.getElementById('upload_customer_submit');
+    const modal = document.getElementById("modal-delete");
+    const alertDiv = document.getElementById('alert-show');
+
+    // Disable the button to prevent multiple submissions
+    submitButton.disabled = true;
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+
+        const resultText = await response.text();
+        const bootstrapModal = bootstrap.Modal.getInstance(modal);
+        bootstrapModal.hide();
+        if (resultText.status == 'success') {
+            
+            // Show success alert
+                    alertDiv.innerHTML = `
+                        <div class="alert alert-success" role="alert">
+                            ${resultText.message}
+                        </div>`;
+                    // Automatically hide the alert after 4 seconds
+                    setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                    }, 4000);
+            // Refresh the page after showing the alert
+            setTimeout(function() {
+                  window.location.href = document.referrer;  // Reload the page
+              }, 2000);
+        } else {
+          
+            // Show success alert
+            alertDiv.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            ${resultText.message}
+                        </div>`;
+                    // Automatically hide the alert after 4 seconds
+                    setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                    }, 4000);
+        }
+    } catch (error) {
+        
+        // Show success alert
+        alertDiv.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            ${resultText.message}
+                        </div>`;
+                    // Automatically hide the alert after 4 seconds
+                    setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                    }, 4000);
+    } finally {
+        // Re-enable the button
+        submitButton.disabled = false;
+    }
+});
+</script>
+
+{% endblock %}
+</body>
+</html>
