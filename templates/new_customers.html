@@ -200,7 +200,7 @@
                   <td>${customer[1]}</td>
                   <td>${customer[2]}</td>
                   <td>${customer[3]}</td>
-                  <td>${new Date(customer[4]).toLocaleString()}</td>
+                  <td>${customer[4] === "0000-00-00 00:00:00" ? "-" : new Date(customer[4]).toLocaleString()}</td>
                   <td><div class="btn-list flex-nowrap">
                               <a href="#" class="btn">
                                   Edit
@@ -266,7 +266,7 @@
                   <td>${customer[1]}</td>
                   <td>${customer[2]}</td>
                   <td>${customer[3]}</td>
-                  <td>${new Date(customer[4]).toLocaleString()}</td>
+                  <td>${customer[4] === "0000-00-00 00:00:00" ? "-" : new Date(customer[4]).toLocaleString()}</td>
                   <td><div class="btn-list flex-nowrap">
                               <a href="#" class="btn">
                                   Edit
