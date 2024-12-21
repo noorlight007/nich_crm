@@ -101,6 +101,8 @@ def tests():
 
 @app.route('/filter_parts', methods=['POST'])
 def filter_parts():
+    if 'user_id' not in session:
+        return redirect('login')
     # Connect to the database
     db_handler = DatabaseHandler(**db_config)
     
@@ -118,6 +120,8 @@ def filter_parts():
 
 @app.route('/filter_customers', methods=['POST'])
 def filter_customers():
+    if 'user_id' not in session:
+        return redirect('login')
     # Connect to the database
     db_handler = DatabaseHandler(**db_config)
     
@@ -344,7 +348,13 @@ def mark_part(part_id):
         db_handler.close()
 
 
-@app.route('/customers/<state_count>')
+@app.route('/customers')
+def customers_route():
+    if 'user_id' not in session:
+        return redirect('login')
+    return render_template("new_customers.html", admin_name = session.get('username'))
+
+@app.route('/customers_edit/<state_count>')
 def customers_table(state_count):
     if 'user_id' not in session:
         return redirect('login')
