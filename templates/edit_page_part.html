@@ -238,7 +238,7 @@
         // Get the delete button and modal
         const deleteButton = document.querySelector('[id^="delete_part"]');
         const modal = document.getElementById("modal-delete");
-        const alertDiv = document.getElementById("alert-show");
+        const alertDiv = document.getElementById('alert-show');
 
         // Add click event listener to the delete button
         deleteButton.addEventListener("click", async () => {
@@ -248,9 +248,10 @@
                 // Send DELETE request to Flask route
                 const response = await fetch(`/delete-part/${partId}`, { method: 'DELETE' });
 
-                if (response.ok) {
-                    const data = await response.json();
+                const data = await response.json();
 
+                if (data.status == 'success') {
+                    
                     // Show success alert
                     alertDiv.innerHTML = `
                         <div class="alert alert-success" role="alert">
