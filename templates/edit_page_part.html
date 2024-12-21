@@ -239,7 +239,7 @@
         const deleteButton = document.querySelector('[id^="delete_part"]');
         const modal = document.getElementById("modal-delete");
         const alertDiv = document.getElementById('alert-show');
-
+        const modalId = `#modal-update`; // Modal ID
         // Add click event listener to the delete button
         deleteButton.addEventListener("click", async () => {
             const partId = deleteButton.id.replace("delete_part", ""); // Extract part ID from button ID
@@ -251,7 +251,7 @@
                 const data = await response.json();
 
                 if (data.status == 'success') {
-                    
+                    $(modalId).modal('hide');
                     // Show success alert
                     alertDiv.innerHTML = `
                         <div class="alert alert-success" role="alert">
@@ -261,10 +261,11 @@
                     setTimeout(() => {
                         alertDiv.innerHTML = '';
                     }, 4000);
-                    window.location.href = "http://88.208.224.141:8000/testing";
+                    setTimeout(function() {
+                          window.location.href = "http://88.208.224.141:8000/testing";  // Reload the page
+                      }, 2000);
                 } else {
-                    const errorData = await response.json();
-
+                    $(modalId).modal('hide');
                     // Show error alert
                     alertDiv.innerHTML = `
                         <div class="alert alert-danger" role="alert">
@@ -276,6 +277,7 @@
                     }, 4000);
                 }
             } catch (error) {
+                $(modalId).modal('hide');
                 // Handle fetch errors
                 alertDiv.innerHTML = `
                     <div class="alert alert-danger" role="alert">
