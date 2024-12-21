@@ -370,7 +370,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
       const loadingElement = document.getElementById('loading');
-      const searchInput = document.getElementById('all_search');
       const tableBody = document.querySelector('#parts-table-body');
       const fromDateInput = document.getElementById('from-date');
       const toDateInput = document.getElementById('to-date');
@@ -392,36 +391,6 @@
   
       // Fetch data on page load
       fetchData(requestBody);
-      
-      // searching live
-      searchInput.addEventListener('input', function () {
-          const query = searchInput.value.trim().toLowerCase();
-
-          // Show the loading animation
-          loadingElement.style.display = 'block';
-
-          // Send AJAX request to fetch filtered results
-          fetch('/filter_parts', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                  filter_type: 'live_search',
-                  filter_value: query
-              })
-          })
-          .then(response => response.json())
-          .then(data => {
-              console.log('Live search results:', data);
-              populateTable(data.data); // Populate the table with filtered results
-          })
-          .catch(error => {
-              console.error('Error during live search:', error);
-          })
-          .finally(() => {
-              // Hide the loading animation
-              loadingElement.style.display = 'none';
-          });
-    });
 
       // Function to fetch data and populate the table
       function fetchData(requestBody) {
@@ -597,7 +566,40 @@
   
 </script>
 
+<!-- Include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+<!-- Live Search Script -->
+<script>
+  $(document).ready(function () {
+      $('#all_search').on('keyup', function () {
+          let query = $(this).val().toLowerCase();
+  
+          // Iterate through each table row
+          $('#parts-table-body tr').each(function () {
+              let row = $(this);
+              let match = false;
+  
+              // Iterate through each column except the 8th (index 7)
+              row.find('td').each(function (index) {
+                  if (index !== 8) { // Exclude column 8
+                      if ($(this).text().toLowerCase().includes(query)) {
+                          match = true;
+                          return false; // Exit loop once a match is found
+                      }
+                  }
+              });
+  
+              // Toggle row visibility based on match
+              if (match) {
+                  row.show();
+              } else {
+                  row.hide();
+              }
+          });
+      });
+  });
+  </script>
 
 
 {% endblock %}
