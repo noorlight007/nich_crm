@@ -239,10 +239,11 @@
         const deleteButton = document.querySelector('[id^="delete_part"]');
         const modal = document.getElementById("modal-delete");
         const alertDiv = document.getElementById('alert-show');
+        const partId = deleteButton.id.replace("delete_part", ""); // Extract part ID from button ID
+
         // Add click event listener to the delete button
         deleteButton.addEventListener("click", async () => {
-            const partId = deleteButton.id.replace("delete_part", ""); // Extract part ID from button ID
-
+            
             try {
                 // Send DELETE request to Flask route
                 const response = await fetch(`/delete-part/${partId}`, { method: 'DELETE' });
@@ -250,9 +251,6 @@
                 const data = await response.json();
 
                 if (data.status == 'success') {
-                    // Close the modal
-                    const bootstrapModal = bootstrap.Modal.getInstance(modal);
-                    bootstrapModal.hide();
                     // Show success alert
                     alertDiv.innerHTML = `
                         <div class="alert alert-success" role="alert">
@@ -266,9 +264,6 @@
                           window.location.href = "http://88.208.224.141:8000/testing";  // Reload the page
                       }, 2000);
                 } else {
-                    // Close the modal
-                    const bootstrapModal = bootstrap.Modal.getInstance(modal);
-                    bootstrapModal.hide();
                     // Show error alert
                     alertDiv.innerHTML = `
                         <div class="alert alert-danger" role="alert">
@@ -280,9 +275,7 @@
                     }, 4000);
                 }
             } catch (error) {
-                // Close the modal
-                const bootstrapModal = bootstrap.Modal.getInstance(modal);
-                bootstrapModal.hide();
+
                 // Handle fetch errors
                 alertDiv.innerHTML = `
                     <div class="alert alert-danger" role="alert">
