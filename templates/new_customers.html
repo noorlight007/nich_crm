@@ -194,7 +194,7 @@
             if (data.error) {
                 tableBody.innerHTML = `<tr><td colspan="11">Error: ${data.error}</td></tr>`;
             } else {
-                tableBody.innerHTML = data.data.map(part => `
+                tableBody.innerHTML = data.data.map(customer => `
                     <tr>
                   <td>${customer[0]}</td>
                   <td>${customer[1]}</td>
@@ -323,7 +323,7 @@
     console.log(form)
     const formData = new FormData(form);
     const submitButton = document.getElementById('upload_customer_submit');
-    const modal = document.getElementById("modal-delete");
+    const modal = document.getElementById("modal-create-customer");
     const alertDiv = document.getElementById('alert-show');
 
     // Disable the button to prevent multiple submissions
