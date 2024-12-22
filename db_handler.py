@@ -842,8 +842,7 @@ class DatabaseHandler:
 
             query = """
                 SELECT 
-                    reason, 
-                    SUM(reason) AS total_occur
+                    reason
                 FROM 
                     parts
                 WHERE 
@@ -853,10 +852,14 @@ class DatabaseHandler:
             """
             cursor.execute(query, (month_start, month_end))
             results = cursor.fetchall()
-            print(results)
-            print()
+            total_occur = dict()
+            for row in results:
+                if row[0] in total_occur:
+                    total_occur[row[0]]+= 1
+                elif row[0] not in total_occur:
+                    total_occur[row[0]] = 1
             # Convert Decimal to int
-            return [{"reason": row[0], "total_occur": int(row[1])} for row in results]
+            return total_occur
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
