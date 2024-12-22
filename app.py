@@ -354,6 +354,16 @@ def customers_route():
         return redirect('login')
     return render_template("new_customers.html", admin_name = session.get('username'))
 
+@app.route('/customer_edit_page/<customer_id>')
+def customer_edit_page(customer_id):
+    if 'user_id' not in session:
+        return redirect('login')
+    db_handler = DatabaseHandler(**db_config)
+
+    customer_data = db_handler.get_customer_by_ID(customer_id)
+    return render_template("edit_customer.html", customer_data = customer_data, admin_name = session.get('username'))
+    
+
 @app.route('/customers_edit/<state_count>')
 def customers_table(state_count):
     if 'user_id' not in session:

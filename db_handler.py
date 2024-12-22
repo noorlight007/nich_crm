@@ -485,6 +485,23 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
     
+    def get_customer_by_ID(self, customer_id):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            query = "SELECT id, accountNumber, company FROM customers WHERE id = %s"
+            cursor.execute(query, (customer_id,))
+            result = cursor.fetchOne()
+            return result if result else None
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
     def get_part_by_partID(self, partID):
         try:
             if not self.connection:

@@ -1,0 +1,273 @@
+<!-- loading the page from base.html -->
+{% extends 'base.html' %}
+
+{% block page_title %}
+
+    <title>Parts - AutoPart</title>
+
+{% endblock %}
+
+{% block style %}
+
+{% block admin_name %}
+  <div>{{ admin_name }}</div>
+{% endblock %}
+
+{% block content_title %}
+    <div class="d-flex justify-content-between">
+        <h2 class="page-title">
+            <a href="{{ url_for('tests') }}">Customers</a> <span class="me-2">></span> <a href="{{ url_for('edit_part_page', part_id= part_info[0]) }}" >Edit part <span class="text-danger">{{ part_info[1] }}</span> </a> 
+        </h2>
+        <div id="alert-show">
+            
+        </div>
+        
+    </div>
+    
+
+{% endblock %}
+
+{% block main_content %}
+<div class="d-flex justify-content-end mb-2">
+    <button class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#modal-delete">Delete Customer</button>
+
+    <div class="modal modal-blur fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+                    
+                    <h3>Are you sure?</h3>
+                    <div class="text-secondary">Do you really want to remove customer <h4>{{ part_info[1] | upper }}</h4></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                    <div class="row">
+                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                            Cancel
+                        </a></div>
+                        <div class="col">
+                            <button class="btn btn-danger w-100" id="delete_part{{ part_info[0] }}">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <form action="{{ url_for('update_part_route', part_id = part_info[0]) }}" method="post" id="edit_part">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-7">
+                  <div class="mb-3">
+                    <label class="form-label">Part Name</label>
+                    <div class="input-group input-group-flat">
+                      <input type="text" class="form-control" name="edited_partname" value="{{ part_info[1] }}" required>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="col-lg-2">
+                  <div class="mb-3">
+                    <label class="form-label">Credited?</label>
+                    {% if part_info[8] == 1 %} 
+                    <select class="form-select" name="edited_credited">
+                    <option value="1" selected>Yes</option>
+                    <option value="2">No</option>
+                    </select>
+                    {% else %}
+                    <select class="form-select" name="edited_credited">
+                    <option value="1">Yes</option>
+                    <option value="2" selected>No</option>
+                    </select>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+                    <div class="input-group input-group-flat">
+                      <input type="text" class="form-control" name="edited_quantity" value="{{ part_info[2] }}" id="quantity" required >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <label class="form-label">Reason</label>
+                    <select class="form-select" name="edited_reason">
+                        <option value="Faulty" {% if part_info[3] == 'Faulty' %} selected {% endif %}>Faulty</option>
+                        <option value="Not required" {% if part_info[3] == 'Not required' %} selected {% endif %}>Not required</option>
+                        <option value="Surcharge" {% if part_info[3] == 'Surcharge' %} selected {% endif %}>Surcharge</option>
+                    </select>
+                  </div>
+                </div>
+            
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <label class="form-label">Unique ID</label>
+                    <div class="input-group input-group-flat">
+                      <input type="text" class="form-control" name="edited_unique_id" value="{{ part_info[6] }}" required>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label class="form-label">Account Number</label>
+                        <select class="form-select" name="edited_account_number">
+                          {% for i in account_numbers %}
+                              <option value="{{ i }}" {% if i == part_info[4] %} selected {% endif %}>
+                                  {{ i }}
+                              </option>
+                          {% endfor %}
+                      </select>
+                      
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mt-2 mb-5">
+            <button type="submit" class="btn btn-primary me-2">Update & Save</button>
+            <a href="#" class="btn btn-light me-2">Cancel</a>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block js_content %}
+
+<script>
+    document.getElementById('edit_part').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Form data
+        const form = event.target;
+        const formData = new FormData(form);
+        const alertDiv = document.getElementById('alert-show');
+
+        // Clear previous alert messages
+        alertDiv.innerHTML = '';
+
+        try {
+            // Send the POST request to the Flask route
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            // Parse the JSON response
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                // Display success alert
+                alertDiv.innerHTML = `
+                    <div class="alert alert-success" role="alert">
+                        ${result.message}
+                    </div>`;
+                // Automatically hide the alert after 4 seconds
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                }, 4000);
+                window.location.href = document.referrer;
+            } else {
+                // Display error alert
+                alertDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        ${result.message}
+                    </div>`;
+                // Automatically hide the alert after 4 seconds
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                }, 4000);
+            }
+
+            
+        } catch (error) {
+            // Handle fetch errors
+            alertDiv.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    Something went wrong! Please try again.
+                </div>`;
+            setTimeout(() => {
+                alertDiv.innerHTML = '';
+            }, 4000);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Get the delete button and modal
+        const deleteButton = document.querySelector('[id^="delete_part"]');
+        const modal = document.getElementById("modal-delete");
+        const alertDiv = document.getElementById('alert-show');
+        const modalId = `#modal-delete`; // Modal ID
+        // Add click event listener to the delete button
+        deleteButton.addEventListener("click", async () => {
+            const partId = deleteButton.id.replace("delete_part", ""); // Extract part ID from button ID
+
+            try {
+                // Send DELETE request to Flask route
+                const response = await fetch(`/delete-part/${partId}`, { method: 'DELETE' });
+
+                const data = await response.json();
+
+                if (data.status == 'success') {
+                    // Close the modal
+                const bootstrapModal = bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide();
+                    // Show success alert
+                    alertDiv.innerHTML = `
+                        <div class="alert alert-success" role="alert">
+                            ${data.message}
+                        </div>`;
+                    // Automatically hide the alert after 4 seconds
+                    setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                    }, 4000);
+                    setTimeout(function() {
+                          window.location.href = "http://88.208.224.141:8000//returned-parts";  // Reload the page
+                      }, 2000);
+                } else {
+                    // Close the modal
+                const bootstrapModal = bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide();
+                    // Show error alert
+                    alertDiv.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            ${errorData.message || "Something went wrong!"}
+                        </div>`;
+                    // Automatically hide the alert after 4 seconds
+                    setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                    }, 4000);
+                }
+            } catch (error) {
+                // Close the modal
+                const bootstrapModal = bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide();
+                // Handle fetch errors
+                alertDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Something went wrong! Please try again.
+                    </div>`;
+                // Automatically hide the alert after 4 seconds
+                setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                    }, 4000);
+            }
+        });
+    });
+</script>
+{% endblock %}
