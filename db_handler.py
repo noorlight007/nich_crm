@@ -847,21 +847,18 @@ class DatabaseHandler:
                     parts
                 WHERE 
                     created_at BETWEEN %s AND %s
-                ORDER BY 
-                    total_occur DESC
             """
             cursor.execute(query, (month_start, month_end))
             results = cursor.fetchall()
             print(results)
-            # total_occur = dict()
-            # for row in results:
-            #     if row[0] in total_occur:
-            #         total_occur[row[0]]+= 1
-            #     elif row[0] not in total_occur:
-            #         total_occur[row[0]] = 1
-            # # Convert Decimal to int
-            # return total_occur
-            return results
+            total_occur = dict()
+            for row in results:
+                if row[0] in total_occur:
+                    total_occur[row[0]]+= 1
+                elif row[0] not in total_occur:
+                    total_occur[row[0]] = 1
+            # Convert Decimal to int
+            return total_occur
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
