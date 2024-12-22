@@ -379,7 +379,7 @@ class DatabaseHandler:
                 if last_active:
                     time_diff = now - last_active
                     hours = time_diff.total_seconds() // 3600
-                    users_with_hours.append((user, int(hours)))
+                    users_with_hours.append(int(hours))
             sorted_list = sorted(users_with_hours, reverse=True)
             print(sorted_list)
             return sorted_list[0]
