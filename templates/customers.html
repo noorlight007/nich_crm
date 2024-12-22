@@ -114,16 +114,6 @@
               </div>
             </div>
         </div>
-        {% if state %}
-        <div class="d-flex flex-row">
-            <a href="{{ url_for('customers_table', state_count = 'first_half') }}" class="btn btn-sm {% if state =='first_half' %} btn-ghost-primary {% else %} btn-ghost-light {% endif %} active w-100 me-1">
-                First Half Data
-              </a>
-              <a href="{{ url_for('customers_table', state_count = 'last_half') }}" class="btn btn-sm {% if state =='last_half' %} btn-ghost-primary {% else %} btn-ghost-light {% endif %}  active w-100">
-                Last Half Data
-              </a>
-        </div>
-        {% endif %}
     </div>
     <div class="card">
       <div class="table-responsive p-2">
