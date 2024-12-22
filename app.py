@@ -197,9 +197,10 @@ def update_part_route(part_id):
 def update_customer(customer_id):
     if 'user_id' not in session:
         return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
-
+    username = ""
     accountNumber = request.form.get('edited_account_number')
-    username = request.form.get('edited_username')
+    if request.form.get('edited_username'):
+        username = request.form.get('edited_username')
     company = request.form.get('edited_company')
 
     try:
