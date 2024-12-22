@@ -5,7 +5,7 @@ db_config = {
     "host": "localhost",
     "user": "developer_admin",
     "password": "6984125oO!",
-    "db_name": "ap_autopart"
+    "db_name": "AutoParts"
 }
 
 db_handler = DatabaseHandler(**db_config)
