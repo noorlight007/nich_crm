@@ -338,7 +338,7 @@
         const resultText = await response.text();
         const bootstrapModal = bootstrap.Modal.getInstance(modal);
         bootstrapModal.hide();
-        if (resultText.status == 'success') {
+        if (resultText['status'] == 'success') {
             
             // Show success alert
                     alertDiv.innerHTML = `
