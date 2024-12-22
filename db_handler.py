@@ -346,11 +346,43 @@ class DatabaseHandler:
             self.ensure_connection()
             cursor = self.connection.cursor()
             query = """
-                SELECT id, name, optCode, pin, email, email_verified_at, created_at, updated_at
+                SELECT id, name, optCode, pin, email, email_verified_at, created_at, updated_at, last_active
             """
             cursor.execute(query)
             results = cursor.fetchall()
             return results
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
+    def get_last_active_hour(self):
+        """
+        Fetch all user data from the 'users' table.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            query = """
+                SELECT last_active from users ORDER BY last_active DESC
+            """
+            cursor.execute(query)
+            results = cursor.fetchall()
+            # Calculate time difference in hours
+            now = datetime.now()
+            users_with_hours = []
+
+            for user in results:
+                last_active = user[0]  # Assuming last_active is the last column in the SELECT query
+                if last_active:
+                    time_diff = now - last_active
+                    hours = time_diff.total_seconds() // 3600
+                    users_with_hours.append((user, int(hours)))
+            sorted_list = sorted(users_with_hours, reverse=True)
+            print(sorted_list)
+            return sorted_list[0]
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
