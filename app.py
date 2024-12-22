@@ -314,9 +314,9 @@ def delete_customer(customer_id):
     try:
         # Attempt to delete the customer
         if db_handler.delete_customer(customer_id):
-            return jsonify({"status": "success", "message": "Part deleted successfully."}), 200
+            return jsonify({"status": "success", "message": "Customer deleted successfully."}), 200
         else:
-            return jsonify({"status": "error", "message": "Part not found."}), 404
+            return jsonify({"status": "error", "message": "Customer not found."}), 404
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
     finally:
