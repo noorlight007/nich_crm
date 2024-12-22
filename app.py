@@ -86,8 +86,14 @@ def index():
 
     db_handler = DatabaseHandler(**db_config)
     last_active_hour = db_handler.get_last_active_hour()
-
-    return render_template('index.html', last_active_hour = last_active_hour, goods_salary= round(abs(goods_salary), 2), total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count, total_returned_today = total_returned_today)
+    db_handler = DatabaseHandler(**db_config)
+    sum_reasons = db_handler.get_sum_reasons()
+    reason_label = []
+    reason_count = []
+    for key, val in sum_reasons.items():
+        reason_label.append(key)
+        reason_count.append(val)
+    return render_template('index.html',reason_label = reason_label, reason_count = reason_count, last_active_hour = last_active_hour, goods_salary= round(abs(goods_salary), 2), total_parts=total_parts, total_customers=total_customers, total_admins = total_admins, admin_name = session.get('username'), cr_values = cr_values, total_values_company = total_values_company, total_values_count = total_values_count, total_returned_today = total_returned_today)
 
 @app.route('/settings')
 def settings():

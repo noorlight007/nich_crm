@@ -326,4 +326,57 @@
   // @formatter:on
 </script>
 
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Passing Python cr_values to JavaScript
+    const key_reasons = {{ reason_label|tojson }};
+    const key_vals = {{ reason_count|tojson }};
+
+    // Initialize the ApexChart
+    window.ApexCharts && (new ApexCharts(document.getElementById('reason-chart-demo-pie'), {
+      chart: {
+        type: "donut",
+        fontFamily: 'inherit',
+        height: 278,
+        sparkline: {
+          enabled: true
+        },
+        animations: {
+          enabled: true
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      series: key_vals, // Use the dynamically passed cr_values list
+      labels: key_reasons,
+      tooltip: {
+        theme: 'dark'
+      },
+      grid: {
+        strokeDashArray: 4,
+      },
+      colors: [tabler.getColor("danger"), tabler.getColor("primary")],
+      legend: {
+        show: true,
+        position: 'bottom',
+        offsetY: 12,
+        markers: {
+          width: 10,
+          height: 10,
+          radius: 100,
+        },
+        itemMargin: {
+          horizontal: 8,
+          vertical: 8
+        },
+      },
+      tooltip: {
+        fillSeriesColor: false
+      },
+    })).render();
+  });
+</script>
+
 {% endblock %}
