@@ -271,7 +271,7 @@ def live_create_customer():
             username=username,
             company=company
         )
-        return jsonify({'status': 'success', 'message': 'Customer created successfully'}), 200
+        return redirect(request.referrer)
     except Exception as e:
         return jsonify({'status': 'error', 'message': f"Error creating customer: {str(e)}"}), 500
     
