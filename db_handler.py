@@ -853,6 +853,8 @@ class DatabaseHandler:
             """
             cursor.execute(query, (month_start, month_end))
             results = cursor.fetchall()
+            print(results)
+            print()
             # Convert Decimal to int
             return [{"reason": row[0], "total_occur": int(row[1])} for row in results]
         except MySQLdb.MySQLError as e:
