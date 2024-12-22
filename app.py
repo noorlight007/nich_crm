@@ -47,6 +47,8 @@ def login():
                 # Set session data
                 session['user_id'] = user[0]
                 session['username'] = user[1]
+                db_handler = DatabaseHandler(**db_config)
+                db_handler.update_last_acitve(user[0])
                 return redirect(url_for('index'))  # Redirect to a dashboard or home page
             else:
                 return render_template('signin.html', error="Invalid OPT Code or PIN.")

@@ -861,6 +861,35 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+
+    def update_last_acitve(self, user_id):
+        """
+        Update user details in the database.
+        """
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+
+            # Update query
+            query = """
+                UPDATE users
+                SET 
+                    last_active = NOW()
+                WHERE 
+                    id = %s
+            """
+            cursor.execute(query, (user_id,))
+            self.connection.commit()
+
+            # Return success status
+            return cursor.rowcount > 0
+        except self.MySQLdb.MySQLError as e:
+            print(f"Error updating part: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
     def close(self):
         """
         Close the database connection safely.
