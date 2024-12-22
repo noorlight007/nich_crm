@@ -198,7 +198,7 @@
                   <td>${customer[3]}</td>
                   <td>${customer[4] === "0000-00-00 00:00:00" ? "-" : new Date(customer[4]).toLocaleString()}</td>
                   <td><div class="btn-list flex-nowrap">
-                              <a href="{{ 'customer_edit_page', customer_id = ''}}${customer[0]}" class="btn">
+                              <a href="{{ 'customer_edit_page', customer_id=''}}${customer[0]}" class="btn">
                                   Edit
                               </a>
                           </div></td>
@@ -264,7 +264,7 @@
                   <td>${customer[3]}</td>
                   <td>${new Date(customer[4]).toLocaleString() === "1/1/1970, 6:00:00 AM" ? "-" : new Date(customer[4]).toLocaleString()}</td>
                   <td><div class="btn-list flex-nowrap">
-                              <a href="#" class="btn">
+                              <a href="{{ 'customer_edit_page', customer_id=''}}${customer[0]}" class="btn">
                                   Edit
                               </a>
                           </div></td>
