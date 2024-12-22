@@ -14,7 +14,7 @@
 {% block content_title %}
     <div class="d-flex justify-content-between">
         <h2 class="page-title">
-            <a href="{{ url_for('tests') }}">Customers</a> <span class="me-2">></span> <a href="{{ url_for('edit_part_page', part_id= customer_data[0]) }}" >Edit customer <span class="text-danger">{{ customer_data[3] }}</span> </a> 
+            <a href="{{ url_for('customers_route') }}">Customers</a> <span class="me-2">></span> <a href="{{ url_for('customer_edit_page', customer_id= customer_data[0]) }}" >Edit customer <span class="text-danger">{{ customer_data[3] }}</span> </a> 
         </h2>
         <div id="alert-show">
             
