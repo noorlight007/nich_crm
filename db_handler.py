@@ -848,8 +848,6 @@ class DatabaseHandler:
                     parts
                 WHERE 
                     created_at BETWEEN %s AND %s
-                GROUP BY 
-                    c.company
                 ORDER BY 
                     total_occur DESC
             """
