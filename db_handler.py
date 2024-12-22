@@ -491,7 +491,7 @@ class DatabaseHandler:
                 self.connect()
 
             cursor = self.connection.cursor()
-            query = "SELECT id, accountNumber, company FROM customers WHERE id = %s"
+            query = "SELECT id, accountNumber, username, company FROM customers WHERE id = %s"
             cursor.execute(query, (customer_id,))
             result = cursor.fetchone()
             return result if result else None
