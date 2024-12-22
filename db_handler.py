@@ -829,6 +829,41 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
+    def get_sum_reasons(self):
+
+        try:
+            self.ensure_connection()
+            cursor = self.connection.cursor()
+            # Calculate the start and end of the current month
+            now = datetime.now()
+            month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            next_month = month_start + timedelta(days=32)
+            month_end = next_month.replace(day=1) - timedelta(seconds=1)
+
+            query = """
+                SELECT 
+                    reason, 
+                    SUM(reason) AS total_occur
+                FROM 
+                    parts
+                WHERE 
+                    created_at BETWEEN %s AND %s
+                GROUP BY 
+                    c.company
+                ORDER BY 
+                    total_occur DESC
+            """
+            cursor.execute(query, (month_start, month_end))
+            results = cursor.fetchall()
+            # Convert Decimal to int
+            return [{"reason": row[0], "total_occur": int(row[1])} for row in results]
+        except MySQLdb.MySQLError as e:
+            print(f"Error executing query: {e}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+
 
     # ap_autopart database
     def get_goods_salary(self):

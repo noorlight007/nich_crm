@@ -9,6 +9,6 @@ db_config = {
 }
 
 db_handler = DatabaseHandler(**db_config)
-account_numbers = db_handler.get_goods_salary()
+account_numbers = db_handler.get_sum_reasons()
 
 print(account_numbers)
