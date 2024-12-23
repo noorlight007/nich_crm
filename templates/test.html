@@ -409,7 +409,8 @@
       });
       function filterTable(filterType) {
         // Show the loading spinner
-        document.getElementById('loading').style.display = 'block';
+        loadingElement.style.display = 'block'; // Show the loading animation
+        tableBody.innerHTML = ''; // Clear table data
 
         fetch('/filter-parts', {
             method: 'POST',
