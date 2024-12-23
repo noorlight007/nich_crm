@@ -205,7 +205,7 @@
       <div class="d-flex align-items-between">
         <button class="btn btn-sm btn-outline-success me-1" id="filter-today">Today</button>
         <button class="btn btn-sm btn-outline-success me-1" id="filter-yesterday">Yesterday</button> 
-        <button class="btn btn-sm btn-outline-success me-1" id="filter-month">This month</button> 
+        <button class="btn btn-sm btn-outline-success me-1" id="filter-this-month">This month</button> 
       </div>
     </div>
     <div class="col-md-2">
@@ -610,152 +610,44 @@
 
 
 <script>
-  function loadPartsData(filterType = null) {
-    const loadingElement = document.getElementById('loading');
-    const tableBody = document.getElementById('parts-table-body');
+  document.addEventListener('DOMContentLoaded', function () {
+    const tableBody = document.querySelector('#parts-table-body'); // Assuming your table body has this ID
 
-    // Show the loading spinner
-    loadingElement.style.display = 'block';
+    // Helper function to filter rows by date
+    function filterByDate(range) {
+        const rows = tableBody.querySelectorAll('tr');
+        const now = new Date();
 
-    // Prepare the request payload
-    const requestData = filterType ? { filter_type: filterType } : {};
+        rows.forEach(row => {
+            const createdAtCell = row.querySelector('td:nth-child(8)'); // Adjust the index to match the "created_at" column
+            const createdAt = new Date(createdAtCell.textContent.trim());
 
-    // Fetch data from the server
-    fetch('/filter-parts', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(response.message);
+            let showRow = false;
+            switch (range) {
+                case 'today':
+                    showRow = createdAt.toDateString() === now.toDateString();
+                    break;
+                case 'yesterday':
+                    const yesterday = new Date(now);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    showRow = createdAt.toDateString() === yesterday.toDateString();
+                    break;
+                case 'this-month':
+                    showRow = createdAt.getFullYear() === now.getFullYear() && createdAt.getMonth() === now.getMonth();
+                    break;
+                default:
+                    showRow = true;
             }
-            return response.json();
-        })
-        .then((data) => {
-            // Clear the existing table rows
-            tableBody.innerHTML = '';
 
-            // Populate table with new data
-            data.forEach((part) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-details${part[0]}">
-                            ${part[1]}
-                        </a>
-                    </td>
-                    <td>${part[2]}</td>
-                    <td>${part[3]}</td>
-                    <td>${part[4]}</td>
-                    <td>${part[6]}</td>
-                    <td>${part[7]}</td>
-                    <td>${part[8] ? 'Yes' : 'No'}</td>
-                    <td>${new Date(part[9]).toLocaleString()}</td>
-                    <td>
-                        <div class="btn-list flex-nowrap">
-                            <a href="/edit-part/${part[0]}" class="btn btn-sm btn-primary">
-                                Edit
-                            </a>
-                        </div>
-                    </td>
-                `;
-
-                // Append modal for this part
-                const modal = `
-                    <div class="modal modal-blur fade" id="modal-details${part[0]}" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Part Details - <strong>${part[1]}</strong></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="datagrid">
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Part Name</div>
-                                                    <div class="datagrid-content">${part[1]}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Quantity</div>
-                                                    <div class="datagrid-content">${part[2]}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Reason</div>
-                                                    <div class="datagrid-content">${part[3]}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Account Number</div>
-                                                    <div class="datagrid-content">${part[4]}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Company</div>
-                                                    <div class="datagrid-content">${part[5]}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Unique ID</div>
-                                                    <div class="datagrid-content">${part[6]}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Added By</div>
-                                                    <div class="datagrid-content">${part[7]}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Credited</div>
-                                                    <div class="datagrid-content">${part[8] ? 'Yes' : 'No'}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Created at</div>
-                                                    <div class="datagrid-content">${new Date(part[9]).toLocaleString()}</div>
-                                                </div>
-                                                <div class="datagrid-item">
-                                                    <div class="datagrid-title">Updated at</div>
-                                                    <div class="datagrid-content">${new Date(part[10]).toLocaleString()}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                tableBody.appendChild(row);
-                document.body.insertAdjacentHTML('beforeend', modal);
-            });
-        })
-        .catch((error) => {
-            console.error('Error loading parts data:', error);
-        })
-        .finally(() => {
-            // Hide the loading spinner
-            loadingElement.style.display = 'none';
+            // Toggle row visibility
+            row.style.display = showRow ? '' : 'none';
         });
-}
+    }
 
-// Attach event listeners to filter buttons
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('filter-today').addEventListener('click', function () {
-        loadPartsData('today');
-    });
-
-    document.getElementById('filter-yesterday').addEventListener('click', function () {
-        loadPartsData('yesterday');
-    });
-
-    document.getElementById('filter-month').addEventListener('click', function () {
-        loadPartsData('this_month');
-    });
+    // Event listeners for the buttons
+    document.getElementById('filter-today').addEventListener('click', () => filterByDate('today'));
+    document.getElementById('filter-yesterday').addEventListener('click', () => filterByDate('yesterday'));
+    document.getElementById('filter-this-month').addEventListener('click', () => filterByDate('this-month'));
 });
 
 </script>
