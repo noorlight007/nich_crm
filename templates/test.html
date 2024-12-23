@@ -395,7 +395,40 @@
           filter_value: filterValue,
           page: currentPage
       };
-  
+
+      const buttons = {
+        'filter-today': 'today',
+        'filter-yesterday': 'yesterday',
+        'filter-month': 'this_month'
+      };
+
+      Object.keys(buttons).forEach(buttonId => {
+          document.getElementById(buttonId).addEventListener('click', function () {
+              filterTable(buttons[buttonId]);
+          });
+      });
+      function filterTable(filterType) {
+        // Show the loading spinner
+        document.getElementById('loading').style.display = 'block';
+
+        fetch('/filter-parts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ filter_type: filterType })
+        })
+        .then(response => response.json())
+        .then(data => {
+              console.log('Data fetched:', data);
+              populateTable(data.data); // Update the table with received data
+          })
+        .catch(error => console.error('Error:', error))
+        .finally(() => {
+            // Hide the loading spinner
+            loadingElement.style.display = 'none'; // Hide the loading animation
+        });
+      }
       // Fetch data on page load
       fetchData(requestBody);
 
@@ -607,61 +640,6 @@
       });
   });
   </script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-      // Function to format a date range
-      function formatDateRange(date, startOfDay = true) {
-          const year = date.getFullYear();
-          const month = String(date.getMonth() + 1).padStart(2, '0');
-          const day = String(date.getDate()).padStart(2, '0');
-          const time = startOfDay ? "00:00:00" : "23:59:59";
-          return new Date(`${year}-${month}-${day}T${time}`);
-      }
-
-      // Filter function
-      function filterByDateRange(fromDate, toDate) {
-          $('#parts-table-body tr').each(function () {
-              const partDateText = $(this).find('td:nth-child(5)').text().trim(); // 5th column
-              const partDate = new Date(partDateText);
-
-              if (partDateText === "-" || isNaN(partDate)) {
-                  $(this).hide(); // Hide rows with invalid or missing dates
-              } else {
-                  const partTimestamp = partDate.getTime();
-                  if (partTimestamp <= fromDate.getTime() && partTimestamp >= toDate.getTime()) {
-                      $(this).show();
-                  } else {
-                      $(this).hide();
-                  }
-              }
-          });
-      }
-
-      // Button event listeners
-      $('#filter-today').on('click', function () {
-          const today = new Date();
-          const fromDate = formatDateRange(today, true); // Start of today
-          const toDate = formatDateRange(today, false); // End of today
-          filterByDateRange(fromDate, toDate);
-      });
-
-      $('#filter-yesterday').on('click', function () {
-          const yesterday = new Date();
-          yesterday.setDate(yesterday.getDate() - 1); // Subtract one day
-          const fromDate = formatDateRange(yesterday, true); // Start of yesterday
-          const toDate = formatDateRange(yesterday, false); // End of yesterday
-          filterByDateRange(fromDate, toDate);
-      });
-
-      $('#filter-month').on('click', function () {
-          const today = new Date();
-          const fromDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0); // First day of the month
-          const toDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59); // Last day of the month
-          filterByDateRange(fromDate, toDate);
-      });
-  });
-</script>
 
 {% endblock %}
 </body>
