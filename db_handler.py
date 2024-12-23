@@ -91,7 +91,7 @@ class DatabaseHandler:
             return results
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
-            raise
+            
         finally:
             if cursor:
                 cursor.close()
