@@ -285,7 +285,7 @@
             } else {
                 tableBody.innerHTML = data.data.map(part => `
                     <tr>
-                        <td>${part[1]}</td>
+                        <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-details${part[0]}">${part[1].toUpperCase()}</a></td>
             <td>${part[2]}</td>
             <td>${part[3]}</td>
             <td>${part[4]}</td>
@@ -428,7 +428,7 @@
           data.forEach(part => {
               const row = document.createElement('tr');
               row.innerHTML = `
-                  <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-details${part[0]}">${part[1]}</a></td>
+                  <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-details${part[0]}">${part[1].toUpperCase()}</a></td>
                   <td>${part[2]}</td>
                   <td>${part[3]}</td>
                   <td>${part[4]}</td>
