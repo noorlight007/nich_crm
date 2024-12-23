@@ -610,23 +610,23 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-      // Function to format a date to "YYYY-MM-DD HH:mm:ss"
-      function formatDateToRange(date, startOfDay = true) {
+      // Function to format a date range
+      function formatDateRange(date, startOfDay = true) {
           const year = date.getFullYear();
           const month = String(date.getMonth() + 1).padStart(2, '0');
           const day = String(date.getDate()).padStart(2, '0');
           const time = startOfDay ? "00:00:00" : "23:59:59";
-          return `${year}-${month}-${day} ${time}`;
+          return new Date(`${year}-${month}-${day}T${time}`);
       }
 
       // Filter function
       function filterByDateRange(fromDate, toDate) {
           $('#parts-table-body tr').each(function () {
-              const partDateText = $(this).find('td:nth-child(4)').text().trim(); // 5th column
+              const partDateText = $(this).find('td:nth-child(5)').text().trim(); // 5th column
               const partDate = new Date(partDateText);
-              
+
               if (partDateText === "-" || isNaN(partDate)) {
-                  $(this).hide();
+                  $(this).hide(); // Hide rows with invalid or missing dates
               } else {
                   const partTimestamp = partDate.getTime();
                   if (partTimestamp >= fromDate.getTime() && partTimestamp <= toDate.getTime()) {
@@ -638,30 +638,31 @@
           });
       }
 
-      // Event listeners for buttons
+      // Button event listeners
       $('#filter-today').on('click', function () {
           const today = new Date();
-          const fromDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
-          const toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+          const fromDate = formatDateRange(today, true); // Start of today
+          const toDate = formatDateRange(today, false); // End of today
           filterByDateRange(fromDate, toDate);
       });
 
       $('#filter-yesterday').on('click', function () {
-          const today = new Date();
-          const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
-          const fromDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0);
-          const toDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59);
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1); // Subtract one day
+          const fromDate = formatDateRange(yesterday, true); // Start of yesterday
+          const toDate = formatDateRange(yesterday, false); // End of yesterday
           filterByDateRange(fromDate, toDate);
       });
 
       $('#filter-month').on('click', function () {
           const today = new Date();
-          const fromDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0);
-          const toDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59);
+          const fromDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0); // First day of the month
+          const toDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59); // Last day of the month
           filterByDateRange(fromDate, toDate);
       });
   });
 </script>
+
 {% endblock %}
 </body>
 </html>
