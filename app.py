@@ -121,12 +121,13 @@ def filter_parts():
     filter_type = request.json.get('filter_type', 'no_filter')
     filter_value = request.json.get('filter_value', '')
     print(f"filer type: {filter_type}, filervalue: {filter_value}")
+    today = datetime.now()
     if filter_type == 'date_range':
         from_date = filter_value.get('from')
         to_date = filter_value.get('to')
         results = db_handler.get_filtered_by_date_range(from_date, to_date)
-    today = datetime.now()
-    if filter_type == 'today':
+    
+    elif filter_type == 'today':
         from_date = today.replace(hour=0, minute=0, second=0, microsecond=0)
         to_date = today.replace(hour=23, minute=59, second=59, microsecond=999999)
         results = db_handler.get_filtered_by_date_range(from_date, to_date)
@@ -141,6 +142,7 @@ def filter_parts():
     else:
         results = db_handler.get_filtered_data(filter_type, filter_value)
     #print(results)
+    print(results)
     return {"data": results}
 
 @app.route('/filter_customers', methods=['POST'])
