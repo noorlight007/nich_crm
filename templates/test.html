@@ -622,7 +622,7 @@
       // Filter function
       function filterByDateRange(fromDate, toDate) {
           $('#parts-table-body tr').each(function () {
-              const partDateText = $(this).find('td:nth-child(5)').text().trim(); // 5th column
+              const partDateText = $(this).find('td:nth-child(4)').text().trim(); // 5th column
               const partDate = new Date(partDateText);
               
               if (partDateText === "-" || isNaN(partDate)) {
