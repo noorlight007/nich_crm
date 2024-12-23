@@ -130,7 +130,9 @@ def filter_parts():
     elif filter_type == 'today':
         from_date = today.replace(hour=0, minute=0, second=0, microsecond=0)
         to_date = today.replace(hour=23, minute=59, second=59, microsecond=999999)
-        results = db_handler.get_filtered_by_date_range(to_date, from_date)
+        results = db_handler.get_filtered_by_date_range(from_date, to_date)
+        print("****")
+        print(results)
     elif filter_type == 'yesterday':
         from_date = (today - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
         to_date = (today - timedelta(days=1)).replace(hour=23, minute=59, second=59, microsecond=999999)
