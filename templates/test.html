@@ -206,6 +206,7 @@
         <button class="btn btn-sm btn-outline-success me-1" id="filter-today">Today</button>
         <button class="btn btn-sm btn-outline-success me-1" id="filter-yesterday">Yesterday</button> 
         <button class="btn btn-sm btn-outline-success me-1" id="filter-this-month">This month</button> 
+        <button class="btn btn-sm btn-outline-danger me-1" id="reset-filter">Reset</button> 
       </div>
     </div>
     <div class="col-md-2">
@@ -648,6 +649,14 @@
     document.getElementById('filter-today').addEventListener('click', () => filterByDate('today'));
     document.getElementById('filter-yesterday').addEventListener('click', () => filterByDate('yesterday'));
     document.getElementById('filter-this-month').addEventListener('click', () => filterByDate('this-month'));
+
+    // Reset button functionality
+    document.getElementById('reset-filter').addEventListener('click', () => {
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            row.style.display = ''; // Show all rows
+        });
+    });
 });
 
 </script>
