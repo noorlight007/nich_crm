@@ -291,7 +291,7 @@
             <td>${part[4]}</td>
             <td>${part[6]}</td>
             <td>${part[7]}</td>
-            <td>${part[8] ? 'Yes' : 'No'}</td>
+            <td>${part[8] ? '<span class="badge bg-teal text-teal-fg">Yes</span>' : '<span class="badge bg-red text-red-fg">No</span>'}</td>
             <td>${new Date(part[9]).toLocaleString()}</td>
             <td><div class="btn-list flex-nowrap">
                               <a href="{{ url_for('edit_part_page', part_id='') }}${part[0]}" class="btn">
@@ -434,7 +434,7 @@
                   <td>${part[4]}</td>
                   <td>${part[6]}</td>
                   <td>${part[7]}</td>
-                  <td>${part[8] ? 'Yes' : 'No'}</td>
+                  <td>${part[8] ? '<span class="badge bg-teal text-teal-fg">Yes</span>' : '<span class="badge bg-red text-red-fg">No</span>'}</td>
                   <td>${new Date(part[9]).toLocaleString()}</td>
                   <td><div class="btn-list flex-nowrap">
                               <a href="{{ url_for('edit_part_page', part_id='') }}${part[0]}" class="btn">
