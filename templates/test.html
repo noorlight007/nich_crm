@@ -203,9 +203,9 @@
     </div>
     <div class="col-md-3">
       <div class="d-flex align-items-between">
-        <button class="btn btn-sm btn-outline-success me-1" aria-selected="true">Today</button>
-        <button class="btn btn-sm btn-outline-success me-1">Yesterday</button> 
-        <button class="btn btn-sm btn-outline-success me-1">This month</button> 
+        <button type="button" class="btn btn-sm btn-outline-success me-1" id="filter-today">Today</button>
+        <button type="button" class="btn btn-sm btn-outline-success me-1" id="filter-yesterday">Yesterday</button> 
+        <button type="button" class="btn btn-sm btn-outline-success me-1" id="filter-month">This month</button> 
       </div>
     </div>
     <div class="col-md-2">
@@ -608,7 +608,60 @@
   });
   </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Function to format a date to "YYYY-MM-DD HH:mm:ss"
+      function formatDateToRange(date, startOfDay = true) {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          const time = startOfDay ? "00:00:00" : "23:59:59";
+          return `${year}-${month}-${day} ${time}`;
+      }
 
+      // Filter function
+      function filterByDateRange(fromDate, toDate) {
+          $('#parts-table-body tr').each(function () {
+              const partDateText = $(this).find('td:nth-child(5)').text().trim(); // 5th column
+              const partDate = new Date(partDateText);
+              
+              if (partDateText === "-" || isNaN(partDate)) {
+                  $(this).hide();
+              } else {
+                  const partTimestamp = partDate.getTime();
+                  if (partTimestamp >= fromDate.getTime() && partTimestamp <= toDate.getTime()) {
+                      $(this).show();
+                  } else {
+                      $(this).hide();
+                  }
+              }
+          });
+      }
+
+      // Event listeners for buttons
+      $('#filter-today').on('click', function () {
+          const today = new Date();
+          const fromDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
+          const toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+          filterByDateRange(fromDate, toDate);
+      });
+
+      $('#filter-yesterday').on('click', function () {
+          const today = new Date();
+          const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+          const fromDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0);
+          const toDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59);
+          filterByDateRange(fromDate, toDate);
+      });
+
+      $('#filter-month').on('click', function () {
+          const today = new Date();
+          const fromDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0);
+          const toDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59);
+          filterByDateRange(fromDate, toDate);
+      });
+  });
+</script>
 {% endblock %}
 </body>
 </html>
