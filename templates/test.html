@@ -629,7 +629,7 @@
                   $(this).hide(); // Hide rows with invalid or missing dates
               } else {
                   const partTimestamp = partDate.getTime();
-                  if (partTimestamp >= fromDate.getTime() && partTimestamp <= toDate.getTime()) {
+                  if (partTimestamp <= fromDate.getTime() && partTimestamp >= toDate.getTime()) {
                       $(this).show();
                   } else {
                       $(this).hide();
