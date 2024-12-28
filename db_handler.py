@@ -67,7 +67,7 @@ class DatabaseHandler:
                     customers c ON p.customer_id = c.id
             """
             filters = {
-                "today_not_credited": "WHERE p.created_at BETWEEN %s AND %s ORDER BY p.created_at DESC",
+                "today_not_credited": "WHERE p.created_at BETWEEN %s AND %s",
                 "partname_asc": "ORDER BY p.partname ASC ",
                 "partname_desc": "ORDER BY p.partname DESC",
                 "quantity_high": "ORDER BY p.quantity DESC",
