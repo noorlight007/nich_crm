@@ -1,5 +1,5 @@
 import MySQLdb
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 class DatabaseHandler:
     def __init__(self, host, user, password, db_name):
@@ -45,6 +45,11 @@ class DatabaseHandler:
         """
         Fetch parts data with related user and customer information, ordered by `updated_at` descending.
         """
+        # Start time: 00:00:00
+        start_time = datetime.combine(datetime.today(), time.min)
+
+        # End time: 11:59:59
+        end_time = datetime.combine(datetime.today(), time(11, 59, 59))
         try:
             self.ensure_connection()
             cursor = self.connection.cursor()
@@ -62,6 +67,7 @@ class DatabaseHandler:
                     customers c ON p.customer_id = c.id
             """
             filters = {
+                "today_not_credited": "WHERE p.created_at BETWEEN %s AND %s ORDER BY p.created_at DESC",
                 "partname_asc": "ORDER BY p.partname ASC ",
                 "partname_desc": "ORDER BY p.partname DESC",
                 "quantity_high": "ORDER BY p.quantity DESC",
@@ -80,6 +86,9 @@ class DatabaseHandler:
             }
 
             query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
+            if "today_not_credited" in filter_type:
+                final_query = base_query + f" {query_filter}"
+                cursor.execute(final_query, (start_time,end_time))
             if "reason" in filter_type:
                 final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query, (filter_value,))
