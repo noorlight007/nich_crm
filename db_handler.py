@@ -73,7 +73,7 @@ class DatabaseHandler:
 
             # Filters dictionary
             filters = {
-                "today_not_credited": "WHERE p.created_at BETWEEN %s AND %s AND (p.credited IS NULL OR p.credited != 1)",
+                "no_filter": "ORDER BY p.updated_at DESC",
                 "partname_asc": "ORDER BY p.partname ASC ",
                 "partname_desc": "ORDER BY p.partname DESC",
                 "quantity_high": "ORDER BY p.quantity DESC",
@@ -92,16 +92,18 @@ class DatabaseHandler:
             }
 
             # Get the filter query
-            query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
-
-            # Build and execute the query
-            if filter_type == "today_not_credited":
+            #query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
+            if filter_type not in filters.keys():
+                query_filter = "WHERE p.created_at BETWEEN %s AND %s AND (p.credited IS NULL OR p.credited != 1)"
                 final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query, (start_time, end_time))
+
             elif filter_type == "reason":
+                query_filter = filters.get(filter_type)
                 final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query, (filter_value,))
             else:
+                query_filter = filters.get(filter_type)
                 final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query)
 
