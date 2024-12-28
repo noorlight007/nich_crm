@@ -41,19 +41,23 @@ class DatabaseHandler:
             print(f"Error ensuring connection: {e}")
             raise
 
-    def get_filtered_data(self,filter_type , filter_value):
+    def get_filtered_data(self, filter_type, filter_value):
         """
         Fetch parts data with related user and customer information, ordered by `updated_at` descending.
         """
+        from datetime import datetime, time
+
         # Start time: 00:00:00
         start_time = datetime.combine(datetime.today(), time.min)
 
         # End time: 11:59:59
         end_time = datetime.combine(datetime.today(), time(11, 59, 59))
+
         try:
             self.ensure_connection()
             cursor = self.connection.cursor()
-            # Dynamically build the query based on filter
+
+            # Base query
             base_query = """
                 SELECT 
                     p.id, p.partname, p.quantity, p.reason, 
@@ -66,8 +70,10 @@ class DatabaseHandler:
                 JOIN 
                     customers c ON p.customer_id = c.id
             """
+
+            # Filters dictionary
             filters = {
-                "today_not_credited": "WHERE p.created_at BETWEEN %s AND %s",
+                "today_not_credited": "WHERE p.created_at BETWEEN %s AND %s AND (p.credited IS NULL OR p.credited != 1)",
                 "partname_asc": "ORDER BY p.partname ASC ",
                 "partname_desc": "ORDER BY p.partname DESC",
                 "quantity_high": "ORDER BY p.quantity DESC",
@@ -82,14 +88,17 @@ class DatabaseHandler:
                 "credited_yes": "WHERE p.credited = 1 ORDER BY p.updated_at DESC",
                 "credited_no": "WHERE (p.credited IS NULL OR p.credited != 1) ORDER BY p.updated_at DESC",
                 "created_at_asc": "ORDER BY p.created_at ASC",
-                "created_at_desc": "ORDER BY p.created_at DESC"
+                "created_at_desc": "ORDER BY p.created_at DESC",
             }
 
+            # Get the filter query
             query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
-            if "today_not_credited" in filter_type:
+
+            # Build and execute the query
+            if filter_type == "today_not_credited":
                 final_query = base_query + f" {query_filter}"
-                cursor.execute(final_query, (start_time,end_time))
-            if "reason" in filter_type:
+                cursor.execute(final_query, (start_time, end_time))
+            elif filter_type == "reason":
                 final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query, (filter_value,))
             else:
@@ -98,6 +107,8 @@ class DatabaseHandler:
 
             results = cursor.fetchall()
             return results
+
+        
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
             raise
