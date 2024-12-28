@@ -150,7 +150,7 @@
         <div class="d-flex gap-1">
             <label for="filter" class="form-label mb-0 me-1">Filter:</label>
             <select id="filter" class="form-select form-select-sm">
-                <option value="today_not_credited" selected>Today - Not Credited</option>
+                <option value="today_not_credited">Today - Not Credited</option>
                 <option value="no_filter">No Filter</option>
                 <optgroup label="Credited">
                     <option value="credited_yes">Yes</option>
@@ -384,7 +384,7 @@
       const toDateInput = document.getElementById('to-date');
       
       // Automatically fetch data with "No Filter" on page load
-      const filterType = 'no_filter'; // Default filter type
+      const filterType = 'today_not_credited'; // Default filter type
       const filterValue = '';         // No specific value for "No Filter"
   
       // Get the current page number from the URL
