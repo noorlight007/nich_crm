@@ -94,7 +94,7 @@ class DatabaseHandler:
             # Get the filter query
             #query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
             if filter_type not in filters.keys():
-                query_filter = "WHERE p.created_at BETWEEN %s AND %s AND (p.credited IS NULL OR p.credited != 1)"
+                query_filter = "WHERE (p.credited IS NULL OR p.credited != 1) ORDER BY p.created_at DESC"
                 final_query = base_query + f" {query_filter}"
                 cursor.execute(final_query, (start_time, end_time))
 
