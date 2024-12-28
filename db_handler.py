@@ -45,13 +45,13 @@ class DatabaseHandler:
         """
         Fetch parts data with related user and customer information, ordered by `updated_at` descending.
         """
-        from datetime import datetime, time
+        # from datetime import datetime, time
 
-        # Start time: 00:00:00
-        start_time = datetime.combine(datetime.today(), time.min)
+        # # Start time: 00:00:00
+        # start_time = datetime.combine(datetime.today(), time.min)
 
-        # End time: 11:59:59
-        end_time = datetime.combine(datetime.today(), time(11, 59, 59))
+        # # End time: 11:59:59
+        # end_time = datetime.combine(datetime.today(), time(11, 59, 59))
 
         try:
             self.ensure_connection()
@@ -96,7 +96,7 @@ class DatabaseHandler:
             if filter_type not in filters.keys():
                 query_filter = "WHERE (p.credited IS NULL OR p.credited != 1) ORDER BY p.created_at DESC"
                 final_query = base_query + f" {query_filter}"
-                cursor.execute(final_query, (start_time, end_time))
+                cursor.execute(final_query)
 
             elif filter_type == "reason":
                 query_filter = filters.get(filter_type)
