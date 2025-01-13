@@ -66,7 +66,9 @@ def index():
     total_admins = db_handler.get_total_admins()
     db_handler = DatabaseHandler(**db_config)
     credit_non_credited = db_handler.get_credit_status_counts_for_today()
+    print("**************************************************************")
     print(credit_non_credited)
+    print("**************************************************************")
     cr_values = []
     total_returned_today = 0
     for _,val in credit_non_credited.items():
@@ -80,8 +82,8 @@ def index():
     for item in top_five_company:
         total_values_company.append(item['company'])
         total_values_count.append(item['total_quantity'])
-    print(total_values_company)
-    print(total_values_count)
+    # print(total_values_company)
+    # print(total_values_count)
     ap_db_handler = DatabaseHandler(**db_config_ap)
     goods_salary = ap_db_handler.get_goods_salary()
 
