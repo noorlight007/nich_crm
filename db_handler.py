@@ -218,7 +218,7 @@ class DatabaseHandler:
                     created_at BETWEEN %s AND %s
             """
             cursor.execute(query, (today_start, today_end))
-            result = cursor.fetchAll()
+            result = cursor.fetchall()
             print("#######################################")
             print(result)
             print("#######################################")
