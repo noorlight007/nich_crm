@@ -206,7 +206,7 @@ class DatabaseHandler:
             # Calculate today's date range: 00:00:00 to 23:59:59
             today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
             today_end = today_start + timedelta(days=1) - timedelta(seconds=1)
-            print(today_start.strftime('dd-mm-yyyy'))
+            # print(today_start.strftime('dd-mm-yyyy'))
             print(f"{today_start} - {today_end}")
             query = """
                 SELECT 
@@ -218,7 +218,7 @@ class DatabaseHandler:
                     created_at BETWEEN %s AND %s
             """
             cursor.execute(query, (today_start, today_end))
-            result = cursor.fetchone()
+            result = cursor.fetchAll()
             print("#######################################")
             print(result)
             print("#######################################")
