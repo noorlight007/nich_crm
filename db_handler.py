@@ -215,10 +215,10 @@ class DatabaseHandler:
                 FROM 
                     parts
                 WHERE 
-                    created_at BETWEEN %s AND %s
+                    updated_at BETWEEN %s AND %s
             """
             cursor.execute(query, (today_start, today_end))
-            result = cursor.fetchall()
+            result = cursor.fetchone()
             print("#######################################")
             print(result)
             print("#######################################")
