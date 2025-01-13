@@ -211,11 +211,11 @@ class DatabaseHandler:
             query = """
                 SELECT 
                     SUM(CASE WHEN credited = 1 THEN 1 ELSE 0 END) AS credited_count,
-                    SUM(CASE WHEN credited != 1 THEN 1 ELSE 0 END) AS not_credited_count
+                    SUM(CASE WHEN credited IS NULL THEN 1 ELSE 0 END) AS not_credited_count
                 FROM 
                     parts
                 WHERE 
-                    updated_at BETWEEN %s AND %s
+                    created_at BETWEEN %s AND %s
             """
             cursor.execute(query, (today_start, today_end))
             result = cursor.fetchone()
