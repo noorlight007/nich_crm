@@ -218,6 +218,9 @@ class DatabaseHandler:
             """
             cursor.execute(query, (today_start, today_end))
             result = cursor.fetchone()
+            print("#######################################")
+            print(result)
+            print("#######################################")
             return {
                 "credited": result[0] or 0,
                 "not_credited": result[1] or 0
