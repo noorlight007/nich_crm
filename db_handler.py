@@ -407,7 +407,7 @@ class DatabaseHandler:
                     hours = time_diff.total_seconds() // 3600
                     users_with_hours.append(int(hours))
             sorted_list = sorted(users_with_hours, reverse=True)
-            print(sorted_list)
+            #print(sorted_list)
             return sorted_list[0]
         except MySQLdb.MySQLError as e:
             print(f"Error executing query: {e}")
@@ -876,7 +876,7 @@ class DatabaseHandler:
             """
             cursor.execute(query, (month_start, month_end))
             results = cursor.fetchall()
-            print(results)
+            #print(results)
             total_occur = dict()
             for row in results:
                 if row[0] in total_occur:
