@@ -94,9 +94,17 @@ class DatabaseHandler:
             # Get the filter query
             #query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
             if filter_type not in filters.keys():
-                query_filter = "WHERE (p.credited IS NULL OR p.credited != 1) ORDER BY p.created_at DESC"
+                query_filter = "WHERE (p.credited IS NULL OR p.credited != 1) WHERE p.created_at BETWEEN %s AND %s ORDER BY p.created_at DESC"
                 final_query = base_query + f" {query_filter}"
-                cursor.execute(final_query)
+                # Get today's date
+                today_date = datetime.today().date()
+
+                # Start of today (00:00:00)
+                start_of_today = datetime.combine(today_date, time.min)
+
+                # End of today (23:59:59)
+                end_of_today = datetime.combine(today_date, time.max)
+                cursor.execute(final_query, start_of_today, end_of_today)
 
             elif filter_type == "reason":
                 query_filter = filters.get(filter_type)
