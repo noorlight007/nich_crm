@@ -94,7 +94,7 @@ class DatabaseHandler:
             # Get the filter query
             #query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
             if filter_type not in filters.keys():
-                query_filter = "WHERE (p.credited IS NULL OR p.credited != 1) WHERE p.created_at BETWEEN %s AND %s ORDER BY p.created_at DESC"
+                query_filter = "WHERE (p.credited IS NULL OR p.credited != 1) AND p.created_at BETWEEN %s AND %s ORDER BY p.created_at DESC"
                 final_query = base_query + f" {query_filter}"
                 # Get today's date
                 today_date = datetime.today().date()
