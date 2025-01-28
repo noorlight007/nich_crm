@@ -104,7 +104,7 @@ class DatabaseHandler:
 
                 # End of today (23:59:59)
                 end_of_today = datetime.combine(today_date, time.max)
-                cursor.execute(final_query, start_of_today, end_of_today)
+                cursor.execute(final_query, (start_of_today, end_of_today))
 
             elif filter_type == "reason":
                 query_filter = filters.get(filter_type)
