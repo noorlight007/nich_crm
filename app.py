@@ -412,7 +412,7 @@ def users_table():
     db_handler = DatabaseHandler(**db_config)
     try:
         users_data = db_handler.get_users_data()
-        return render_template('users_table.html', users=users_data)
+        return jsonify(users_data)
     except Exception as e:
         return f"Error: {str(e)}"
 
