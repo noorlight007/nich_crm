@@ -83,8 +83,7 @@ class DatabaseHandler:
                 "account_desc": "ORDER BY c.accountNumber DESC",
                 "uniqueid_asc": "ORDER BY p.unique_id ASC",
                 "uniqueid_desc": "ORDER BY p.unique_id DESC",
-                "addedby_asc": "ORDER BY u.name ASC",
-                "addedby_desc": "ORDER BY u.name DESC",
+                "addedby_": "WHERE u.name = %s",
                 "credited_yes": "WHERE p.credited = 1 ORDER BY p.updated_at DESC",
                 "credited_no": "WHERE (p.credited IS NULL OR p.credited != 1) ORDER BY p.updated_at DESC",
                 "created_at_asc": "ORDER BY p.created_at ASC",
@@ -93,6 +92,10 @@ class DatabaseHandler:
 
             # Get the filter query
             #query_filter = filters.get(filter_type, "ORDER BY p.updated_at DESC")
+            if filter_type.startswith('addedby_'):
+                driver_name = filter_type.replace("addedby_", "")
+                filter_type = "addedby_"
+
             if filter_type not in filters.keys():
                 query_filter = "WHERE (p.credited IS NULL OR p.credited != 1) AND p.created_at BETWEEN %s AND %s ORDER BY p.created_at DESC"
                 final_query = base_query + f" {query_filter}"
@@ -105,6 +108,11 @@ class DatabaseHandler:
                 # End of today (23:59:59)
                 end_of_today = datetime.combine(today_date, time.max)
                 cursor.execute(final_query, (start_of_today, end_of_today))
+            
+            elif filter_type == "addedby_":
+                query_filter = filters.get(filter_type)
+                final_query = base_query + f" {query_filter}"
+                cursor.execute(final_query, (driver_name,))
 
             elif filter_type == "reason":
                 query_filter = filters.get(filter_type)
