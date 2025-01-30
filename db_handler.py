@@ -823,8 +823,6 @@ class DatabaseHandler:
             if cursor:
                 cursor.close()
 
-    def get_all_driver_names(self):
-
     
     def get_top_companies_by_quantity_this_month(self):
         """
