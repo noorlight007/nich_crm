@@ -112,7 +112,14 @@ def settings():
 def tests():
     if 'user_id' not in session:
         return redirect('login')
-    return render_template("test.html", admin_name = session.get('username'))
+    # Connect to the database
+    db_handler = DatabaseHandler(**db_config)
+    users_data = db_handler.get_users_data()
+    drivers = []
+    for user in users_data:
+        drivers.append(user[1])
+    print(drivers)
+    return render_template("test.html", admin_name = session.get('username'), drivers = drivers)
 
 @app.route('/filter_parts', methods=['POST'])
 def filter_parts():
