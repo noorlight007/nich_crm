@@ -380,7 +380,7 @@ class DatabaseHandler:
             self.ensure_connection()
             cursor = self.connection.cursor()
             query = """
-                SELECT id, name, optCode, pin, email, email_verified_at, created_at, updated_at, last_active
+                SELECT id, name, optCode, pin, email, email_verified_at, created_at, updated_at, last_active from users
             """
             cursor.execute(query)
             results = cursor.fetchall()
@@ -822,6 +822,9 @@ class DatabaseHandler:
         finally:
             if cursor:
                 cursor.close()
+
+    def get_all_driver_names(self):
+
     
     def get_top_companies_by_quantity_this_month(self):
         """
