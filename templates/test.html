@@ -185,8 +185,6 @@
                     {% for driver in drivers %}
                     <option value="addedby_{{ driver }}">{{ driver }}</option>
                     {% endfor %}
-                    <option value="addedby_asc">Ascending - Added By</option>
-                    <option value="addedby_desc">Descending - Added By</option>
                 </optgroup>
             </select>
         </div>
@@ -384,6 +382,8 @@
     });
 </script>
 
+
+<!-- First time loaded -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
       const loadingElement = document.getElementById('loading');
@@ -618,7 +618,7 @@
   </script>
 
 
-
+<!-- Date filter -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('#parts-table-body'); // Assuming your table body has this ID
