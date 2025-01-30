@@ -381,7 +381,26 @@
     });
 </script>
 
-
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const driverFilter = document.getElementById("driver_filter");
+      const tableBody = document.getElementById("parts-table-body");
+  
+      driverFilter.addEventListener("change", function () {
+          const selectedDriver = this.value.toLowerCase();
+          const rows = tableBody.getElementsByTagName("tr");
+  
+          for (let row of rows) {
+              const driverCell = row.cells[5]; // 6th column (index starts from 0)
+              if (driverCell) {
+                  const driverName = driverCell.textContent.trim().toLowerCase();
+                  row.style.display = (selectedDriver === "" || driverName === selectedDriver) ? "" : "none";
+              }
+          }
+      });
+  });
+  </script>
+  
 
 
 <script>
